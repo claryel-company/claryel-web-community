@@ -1,5 +1,15 @@
 # Changelog / Журнал изменений
 
+## 0.2.1 — 2026-07-20
+
+- Made server-rendered localized SEO metadata deterministic for every language path.
+- Added an explicit patch-version signal so deployment verification waits for the current Worker rather than an earlier `0.2.0` build.
+- Reduced localized HTML and public-configuration edge-cache lifetime with revalidation.
+
+- Серверные локализованные SEO-метаданные сделаны детерминированными для каждого языкового пути.
+- Добавлен явный сигнал patch-версии, чтобы deployment-проверка ожидала текущий Worker, а не предыдущую сборку `0.2.0`.
+- Сокращён срок edge-cache для локализованного HTML и публичной конфигурации с обязательной revalidation.
+
 ## 0.2.0 — 2026-07-20
 
 - Repositioned the product around voice-first website creation and continuous voice control.

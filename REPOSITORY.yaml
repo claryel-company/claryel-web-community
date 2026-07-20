@@ -21,14 +21,13 @@ does_not_own:
   - private customer infrastructure
   - agent orchestration
   - remote support infrastructure
-source_boundaries:
-  allowed:
-    - reviewed public-safe shared website contracts
-    - reviewed public documentation templates
-    - reviewed generic Cloudflare deployment patterns
-  forbidden:
-    - private repository history
-    - secrets and account identifiers
-    - customer or production data
-    - internal service topology
-    - private commercial modules
+allowed_sources:
+  - reviewed public-safe shared website contracts
+  - reviewed public documentation templates
+  - reviewed generic Cloudflare deployment patterns
+forbidden_sources:
+  - private repository history
+  - secrets and account identifiers
+  - customer or production data
+  - internal service topology
+  - private commercial modules

@@ -1,8 +1,8 @@
 {
   "name": "@claryel/web-community",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Community Edition of the CLARYEL web platform for building, deploying and managing modern websites.",
+  "description": "Voice-first Community Edition for creating, publishing and continuously improving websites through AI, GitHub and Cloudflare.",
   "type": "module",
   "scripts": {
     "check": "node scripts/check.mjs && node --test",
@@ -11,8 +11,6 @@
     "deploy": "npx --yes wrangler@4.112.0 deploy",
     "deploy:dry-run": "npx --yes wrangler@4.112.0 deploy --dry-run"
   },
-  "engines": {
-    "node": ">=22"
-  },
+  "engines": {"node": ">=22"},
   "license": "BUSL-1.1"
 }

@@ -1,15 +1,27 @@
 # Changelog / Журнал изменений
 
+## 0.2.0 — 2026-07-20
+
+- Repositioned the product around voice-first website creation and continuous voice control.
+- Added voice dictation for initial briefs and later change requests.
+- Added logo and visual-reference selection.
+- Rebuilt the public site with a strict, minimal, premium responsive design.
+- Added the standard fixed multilingual beta banner and official CLARYEL brand mark.
+- Replaced query language selection with canonical locale paths and flag navigation.
+- Changed the free licence allowance from a legal-entity basis to two active sites per Account Holder.
+- Added market-positioning, localisation and deployment standards.
+
+- Продукт перепозиционирован вокруг создания сайта и постоянного управления голосом.
+- Добавлена голосовая диктовка первого задания и последующих изменений.
+- Добавлен выбор логотипа и визуальных примеров.
+- Публичный сайт полностью переработан в строгом минималистичном профессиональном дизайне.
+- Добавлены стандартная фиксированная многоязычная beta-плашка и официальный знак CLARYEL.
+- Query-переключение языков заменено каноническими путями и навигацией с флагами.
+- Бесплатное лицензионное разрешение изменено с юридического лица на два активных сайта на владельца аккаунта.
+- Добавлены стандарты рыночного позиционирования, локализации и публикации.
+
 ## 0.1.0 — 2026-07-20
 
-- Initial standalone public beta.
-- Added a two-site local-first browser workspace.
-- Added site-manifest and ChatGPT-brief exports.
-- Added Cloudflare Worker deployment configuration.
-- Added multilingual presentation, security controls, CI and licensing documents.
+Initial standalone public beta.
 
-- Первая автономная публичная бета-версия.
-- Добавлена локальная браузерная рабочая область для двух сайтов.
-- Добавлен экспорт манифеста и задания для ChatGPT.
-- Добавлена конфигурация развёртывания Cloudflare Worker.
-- Добавлены многоязычное представление, меры безопасности, CI и лицензионные документы.
+Первая автономная публичная бета-версия.

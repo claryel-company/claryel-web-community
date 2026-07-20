@@ -13,9 +13,13 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository / Получить репозиторий
+        uses: actions/checkout@v4
+      - name: Set up Node.js / Настроить Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm run check
-      - run: npm run deploy:dry-run
+      - name: Run product checks / Запустить проверки продукта
+        run: npm run check
+      - name: Validate Cloudflare bundle / Проверить сборку Cloudflare
+        run: npm run deploy:dry-run

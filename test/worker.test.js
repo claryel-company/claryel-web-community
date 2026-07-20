@@ -1,54 +1,15 @@
-import test from "node:test";
-import assert from "node:assert/strict";
-import { handleRequest } from "../src/worker.js";
-
-function createEnv() {
-  return {
-    PUBLIC_ORIGIN: "https://web.claryel.space",
-    FREE_SITE_LIMIT: "2",
-    PRODUCT_VERSION: "0.1.0",
-    ASSETS: {
-      async fetch(request) {
-        const url = new URL(request.url);
-        if (url.pathname === "/index.html" || url.pathname === "/") {
-          return new Response("<!doctype html><title>CLARYEL</title>", { headers: { "Content-Type": "text/html; charset=utf-8" } });
-        }
-        return new Response("not found", { status: 404 });
-      }
-    }
-  };
-}
-
-test("health endpoint reports the product version", async () => {
-  const response = await handleRequest(new Request("https://web.claryel.space/api/health"), createEnv());
-  assert.equal(response.status, 200);
-  assert.equal(response.headers.get("X-Content-Type-Options"), "nosniff");
-  const body = await response.json();
-  assert.equal(body.status, "ok");
-  assert.equal(body.version, "0.1.0");
-});
-
-test("public configuration exposes two sites and hides Russian", async () => {
-  const response = await handleRequest(new Request("https://web.claryel.space/api/public-config"), createEnv());
-  const body = await response.json();
-  assert.equal(body.freeSiteLimit, 2);
-  assert.deepEqual(body.hiddenLocales, ["ru"]);
-  assert.equal(body.publicLocales.includes("ru"), false);
-  assert.equal(body.aiMode, "chatgpt-application");
-});
-
-test("Russian context is excluded from indexing", async () => {
-  const response = await handleRequest(new Request("https://web.claryel.space/?lang=ru"), createEnv());
-  assert.equal(response.headers.get("X-Robots-Tag"), "noindex, nofollow, noarchive");
-});
-
-test("unknown application routes fall back to index", async () => {
-  const response = await handleRequest(new Request("https://web.claryel.space/workspace"), createEnv());
-  assert.equal(response.status, 200);
-  assert.match(await response.text(), /CLARYEL/);
-});
-
-test("state-changing methods are rejected", async () => {
-  const response = await handleRequest(new Request("https://web.claryel.space/api/health", { method: "POST" }), createEnv());
-  assert.equal(response.status, 405);
-});
+import test from"node:test";
+import assert from"node:assert/strict";
+import{readFile}from"node:fs/promises";
+import path from"node:path";
+import{handleRequest}from"../src/worker.js";
+const mime={".html":"text/html; charset=utf-8",".json":"application/json; charset=utf-8",".css":"text/css; charset=utf-8",".js":"text/javascript; charset=utf-8",".svg":"image/svg+xml"};
+function createEnv(){return{PUBLIC_ORIGIN:"https://web.claryel.space",FREE_SITE_LIMIT:"2",PRODUCT_VERSION:"0.2.0",ASSETS:{async fetch(request){const url=new URL(request.url);let pathname=url.pathname;if(pathname==="/")pathname="/index.html";const file=path.join(process.cwd(),"public",pathname.replace(/^\//,""));try{return new Response(await readFile(file),{headers:{"Content-Type":mime[path.extname(file)]||"application/octet-stream"}});}catch{return new Response("not found",{status:404});}}}};}
+test("health reports 0.2.0",async()=>{const response=await handleRequest(new Request("https://web.claryel.space/api/health"),createEnv());assert.equal(response.status,200);assert.equal((await response.json()).version,"0.2.0");});
+test("public config is account based and excludes Russian",async()=>{const body=await(await handleRequest(new Request("https://web.claryel.space/api/public-config"),createEnv())).json();assert.equal(body.freeSiteLimit,2);assert.equal(body.freeLimitBasis,"account-holder");assert.equal(body.localePaths.it,"/it/");assert.equal(body.publicLocales.includes("ru"),false);});
+test("legacy language query redirects to canonical path",async()=>{const response=await handleRequest(new Request("https://web.claryel.space/?lang=it"),createEnv());assert.equal(response.status,308);assert.equal(response.headers.get("location"),"https://web.claryel.space/it/");});
+test("locale path receives server-rendered metadata",async()=>{const response=await handleRequest(new Request("https://web.claryel.space/it/"),createEnv());const html=await response.text();assert.equal(response.status,200);assert.equal(response.headers.get("Content-Language"),"it-IT");assert.match(html,/lang="it-IT"/);assert.match(html,/href="https:\/\/web\.claryel\.space\/it\/"/);assert.match(html,/CLARYEL Web Community — Crea e gestisci siti con la voce/);});
+test("Russian path is hidden and noindex",async()=>{const response=await handleRequest(new Request("https://web.claryel.space/ru/"),createEnv());assert.equal(response.headers.get("X-Robots-Tag"),"noindex, nofollow, noarchive");assert.match(await response.text(),/data-hidden-locale="true"/);});
+test("sitemap uses canonical locale paths",async()=>{const text=await(await handleRequest(new Request("https://web.claryel.space/sitemap.xml"),createEnv())).text();assert.match(text,/https:\/\/web\.claryel\.space\/it\//);assert.doesNotMatch(text,/\?lang=/);assert.doesNotMatch(text,/\/ru\//);});
+test("voice permission is enabled only for self",async()=>{const response=await handleRequest(new Request("https://web.claryel.space/"),createEnv());assert.equal(response.headers.get("Permissions-Policy"),"camera=(), microphone=(self), geolocation=(), payment=()");});
+test("state-changing requests are rejected",async()=>{const response=await handleRequest(new Request("https://web.claryel.space/api/health",{method:"POST"}),createEnv());assert.equal(response.status,405);});

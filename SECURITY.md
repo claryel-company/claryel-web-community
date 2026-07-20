@@ -8,20 +8,26 @@ Only the latest public beta release is supported with security fixes.
 
 ## Reporting / Сообщение об уязвимости
 
-Do not disclose a suspected vulnerability in a public issue before maintainers have had a reasonable opportunity to investigate it. Use GitHub private vulnerability reporting when it is enabled. If that interface is unavailable, open a minimal issue requesting a private contact channel without publishing exploit details.
+Use GitHub private vulnerability reporting when it is enabled. If unavailable, open a minimal public issue requesting a private contact channel without publishing exploit details.
 
-Не публикуйте предполагаемую уязвимость в открытом issue до того, как сопровождающие получат разумное время на проверку. Используйте приватное сообщение об уязвимости GitHub, когда оно включено. Если интерфейс недоступен, создайте краткий issue с просьбой предоставить приватный канал без публикации деталей эксплуатации.
+Используйте приватное сообщение об уязвимости GitHub, когда оно включено. Если оно недоступно, создайте краткий публичный issue с просьбой предоставить приватный канал без публикации деталей эксплуатации.
 
-## Security boundaries / Границы безопасности
+## Security and privacy boundaries / Границы безопасности и конфиденциальности
 
-- Beta project records stay in browser local storage unless exported by the user.
+- Project records, selected file names and change histories stay in browser local storage unless exported by the user.
+- Selected logo and reference file contents are not uploaded by the website.
+- Voice recognition is initiated only by an explicit button press and uses the browser-provided speech-recognition capability.
+- Text input remains available when voice recognition is unsupported or declined.
 - The public Worker exposes only read-only health and configuration endpoints.
 - No OpenAI API key, GitHub token or Cloudflare token is requested by the browser application.
-- Deployment credentials belong only in GitHub or Cloudflare encrypted secrets.
-- The two-site browser limit is a product rule, not an anti-tamper security control.
+- Production credentials exist only in the protected private deployment workflow.
+- The two-site browser limit is a product and licence rule, not an anti-tamper security boundary.
 
-- Записи бета-проектов остаются в локальном хранилище браузера, пока пользователь сам их не экспортирует.
+- Записи проектов, имена выбранных файлов и история изменений остаются в локальном хранилище браузера до явного экспорта пользователем.
+- Содержимое выбранных логотипов и файлов-примеров не загружается сайтом.
+- Распознавание речи запускается только явным нажатием кнопки и использует предоставляемую браузером возможность.
+- При отсутствии или запрете голосового ввода остаётся текстовый ввод.
 - Публичный Worker предоставляет только read-only endpoints состояния и конфигурации.
 - Браузерное приложение не запрашивает ключ OpenAI API, токен GitHub или токен Cloudflare.
-- Учётные данные развёртывания хранятся только в зашифрованных секретах GitHub или Cloudflare.
-- Ограничение двух сайтов является продуктовым правилом, а не защитой от изменения исходного кода.
+- Production credentials находятся только в защищённом приватном deployment workflow.
+- Ограничение двух сайтов является продуктовым и лицензионным правилом, а не защитой от изменения исходного кода.

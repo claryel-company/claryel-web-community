@@ -7,43 +7,39 @@
 > CLARYEL Web Community — публичная автономная Community Edition платформы разработки сайтов CLARYEL. Публичные участники обязаны соблюдать локальные `AGENTS.md`, `REPOSITORY.yaml`, `CONTRIBUTING.md`, `SECURITY.md` и документацию реализации. Сопровождающие CLARYEL дополнительно применяют приватные общепроектные правила из `claryel-company/claryel-platform` до принятия изменений.
 <!-- CLARYEL-NAVIGATION:END -->
 
-A source-available, local-first workspace for planning, documenting and managing website projects with the ChatGPT application, GitHub and Cloudflare.
+**Create, publish and continuously improve websites through voice-first AI conversations.** Describe the business, attach a logo or visual reference, work with ChatGPT or another AI connected to GitHub, publish through Cloudflare and keep changing any part of the website with natural-language or dictated commands.
 
 <!-- RU:BEGIN -->
-Публичная source-available платформа с локальным хранением данных для планирования, документирования и управления проектами сайтов с помощью приложения ChatGPT, GitHub и Cloudflare.
+**Создавайте, публикуйте и постоянно улучшайте сайты голосовыми командами искусственному интеллекту.** Расскажите о бизнесе, приложите логотип или визуальный пример, работайте через ChatGPT или другой ИИ, подключённый к GitHub, публикуйте через Cloudflare и продолжайте менять любую часть сайта обычными словами или голосом.
 <!-- RU:END -->
 
-## Public beta
+## Public beta 0.2.0
 
-The first beta provides:
-
-- a browser workspace for up to two active website projects;
-- portable CLARYEL site manifests;
-- structured briefs for use in the ChatGPT browser or mobile application;
-- no required OpenAI API key;
-- a Cloudflare Worker deployment target;
-- 15 public locales and a hidden Russian maintenance locale;
-- source-available licensing with a commercial path for larger use.
+- voice dictation for the first website brief and later change requests;
+- logo and visual-reference selection;
+- portable site manifests and AI development briefs;
+- two active websites per free account holder, whether an individual or an organisation;
+- standard CLARYEL beta banner, official brand mark and flag-based language selector;
+- canonical language paths: `/`, `/it/`, `/de/`, `/fr/` and the other supported locales;
+- hidden Russian maintenance path `/ru/` with no public discovery or indexing;
+- Cloudflare Worker deployment, security headers, SEO metadata, tests and rollback documentation;
+- no required OpenAI API key for the Community beta workflow.
 
 <!-- RU:BEGIN -->
-Первая бета-версия предоставляет:
-
-- рабочую область в браузере для двух активных проектов сайтов;
-- переносимые манифесты сайтов CLARYEL;
-- структурированные задания для приложения ChatGPT в браузере или на телефоне;
-- отсутствие обязательного ключа OpenAI API;
-- развёртывание через Cloudflare Worker;
-- 15 публичных локалей и скрытую русскую локаль для сопровождения;
-- source-available лицензию с коммерческой моделью для более широкого использования.
+- голосовая диктовка первого задания на сайт и последующих изменений;
+- выбор логотипа и визуальных примеров;
+- переносимые манифесты и задания для ИИ-разработчика;
+- два активных сайта на владельца бесплатного аккаунта — физическое лицо или организацию;
+- стандартная beta-плашка CLARYEL, официальный знак бренда и переключатель языков с флагами;
+- канонические адреса языков: `/`, `/it/`, `/de/`, `/fr/` и остальные поддерживаемые локали;
+- скрытый русский путь `/ru/` без публичного обнаружения и индексации;
+- публикация Cloudflare Worker, заголовки безопасности, SEO, тесты и документация отката;
+- для Community-беты не требуется ключ OpenAI API.
 <!-- RU:END -->
 
 ## Live site
 
-Planned production address: **https://web.claryel.space**
-
-<!-- RU:BEGIN -->
-Планируемый production-адрес: **https://web.claryel.space**
-<!-- RU:END -->
+**https://web.claryel.space**
 
 ## Local development
 
@@ -55,9 +51,9 @@ Install dependencies.
 npm install
 ```
 
-Run all checks.
+Run deterministic tests and public-boundary checks.
 
-Запустить все проверки.
+Запустить детерминированные тесты и проверки публичных границ.
 
 ```bash
 npm run check
@@ -71,46 +67,21 @@ Start the local Cloudflare Worker.
 npm run dev
 ```
 
-## Deployment
+## Product and implementation documents
 
-The repository deploys to Cloudflare through `.github/workflows/deploy.yml` after the organisation secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are configured. The custom domain is declared in `wrangler.jsonc`.
-
-<!-- RU:BEGIN -->
-Репозиторий публикуется в Cloudflare через `.github/workflows/deploy.yml` после настройки секретов организации `CLOUDFLARE_API_TOKEN` и `CLOUDFLARE_ACCOUNT_ID`. Пользовательский домен объявлен в `wrangler.jsonc`.
-<!-- RU:END -->
-
-## Repository structure
-
-```text
-src/                  Cloudflare Worker entry point
-public/               public website and browser workspace
-scripts/              validation tools
-test/                 automated tests
-docs/                 architecture, deployment, pricing and legal notes
-.github/               CI, deployment and contribution templates
-```
-
-```text
-src/                  точка входа Cloudflare Worker
-public/               публичный сайт и рабочая область браузера
-scripts/              инструменты проверки
-test/                 автоматические тесты
-docs/                 архитектура, развёртывание, тарифы и юридические пояснения
-.github/               CI, публикация и шаблоны участия
-```
+- `docs/MARKET_POSITIONING.md`
+- `docs/ARCHITECTURE.md`
+- `docs/LOCALIZATION.md`
+- `docs/AI_APP_WORKFLOW.md`
+- `docs/PRIVATE_EXPORT_BOUNDARY.md`
+- `docs/PRICING.md`
+- `docs/LICENSING.md`
+- `docs/DEPLOYMENT.md`
 
 ## Licence
 
-The repository uses **Business Source License 1.1** with an Additional Use Grant for up to two Active Websites per Legal Entity. It is source-available, not OSI open source. Production use outside the grant requires a commercial licence. See `LICENSE` and `docs/LICENSING.md`.
+The repository uses **Business Source License 1.1**. The Additional Use Grant permits one Account Holder—an individual or organisation—to use one free Community account, installation or workspace for up to two Active Websites. Related accounts and self-hosted installations under common control are aggregated. Production use beyond that grant requires a commercial licence.
 
 <!-- RU:BEGIN -->
-Репозиторий использует **Business Source License 1.1** с дополнительным разрешением на два активных сайта для одного юридического субъекта. Это source-available, а не OSI open source. Использование в production за пределами разрешения требует коммерческой лицензии. См. `LICENSE` и `docs/LICENSING.md`.
-<!-- RU:END -->
-
-## Current status
-
-Version `0.1.0` is an early public beta. Browser storage and the two-site control are product onboarding features, not an anti-tamper security boundary. Paid checkout, hosted accounts, team workspaces and managed backups are intentionally not active yet.
-
-<!-- RU:BEGIN -->
-Версия `0.1.0` является ранней публичной бетой. Хранение в браузере и ограничение двух сайтов служат для знакомства с продуктом и не являются защитой от модификации кода. Платная оплата, размещённые аккаунты, командные рабочие области и управляемые резервные копии пока намеренно не активированы.
+Репозиторий использует **Business Source License 1.1**. Additional Use Grant разрешает одному владельцу аккаунта — физическому лицу или организации — использовать один бесплатный Community-аккаунт, установку или рабочую область максимум для двух активных сайтов. Связанные аккаунты и самостоятельные установки под единым контролем учитываются совместно. Production-использование сверх разрешения требует коммерческой лицензии.
 <!-- RU:END -->

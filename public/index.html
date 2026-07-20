@@ -1,99 +1,181 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-locale="en" data-hidden-locale="false">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Build, document and manage modern websites with CLARYEL Web Community, GitHub, Cloudflare and the ChatGPT application.">
-  <meta name="theme-color" content="#151a2d">
-  <meta property="og:title" content="CLARYEL Web Community">
-  <meta property="og:description" content="A source-available, local-first website workspace for GitHub, Cloudflare and the ChatGPT application.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Describe the website you want, publish through GitHub and Cloudflare, then change content, design and functionality with simple voice commands.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#f5f5f7">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CLARYEL Web Community">
+  <meta property="og:title" content="CLARYEL Web Community — Create and manage websites by voice">
+  <meta property="og:description" content="Your website starts with a conversation and keeps improving through voice commands.">
   <meta property="og:url" content="https://web.claryel.space/">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="claryel-hreflang-placeholder" content="">
   <link rel="canonical" href="https://web.claryel.space/">
+  <link rel="icon" type="image/svg+xml" href="/assets/claryel-mark-v3.svg">
   <link rel="manifest" href="/manifest.webmanifest">
-  <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/styles.css">
-  <title>CLARYEL Web Community</title>
+  <link rel="stylesheet" href="/styles.css?v=0.2.0">
+  <title>CLARYEL Web Community — Create and manage websites by voice</title>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="beta-banner" id="betaBanner" role="note" data-i18n-attr="aria-label:beta.aria">
+    <strong class="beta-badge" data-i18n="beta.label">BETA</strong>
+    <span class="beta-platform" data-i18n="beta.platform">This website is built on CLARYEL Web Community.</span>
+    <small class="beta-notice" data-i18n="beta.notice">Beta version: some functions may contain errors.</small>
+  </div>
+
   <header class="site-header">
-    <a class="brand" href="#home" aria-label="CLARYEL Web Community home">
-      <img src="/assets/logo.svg" alt="" width="36" height="36">
-      <span>CLARYEL Web Community</span>
+    <a class="brand" href="#top" aria-label="CLARYEL Web Community">
+      <img src="/assets/claryel-mark-v3.svg" alt="" width="38" height="38" aria-hidden="true">
+      <span><strong>CLARYEL</strong><small>WEB COMMUNITY</small></span>
     </a>
-    <nav class="top-nav" aria-label="Primary navigation">
-      <a href="#features" data-i18n="features">Features</a>
-      <a href="#workspace" data-i18n="workspace">Workspace</a>
-      <a href="#pricing" data-i18n="plans">Plans</a>
-      <a href="https://github.com/claryel-company/claryel-web-community" rel="noreferrer">GitHub</a>
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      <a href="#how" data-i18n="nav.how">How it works</a>
+      <a href="#voice" data-i18n="nav.voice">Voice control</a>
+      <a href="#design" data-i18n="nav.design">Design</a>
+      <a href="#plans" data-i18n="nav.plans">Plans</a>
     </nav>
-    <select id="language-select" aria-label="Language"></select>
+    <div class="header-actions">
+      <div class="language-picker" id="languagePicker">
+        <button class="language-button" id="languageButton" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+          <span id="currentLanguageFlag" class="language-flag" aria-hidden="true"></span>
+          <span id="currentLanguageName">English</span>
+          <span aria-hidden="true">⌄</span>
+        </button>
+        <div class="language-menu" id="languageMenu" role="listbox" hidden></div>
+      </div>
+      <a class="header-cta" href="#workspace" data-i18n="nav.workspace">Start</a>
+    </div>
   </header>
 
-  <main>
-    <section id="home" class="hero section-shell">
-      <div>
-        <p class="eyebrow" data-i18n="beta">Public beta · no AI API required</p>
-        <h1 data-i18n="title">Turn an idea into a documented website project.</h1>
-        <p class="hero-text" data-i18n="intro">Plan websites locally, export a reusable manifest and work with the ChatGPT application, GitHub and Cloudflare without exposing private CLARYEL infrastructure.</p>
-        <div class="actions">
-          <a class="button primary" href="#workspace" data-i18n="create">Create a project</a>
-          <a class="button secondary" href="https://github.com/claryel-company/claryel-web-community" rel="noreferrer" data-i18n="source">View source</a>
+  <main id="main">
+    <section class="hero shell" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow" data-i18n="hero.eyebrow">A VOICE-FIRST WAY TO BUILD FOR THE WEB</p>
+        <h1 data-i18n="hero.title">Your website starts with a conversation.</h1>
+        <p class="hero-lead" data-i18n="hero.lead">Tell the AI what your business does, show it a logo or visual reference, and receive a website you can keep improving with your voice.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#workspace" data-i18n="hero.primary">Describe your website</a>
+          <a class="button secondary" href="#voice" data-i18n="hero.secondary">See voice changes</a>
         </div>
-        <p class="privacy" data-i18n="privacy">Beta workspace data remains in this browser unless you export it.</p>
+        <p class="hero-caption" data-i18n="hero.caption">Works with ChatGPT or another AI connected to GitHub. No AI API key is required for the Community beta.</p>
       </div>
-      <div class="workflow" aria-label="Product workflow">
-        <article><span>1</span><strong data-i18n="planStep">Plan</strong><small data-i18n="planStepBody">Describe the site and its audience.</small></article>
-        <article><span>2</span><strong data-i18n="briefStep">Brief ChatGPT</strong><small data-i18n="briefStepBody">Export a structured development brief.</small></article>
-        <article><span>3</span><strong data-i18n="shipStep">Ship</strong><small data-i18n="shipStepBody">Use GitHub and Cloudflare to publish.</small></article>
+      <div class="hero-stage" aria-label="Voice website workflow demonstration">
+        <div class="browser-frame">
+          <div class="browser-bar"><i></i><i></i><i></i><span>yourbrand.example</span></div>
+          <div class="site-preview">
+            <div class="preview-nav"><b>YOUR BRAND</b><span>Services&nbsp;&nbsp; About&nbsp;&nbsp; Book</span></div>
+            <div class="preview-copy"><small>DESIGNED BY CONVERSATION</small><strong>Make the first impression feel effortless.</strong><button>Book a consultation</button></div>
+            <div class="preview-orb"></div>
+          </div>
+        </div>
+        <div class="conversation-card user-card">
+          <span data-i18n="demo.person">You</span>
+          <p data-i18n="demo.command">Make the homepage calmer. Use more white space, move booking above the fold and make the mobile menu easier to use.</p>
+          <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="conversation-card ai-card">
+          <span data-i18n="demo.ai">AI website partner</span>
+          <p data-i18n="demo.answer">I’ll update the layout, visual rhythm, call to action and mobile navigation, run the checks and prepare the deployment.</p>
+          <strong>✓ <span data-i18n="demo.live">Change prepared</span></strong>
+        </div>
       </div>
     </section>
 
-    <section id="features" class="section-shell block">
-      <p class="eyebrow" data-i18n="standalone">Standalone Community Edition</p>
-      <h2 data-i18n="boundary">A public product with a strict boundary from private CLARYEL systems.</h2>
-      <div class="feature-grid">
-        <article><h3 data-i18n="localTitle">Local-first workspace</h3><p data-i18n="localBody">Project metadata is stored in your browser during the beta.</p></article>
-        <article><h3 data-i18n="manifestTitle">Portable manifests</h3><p data-i18n="manifestBody">Export a clear JSON contract for each website.</p></article>
-        <article><h3 data-i18n="chatTitle">ChatGPT application workflow</h3><p data-i18n="chatBody">Generate a development brief for the browser or mobile ChatGPT application.</p></article>
-        <article><h3 data-i18n="cloudflareTitle">Cloudflare-ready</h3><p data-i18n="cloudflareBody">Worker configuration and secure deployment workflow are included.</p></article>
+    <section class="statement-section" id="how">
+      <div class="shell narrow center">
+        <p class="eyebrow" data-i18n="how.eyebrow">FROM IDEA TO LIVE SITE</p>
+        <h2 data-i18n="how.title">Explain it once. Keep shaping it by conversation.</h2>
+        <p class="section-lead" data-i18n="how.lead">The same natural-language workflow continues after launch. Your site is not a frozen AI draft.</p>
+      </div>
+      <div class="steps shell">
+        <article><b>01</b><h3 data-i18n="how.one.title">Tell the story</h3><p data-i18n="how.one.text">Speak or type what you offer, who it is for and what the site should achieve.</p></article>
+        <article><b>02</b><h3 data-i18n="how.two.title">Show the brand</h3><p data-i18n="how.two.text">Attach a logo, photo, sketch or example. The brief keeps the visual direction together.</p></article>
+        <article><b>03</b><h3 data-i18n="how.three.title">Publish with confidence</h3><p data-i18n="how.three.text">The AI works in GitHub, documents the change, runs checks and deploys through Cloudflare.</p></article>
+        <article><b>04</b><h3 data-i18n="how.four.title">Keep talking</h3><p data-i18n="how.four.text">Ask for a new page, a different tone, a better mobile layout or a complete redesign.</p></article>
       </div>
     </section>
 
-    <section id="workspace" class="workspace-section block">
-      <div class="section-shell">
+    <section class="voice-section" id="voice">
+      <div class="shell voice-grid">
+        <div class="voice-copy">
+          <p class="eyebrow" data-i18n="voice.eyebrow">CONTROL AFTER LAUNCH</p>
+          <h2 data-i18n="voice.title">Every update can begin with your voice.</h2>
+          <p class="section-lead" data-i18n="voice.lead">Use everyday language instead of searching through settings. The AI translates intent into reviewed website changes.</p>
+          <ul class="clean-list">
+            <li data-i18n="voice.one">Change text, images and calls to action</li>
+            <li data-i18n="voice.two">Add pages, forms and business functionality</li>
+            <li data-i18n="voice.three">Improve SEO, accessibility, mobile behaviour and performance</li>
+          </ul>
+        </div>
+        <div class="command-stack" aria-label="Examples of voice commands">
+          <div><span>01</span><p>“Add a page for corporate clients and keep the tone concise.”</p></div>
+          <div><span>02</span><p>“Replace the hero image, shorten the headline and publish it.”</p></div>
+          <div><span>03</span><p>“Check the site on a phone and fix everything that feels awkward.”</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="design-section" id="design">
+      <div class="shell narrow center">
+        <p class="eyebrow" data-i18n="design.eyebrow">DESIGN WITHOUT THE DESIGN TOOL</p>
+        <h2 data-i18n="design.title">Direct the look. Let the AI handle the canvas.</h2>
+        <p class="section-lead" data-i18n="design.lead">Describe a feeling, point to a problem or ask for an expert review. The AI can evaluate hierarchy, spacing, typography, colour, contrast and responsive behaviour before changing the code.</p>
+      </div>
+      <div class="design-gallery shell">
+        <article class="design-card light-card"><div class="mini-layout editorial"><i></i><i></i><i></i></div><p data-i18n="design.command1">Make it feel more premium and less crowded.</p></article>
+        <article class="design-card dark-card"><div class="mini-layout contrast"><i></i><i></i><i></i></div><p data-i18n="design.command2">Keep the brand colours, but improve contrast and typography.</p></article>
+        <article class="design-card mobile-card"><div class="phone-mock"><i></i><i></i><i></i></div><p data-i18n="design.command3">Review the mobile version and fix every weak visual detail.</p></article>
+      </div>
+    </section>
+
+    <section class="workspace-section" id="workspace">
+      <div class="shell">
         <div class="workspace-heading">
-          <div><p class="eyebrow" data-i18n="browserWorkspace">Browser workspace</p><h2 data-i18n="yourProjects">Your website projects</h2><p data-i18n="twoSites">The free Community plan supports up to two active website projects.</p></div>
-          <div class="usage"><span id="site-count">0 / 2</span><small data-i18n="activeSites">active sites</small></div>
+          <div>
+            <p class="eyebrow" data-i18n="workspace.eyebrow">COMMUNITY BETA</p>
+            <h2 data-i18n="workspace.title">Start with the story of your website.</h2>
+            <p class="section-lead" data-i18n="workspace.lead">Create a local project brief, dictate the first description and prepare it for ChatGPT or another AI connected to GitHub.</p>
+          </div>
+          <div class="usage-card"><strong id="siteCount">0 / 2</strong><span data-i18n="workspace.active">active websites</span><small data-i18n="workspace.limit">Two active websites per free account</small></div>
         </div>
 
-        <form id="site-form" class="site-form">
-          <label><span data-i18n="projectName">Project name</span><input name="name" maxlength="80" required placeholder="Example Studio"></label>
-          <label><span data-i18n="hostname">Primary hostname</span><input name="host" maxlength="253" required placeholder="example.com"></label>
-          <label><span data-i18n="siteType">Website type</span><select name="kind"><option value="business">Business</option><option value="community">Community</option><option value="portfolio">Portfolio</option><option value="startup">Startup</option><option value="other">Other</option></select></label>
-          <label class="wide"><span data-i18n="purpose">Purpose and audience</span><textarea name="description" maxlength="800" required placeholder="What the website must achieve and who it serves"></textarea></label>
-          <div class="actions wide"><button class="button primary" type="submit" data-i18n="createProject">Create project</button><button class="button secondary" type="button" id="import-button" data-i18n="importManifest">Import manifest</button><input id="import-file" type="file" accept="application/json" hidden></div>
+        <form id="projectForm" class="project-form">
+          <label><span data-i18n="workspace.name">Project or brand name</span><input name="name" maxlength="80" required placeholder="Atelier Nova"></label>
+          <label><span data-i18n="workspace.host">Preferred domain</span><input name="host" maxlength="253" placeholder="ateliernova.com"></label>
+          <label class="wide voice-field"><span data-i18n="workspace.story">Tell us about the website</span><textarea id="storyInput" name="story" maxlength="2000" required data-i18n-attr="placeholder:workspace.storyPlaceholder" placeholder="What do you do? Who is the site for?"></textarea><button class="mic-button" id="storyMic" type="button" data-target="storyInput"><span class="mic-icon" aria-hidden="true">●</span><span data-i18n="workspace.record">Dictate</span></button></label>
+          <label class="wide"><span data-i18n="workspace.style">Visual direction</span><input name="style" maxlength="400" data-i18n-attr="placeholder:workspace.stylePlaceholder" placeholder="Quiet, premium, editorial, warm or minimalist"></label>
+          <label class="wide file-label"><span data-i18n="workspace.files">Logo and visual references</span><input id="referenceFiles" name="references" type="file" accept="image/*,.pdf" multiple><small data-i18n="workspace.fileHint">Select a logo or images. The exported brief will remind you to attach the same files to the AI conversation.</small><div id="fileList" class="file-list"></div></label>
+          <div class="form-actions wide"><button class="button primary" type="submit" data-i18n="workspace.create">Create voice brief</button><button class="button secondary" id="importButton" type="button" data-i18n="workspace.import">Import project</button><input id="importFile" type="file" accept="application/json" hidden></div>
         </form>
-        <div id="empty-state" class="empty"><h3 data-i18n="emptyTitle">No projects yet</h3><p data-i18n="emptyBody">Create your first project above. Nothing is uploaded automatically.</p></div>
-        <div id="site-list" class="site-list" aria-live="polite"></div>
+        <div id="voiceStatus" class="voice-status" role="status" aria-live="polite"></div>
+        <div id="emptyState" class="empty-state"><span class="empty-mark">◎</span><p data-i18n="workspace.empty">Your first website conversation will appear here.</p></div>
+        <div id="projectList" class="project-list" aria-live="polite"></div>
       </div>
     </section>
 
-    <section id="pricing" class="section-shell block">
-      <p class="eyebrow" data-i18n="plannedEditions">Planned editions</p>
-      <h2 data-i18n="startFree">Start free, expand when your portfolio grows.</h2>
-      <div class="pricing-grid">
-        <article class="plan featured"><span data-i18n="publicBeta">Public beta</span><h3>Community</h3><strong>€0</strong><p data-i18n="freePlan">Up to 2 active websites, local workspace and community support.</p></article>
-        <article class="plan"><span data-i18n="planned">Planned</span><h3>Creator</h3><strong>—</strong><p data-i18n="creatorPlan">Up to 10 websites, backups and extended templates.</p></article>
-        <article class="plan"><span data-i18n="planned">Planned</span><h3>Studio</h3><strong>—</strong><p data-i18n="studioPlan">Teams, client workspaces and higher site limits.</p></article>
+    <section class="plans-section" id="plans">
+      <div class="shell narrow center"><p class="eyebrow" data-i18n="plans.eyebrow">START FREE</p><h2 data-i18n="plans.title">Build two websites. Upgrade when the work grows.</h2></div>
+      <div class="plan-grid shell">
+        <article class="plan-card featured"><span>PUBLIC BETA</span><h3 data-i18n="plans.community">Community</h3><strong data-i18n="plans.free">Free</strong><p data-i18n="plans.freeText">Two active websites per account, voice briefs, portable manifests and community support.</p></article>
+        <article class="plan-card"><span>PLANNED</span><h3 data-i18n="plans.creator">Creator</h3><strong>—</strong><p data-i18n="plans.creatorText">Planned: more websites, encrypted backup, richer templates and assisted updates.</p></article>
+        <article class="plan-card"><span>PLANNED</span><h3 data-i18n="plans.studio">Studio</h3><strong>—</strong><p data-i18n="plans.studioText">Planned: teams, client workspaces, roles, audit history and higher limits.</p></article>
       </div>
-      <p class="privacy" data-i18n="licenseNotice">Source code is available under Business Source License 1.1. Production use beyond the free grant requires a commercial licence.</p>
+      <div class="plan-notes shell narrow center"><p data-i18n="plans.account">The free allowance applies to an account holder, whether an individual or an organisation.</p><p data-i18n="plans.license">Source available under Business Source License 1.1. Use beyond the free account grant requires a commercial licence.</p></div>
     </section>
   </main>
 
-  <footer class="site-footer section-shell"><div><strong>CLARYEL Web Community</strong><p data-i18n="footer">Public Community Edition maintained by CLARYEL S.R.L.S.</p></div><div><a href="https://github.com/claryel-company/claryel-web-community/blob/main/LICENSE">License</a><a href="https://github.com/claryel-company/claryel-web-community/blob/main/SECURITY.md">Security</a><a href="https://github.com/claryel-company/claryel-web-community/blob/main/CONTRIBUTING.md">Contribute</a></div></footer>
+  <footer class="site-footer shell">
+    <div class="footer-brand"><img src="/assets/claryel-mark-v3.svg" alt="" width="32" height="32"><div><strong>CLARYEL Web Community</strong><p data-i18n="footer.text">Voice-first Community Edition maintained by CLARYEL S.R.L.S.</p></div></div>
+    <div class="footer-links"><a href="https://github.com/claryel-company/claryel-web-community/blob/main/LICENSE" data-i18n="footer.license">Licence</a><a href="https://github.com/claryel-company/claryel-web-community/blob/main/SECURITY.md" data-i18n="footer.security">Security</a><a href="https://github.com/claryel-company/claryel-web-community/blob/main/CONTRIBUTING.md" data-i18n="footer.contribute">Contribute</a><a href="https://github.com/claryel-company/claryel-web-community" data-i18n="nav.github">GitHub</a></div>
+  </footer>
 
-  <dialog id="message-dialog"><form method="dialog"><h2 id="dialog-title">Notice</h2><p id="dialog-message"></p><button class="button primary" value="close" data-i18n="close">Close</button></form></dialog>
-  <script type="module" src="/app.js"></script>
+  <dialog id="messageDialog"><form method="dialog"><h2 id="dialogTitle">Notice</h2><p id="dialogMessage"></p><button class="button primary" value="close" data-i18n="common.close">Close</button></form></dialog>
+  <script type="module" src="/app.js?v=0.2.0"></script>
 </body>
 </html>

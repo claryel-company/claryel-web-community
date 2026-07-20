@@ -4,22 +4,16 @@ Contributions are welcome through GitHub Issues and Pull Requests. By submitting
 
 Вклад принимается через GitHub Issues и Pull Requests. Отправляя вклад, вы подтверждаете право предоставить его и соглашаетесь с распространением по лицензии репозитория и будущей Change License соответствующего выпуска.
 
-## Workflow / Процесс
-
-1. Create or reference an issue for non-trivial work.
-2. Use a focused branch.
-3. Keep the public/private boundary intact.
-4. Update all affected locale entries.
-5. Run `npm run check`.
+1. Read `AGENTS.md` and the referenced product standards.
+2. Create or reference an issue for non-trivial work.
+3. Use a focused branch and preserve the public/private boundary.
+4. Update every affected locale and canonical route.
+5. Run `npm run check` and the Wrangler dry-run.
 6. Open a Pull Request using the repository template.
 
-1. Создать или указать issue для нетривиальной работы.
-2. Использовать отдельную целевую ветку.
-3. Сохранять публично-приватную границу.
-4. Обновить все затронутые локали.
-5. Выполнить `npm run check`.
-6. Открыть Pull Request по шаблону репозитория.
-
-Contribution acceptance does not grant rights to CLARYEL names, logos or commercial services. See `LICENSE` and `TRADEMARKS.md`.
-
-Принятие вклада не предоставляет прав на названия, логотипы или коммерческие сервисы CLARYEL. См. `LICENSE` и `TRADEMARKS.md`.
+1. Прочитайте `AGENTS.md` и указанные продуктовые стандарты.
+2. Создайте или укажите issue для нетривиальной работы.
+3. Используйте отдельную ветку и сохраняйте публично-приватную границу.
+4. Обновите каждую затронутую локаль и канонический маршрут.
+5. Выполните `npm run check` и Wrangler dry-run.
+6. Откройте Pull Request по шаблону репозитория.

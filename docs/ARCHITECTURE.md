@@ -1,49 +1,33 @@
 # Architecture / Архитектура
 
-CLARYEL Web Community is a standalone public edition. It borrows only public-safe architectural ideas from the private CLARYEL website platform: declarative site contracts, hostname-based deployment, multilingual delivery, security headers and documented lifecycle operations. It does not depend on private repositories at build time or runtime.
+CLARYEL Web Community 0.2 is a standalone public, voice-first website workflow. Its product surface is intentionally simple: the user describes a website, optionally selects a logo and visual references, dictates later changes and exports a structured brief for ChatGPT or another AI connected to GitHub. The AI performs reviewed repository changes and Cloudflare deployment outside the browser application.
 
-CLARYEL Web Community — автономная публичная редакция. Она использует только безопасные для публикации архитектурные идеи приватной веб-платформы CLARYEL: декларативные контракты сайтов, развёртывание по hostname, многоязычную публикацию, заголовки безопасности и документированный жизненный цикл. Для сборки и работы доступ к приватным репозиториям не требуется.
-
-## Runtime / Runtime
+CLARYEL Web Community 0.2 — автономный публичный процесс создания сайтов с приоритетом голосового управления. Пользователь рассказывает о сайте, при необходимости выбирает логотип и визуальные примеры, диктует последующие изменения и экспортирует структурированное задание для ChatGPT или другого ИИ, подключённого к GitHub. ИИ выполняет проверяемые изменения репозитория и публикацию Cloudflare за пределами браузерного приложения.
 
 ```text
-Browser
-   ├── public product site
-   ├── local project workspace
-   ├── site-manifest export
-   └── ChatGPT brief export
-          │
-          ▼
-Cloudflare Worker
-   ├── static assets
-   ├── security headers
-   ├── /api/health
-   ├── /api/public-config
-   ├── robots.txt
-   └── sitemap.xml
+Voice or text description + local file references
+                    │
+                    ▼
+Browser-local Community workspace
+  ├── portable site manifest
+  ├── AI development brief
+  └── continuous change-request history
+                    │
+                    ▼
+User-selected AI application connected to GitHub
+  ├── implementation plan
+  ├── code and design changes
+  ├── tests and documentation
+  └── reviewed commit / Pull Request
+                    │
+                    ▼
+Cloudflare Worker deployment
 ```
 
-```text
-Браузер
-   ├── публичный сайт продукта
-   ├── локальная рабочая область
-   ├── экспорт манифеста сайта
-   └── экспорт задания для ChatGPT
-          │
-          ▼
-Cloudflare Worker
-   ├── статические ресурсы
-   ├── заголовки безопасности
-   ├── /api/health
-   ├── /api/public-config
-   ├── robots.txt
-   └── sitemap.xml
-```
+Version `0.2.0` stores project records, file names and change requests in browser local storage. Selected files are not uploaded by the website; the user attaches the same files to the AI conversation when using the exported brief. Voice recognition uses the browser's supported speech-recognition interface and falls back to text input.
 
-Version `0.1.0` writes project records only to browser local storage. The Worker has no state-changing endpoint and no user database. Export is an explicit user action.
+Версия `0.2.0` хранит записи проектов, имена файлов и запросы изменений в локальном хранилище браузера. Выбранные файлы не загружаются сайтом; пользователь прикладывает их к диалогу с ИИ вместе с экспортированным заданием. Распознавание речи использует поддерживаемый браузером интерфейс и при недоступности заменяется текстовым вводом.
 
-Версия `0.1.0` сохраняет записи проектов только в локальном хранилище браузера. Worker не имеет endpoint, изменяющего состояние, и не содержит базы пользователей. Экспорт выполняется только по явному действию пользователя.
+The Cloudflare Worker owns canonical locale paths, server-rendered SEO metadata, legacy `?lang=` redirects, hidden Russian noindex behaviour, security headers, health checks and public configuration. It has no state-changing API.
 
-The site manifest contains identity, hostname, lifecycle status, locale policy, features and timestamps while excluding private identifiers and services.
-
-Манифест сайта содержит идентификацию, hostname, состояние жизненного цикла, языковую политику, возможности и временные метки, исключая приватные идентификаторы и сервисы.
+Cloudflare Worker отвечает за канонические языковые пути, серверные SEO-метаданные, перенаправление старых `?lang=` адресов, noindex для скрытого русского, заголовки безопасности, health check и публичную конфигурацию. API изменения состояния отсутствует.

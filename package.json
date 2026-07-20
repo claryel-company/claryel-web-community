@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "check": "node scripts/check.mjs && node --test",
-    "test": "node --test"
+    "test": "node --test",
+    "dev": "npx --yes wrangler@4.112.0 dev",
+    "deploy": "npx --yes wrangler@4.112.0 deploy",
+    "deploy:dry-run": "npx --yes wrangler@4.112.0 deploy --dry-run"
   },
   "engines": {
     "node": ">=22"

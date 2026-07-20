@@ -1,0 +1,25 @@
+{
+  // English: Cloudflare Worker configuration for the public Community Edition.
+  // Русский: Конфигурация Cloudflare Worker для публичной Community Edition.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "claryel-web-community",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-07-20",
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "web.claryel.space",
+      "custom_domain": true
+    }
+  ],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "vars": {
+    "PUBLIC_ORIGIN": "https://web.claryel.space",
+    "FREE_SITE_LIMIT": "2",
+    "PRODUCT_VERSION": "0.1.0"
+  }
+}

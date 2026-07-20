@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Build, document and manage modern websites with CLARYEL Web Community, GitHub, Cloudflare and the ChatGPT application.">
+  <meta name="theme-color" content="#151a2d">
+  <meta property="og:title" content="CLARYEL Web Community">
+  <meta property="og:description" content="A source-available, local-first website workspace for GitHub, Cloudflare and the ChatGPT application.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://web.claryel.space/">
+  <link rel="canonical" href="https://web.claryel.space/">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <title>CLARYEL Web Community</title>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="CLARYEL Web Community home">
+      <img src="/assets/logo.svg" alt="" width="36" height="36">
+      <span>CLARYEL Web Community</span>
+    </a>
+    <nav class="top-nav" aria-label="Primary navigation">
+      <a href="#features" data-i18n="features">Features</a>
+      <a href="#workspace" data-i18n="workspace">Workspace</a>
+      <a href="#pricing" data-i18n="plans">Plans</a>
+      <a href="https://github.com/claryel-company/claryel-web-community" rel="noreferrer">GitHub</a>
+    </nav>
+    <select id="language-select" aria-label="Language"></select>
+  </header>
+
+  <main>
+    <section id="home" class="hero section-shell">
+      <div>
+        <p class="eyebrow" data-i18n="beta">Public beta · no AI API required</p>
+        <h1 data-i18n="title">Turn an idea into a documented website project.</h1>
+        <p class="hero-text" data-i18n="intro">Plan websites locally, export a reusable manifest and work with the ChatGPT application, GitHub and Cloudflare without exposing private CLARYEL infrastructure.</p>
+        <div class="actions">
+          <a class="button primary" href="#workspace" data-i18n="create">Create a project</a>
+          <a class="button secondary" href="https://github.com/claryel-company/claryel-web-community" rel="noreferrer" data-i18n="source">View source</a>
+        </div>
+        <p class="privacy" data-i18n="privacy">Beta workspace data remains in this browser unless you export it.</p>
+      </div>
+      <div class="workflow" aria-label="Product workflow">
+        <article><span>1</span><strong data-i18n="planStep">Plan</strong><small data-i18n="planStepBody">Describe the site and its audience.</small></article>
+        <article><span>2</span><strong data-i18n="briefStep">Brief ChatGPT</strong><small data-i18n="briefStepBody">Export a structured development brief.</small></article>
+        <article><span>3</span><strong data-i18n="shipStep">Ship</strong><small data-i18n="shipStepBody">Use GitHub and Cloudflare to publish.</small></article>
+      </div>
+    </section>
+
+    <section id="features" class="section-shell block">
+      <p class="eyebrow" data-i18n="standalone">Standalone Community Edition</p>
+      <h2 data-i18n="boundary">A public product with a strict boundary from private CLARYEL systems.</h2>
+      <div class="feature-grid">
+        <article><h3 data-i18n="localTitle">Local-first workspace</h3><p data-i18n="localBody">Project metadata is stored in your browser during the beta.</p></article>
+        <article><h3 data-i18n="manifestTitle">Portable manifests</h3><p data-i18n="manifestBody">Export a clear JSON contract for each website.</p></article>
+        <article><h3 data-i18n="chatTitle">ChatGPT application workflow</h3><p data-i18n="chatBody">Generate a development brief for the browser or mobile ChatGPT application.</p></article>
+        <article><h3 data-i18n="cloudflareTitle">Cloudflare-ready</h3><p data-i18n="cloudflareBody">Worker configuration and secure deployment workflow are included.</p></article>
+      </div>
+    </section>
+
+    <section id="workspace" class="workspace-section block">
+      <div class="section-shell">
+        <div class="workspace-heading">
+          <div><p class="eyebrow" data-i18n="browserWorkspace">Browser workspace</p><h2 data-i18n="yourProjects">Your website projects</h2><p data-i18n="twoSites">The free Community plan supports up to two active website projects.</p></div>
+          <div class="usage"><span id="site-count">0 / 2</span><small data-i18n="activeSites">active sites</small></div>
+        </div>
+
+        <form id="site-form" class="site-form">
+          <label><span data-i18n="projectName">Project name</span><input name="name" maxlength="80" required placeholder="Example Studio"></label>
+          <label><span data-i18n="hostname">Primary hostname</span><input name="host" maxlength="253" required placeholder="example.com"></label>
+          <label><span data-i18n="siteType">Website type</span><select name="kind"><option value="business">Business</option><option value="community">Community</option><option value="portfolio">Portfolio</option><option value="startup">Startup</option><option value="other">Other</option></select></label>
+          <label class="wide"><span data-i18n="purpose">Purpose and audience</span><textarea name="description" maxlength="800" required placeholder="What the website must achieve and who it serves"></textarea></label>
+          <div class="actions wide"><button class="button primary" type="submit" data-i18n="createProject">Create project</button><button class="button secondary" type="button" id="import-button" data-i18n="importManifest">Import manifest</button><input id="import-file" type="file" accept="application/json" hidden></div>
+        </form>
+        <div id="empty-state" class="empty"><h3 data-i18n="emptyTitle">No projects yet</h3><p data-i18n="emptyBody">Create your first project above. Nothing is uploaded automatically.</p></div>
+        <div id="site-list" class="site-list" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="pricing" class="section-shell block">
+      <p class="eyebrow" data-i18n="plannedEditions">Planned editions</p>
+      <h2 data-i18n="startFree">Start free, expand when your portfolio grows.</h2>
+      <div class="pricing-grid">
+        <article class="plan featured"><span data-i18n="publicBeta">Public beta</span><h3>Community</h3><strong>€0</strong><p data-i18n="freePlan">Up to 2 active websites, local workspace and community support.</p></article>
+        <article class="plan"><span data-i18n="planned">Planned</span><h3>Creator</h3><strong>—</strong><p data-i18n="creatorPlan">Up to 10 websites, backups and extended templates.</p></article>
+        <article class="plan"><span data-i18n="planned">Planned</span><h3>Studio</h3><strong>—</strong><p data-i18n="studioPlan">Teams, client workspaces and higher site limits.</p></article>
+      </div>
+      <p class="privacy" data-i18n="licenseNotice">Source code is available under Business Source License 1.1. Production use beyond the free grant requires a commercial licence.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer section-shell"><div><strong>CLARYEL Web Community</strong><p data-i18n="footer">Public Community Edition maintained by CLARYEL S.R.L.S.</p></div><div><a href="https://github.com/claryel-company/claryel-web-community/blob/main/LICENSE">License</a><a href="https://github.com/claryel-company/claryel-web-community/blob/main/SECURITY.md">Security</a><a href="https://github.com/claryel-company/claryel-web-community/blob/main/CONTRIBUTING.md">Contribute</a></div></footer>
+
+  <dialog id="message-dialog"><form method="dialog"><h2 id="dialog-title">Notice</h2><p id="dialog-message"></p><button class="button primary" value="close" data-i18n="close">Close</button></form></dialog>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

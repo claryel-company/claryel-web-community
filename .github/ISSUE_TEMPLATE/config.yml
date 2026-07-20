@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report / Сообщение о безопасности
+    url: https://github.com/claryel-company/claryel-web-community/security
+    about: Use private vulnerability reporting when available. / Используйте приватное сообщение об уязвимости, когда оно доступно.

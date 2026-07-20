@@ -1,0 +1,24 @@
+name: Bug report / Сообщение об ошибке
+description: Report a reproducible public beta problem / Сообщить о воспроизводимой проблеме публичной беты
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / Проблема
+      description: Describe what happened and what you expected. / Опишите результат и ожидаемое поведение.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction / Воспроизведение
+      description: Provide the smallest safe reproduction without secrets. / Укажите минимальное безопасное воспроизведение без секретов.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device / Браузер и устройство

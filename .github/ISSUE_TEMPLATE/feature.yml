@@ -1,0 +1,26 @@
+name: Feature request / Предложение функции
+description: Propose a Community Edition improvement / Предложить улучшение Community Edition
+title: "[Feature] "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: User need / Потребность пользователя
+      description: Explain the problem before proposing an implementation. / Сначала опишите проблему, затем реализацию.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed outcome / Предлагаемый результат
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Public boundary / Публичная граница
+      options:
+        - label: This proposal can be implemented without private CLARYEL code or data. / Предложение можно реализовать без приватного кода или данных CLARYEL.
+          required: true

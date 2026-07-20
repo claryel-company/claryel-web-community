@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /ru
+Disallow: /ru/
+Sitemap: https://web.claryel.space/sitemap.xml

@@ -2,9 +2,9 @@
 
 <!-- CLARYEL-NAVIGATION:START -->
 > [!IMPORTANT]
-> CLARYEL Web Community is the public, standalone Community Edition of the CLARYEL website-development platform. Public contributors must follow this repository's `AGENTS.md`, `REPOSITORY.yaml`, `CONTRIBUTING.md`, `SECURITY.md` and implementation documentation. CLARYEL maintainers additionally apply the private project-wide governance rules before accepting changes.
+> CLARYEL Web Community is the public, standalone Community Edition of the CLARYEL website-development platform. Public contributors must follow this repository's `AGENTS.md`, `REPOSITORY.yaml`, `CONTRIBUTING.md`, `SECURITY.md` and implementation documentation. CLARYEL maintainers additionally apply the private project-wide governance rules in `claryel-company/claryel-platform` before accepting changes.
 >
-> CLARYEL Web Community — публичная автономная Community Edition платформы разработки сайтов CLARYEL. Публичные участники обязаны соблюдать локальные `AGENTS.md`, `REPOSITORY.yaml`, `CONTRIBUTING.md`, `SECURITY.md` и документацию реализации. Сопровождающие CLARYEL дополнительно применяют приватные общепроектные правила управления до принятия изменений.
+> CLARYEL Web Community — публичная автономная Community Edition платформы разработки сайтов CLARYEL. Публичные участники обязаны соблюдать локальные `AGENTS.md`, `REPOSITORY.yaml`, `CONTRIBUTING.md`, `SECURITY.md` и документацию реализации. Сопровождающие CLARYEL дополнительно применяют приватные общепроектные правила из `claryel-company/claryel-platform` до принятия изменений.
 <!-- CLARYEL-NAVIGATION:END -->
 
 A source-available, local-first workspace for planning, documenting and managing website projects with the ChatGPT application, GitHub and Cloudflare.

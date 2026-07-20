@@ -1,0 +1,34 @@
+schema_version: 1
+project: CLARYEL
+repository: claryel-company/claryel-web-community
+visibility: public
+central_navigation: claryel-company/claryel-platform
+level: product-edition
+category: website-development-community-edition
+status: beta
+owns:
+  - standalone public Community Edition runtime
+  - public Community product website
+  - Community pricing and plan limits
+  - public contribution workflow
+  - public deployment templates
+  - public site-manifest format
+  - ChatGPT application workflow documentation
+does_not_own:
+  - private CLARYEL Web Platform runtime
+  - CLARYEL Box runtime
+  - CLARYEL ID production identity
+  - private customer infrastructure
+  - agent orchestration
+  - remote support infrastructure
+source_boundaries:
+  allowed:
+    - reviewed public-safe shared website contracts
+    - reviewed public documentation templates
+    - reviewed generic Cloudflare deployment patterns
+  forbidden:
+    - private repository history
+    - secrets and account identifiers
+    - customer or production data
+    - internal service topology
+    - private commercial modules

@@ -2,9 +2,13 @@
 
 ## Mandatory entry / Обязательная точка входа
 
-Before changing this repository, read `README.md`, `REPOSITORY.yaml`, `SECURITY.md`, `CONTRIBUTING.md`, `docs/ARCHITECTURE.md`, `docs/LOCALIZATION.md`, `docs/PRIVATE_EXPORT_BOUNDARY.md` and `docs/DEPLOYMENT.md`.
+Public contributors must first read this repository's `README.md`, `REPOSITORY.yaml`, `SECURITY.md`, `CONTRIBUTING.md`, `docs/ARCHITECTURE.md`, `docs/LOCALIZATION.md`, `docs/PRIVATE_EXPORT_BOUNDARY.md` and `docs/DEPLOYMENT.md`.
 
-Перед изменением этого репозитория прочитать `README.md`, `REPOSITORY.yaml`, `SECURITY.md`, `CONTRIBUTING.md`, `docs/ARCHITECTURE.md`, `docs/LOCALIZATION.md`, `docs/PRIVATE_EXPORT_BOUNDARY.md` и `docs/DEPLOYMENT.md`.
+Публичные участники сначала обязаны прочитать локальные `README.md`, `REPOSITORY.yaml`, `SECURITY.md`, `CONTRIBUTING.md`, `docs/ARCHITECTURE.md`, `docs/LOCALIZATION.md`, `docs/PRIVATE_EXPORT_BOUNDARY.md` и `docs/DEPLOYMENT.md`.
+
+CLARYEL maintainers must additionally open the private `claryel-company/claryel-platform` repository and read `REPOSITORIES.md`, `TASK_ROUTING.md`, `DEVELOPMENT_RULES.md`, `TERMINOLOGY.md` and `repository-catalog.yaml` before accepting or synchronising changes.
+
+Сопровождающие CLARYEL дополнительно обязаны открыть приватный репозиторий `claryel-company/claryel-platform` и прочитать `REPOSITORIES.md`, `TASK_ROUTING.md`, `DEVELOPMENT_RULES.md`, `TERMINOLOGY.md` и `repository-catalog.yaml` до принятия или синхронизации изменений.
 
 ## Rules / Правила
 

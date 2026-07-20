@@ -1,6 +1,6 @@
 {
   "name": "@claryel/web-community",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "Voice-first Community Edition for creating, publishing and continuously improving websites through AI, GitHub and Cloudflare.",
   "type": "module",

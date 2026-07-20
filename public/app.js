@@ -1,108 +1,315 @@
-const STORAGE_KEY = "claryel.web.community.v1";
-const LOCALE_KEY = "claryel.web.community.locale";
-const FREE_SITE_LIMIT = 2;
-const PUBLIC_LOCALES = ["en", "it", "de", "fr", "es", "nl", "pt", "pl", "ro", "cs", "sv", "el", "da", "fi", "zh-CN"];
-const LOCALE_NAMES = { en: "English", it: "Italiano", de: "Deutsch", fr: "Français", es: "Español", nl: "Nederlands", pt: "Português", pl: "Polski", ro: "Română", cs: "Čeština", sv: "Svenska", el: "Ελληνικά", da: "Dansk", fi: "Suomi", "zh-CN": "简体中文" };
+const I18N_VERSION="0.2.0";
+const MANIFEST_URL=`/i18n/manifest.json?v=${I18N_VERSION}`;
+const STORAGE_KEY="claryel.web.community.projects.v2";
+const FREE_SITE_LIMIT=2;
+const $=(selector,root=document)=>root?.querySelector(selector)||null;
+const $$=(selector,root=document)=>root?[...root.querySelectorAll(selector)]:[];
 
-const I18N = {
-  en: {
-    beta: "Public beta · no AI API required", title: "Turn an idea into a documented website project.", intro: "Plan websites locally, export a reusable manifest and work with the ChatGPT application, GitHub and Cloudflare without exposing private CLARYEL infrastructure.", create: "Create a project", source: "View source", privacy: "Beta workspace data remains in this browser unless you export it.",
-    features: "Features", workspace: "Workspace", plans: "Plans", planStep: "Plan", planStepBody: "Describe the site and its audience.", briefStep: "Brief ChatGPT", briefStepBody: "Export a structured development brief.", shipStep: "Ship", shipStepBody: "Use GitHub and Cloudflare to publish.", standalone: "Standalone Community Edition", boundary: "A public product with a strict boundary from private CLARYEL systems.", localTitle: "Local-first workspace", localBody: "Project metadata is stored in your browser during the beta.", manifestTitle: "Portable manifests", manifestBody: "Export a clear JSON contract for each website.", chatTitle: "ChatGPT application workflow", chatBody: "Generate a development brief for the browser or mobile ChatGPT application.", cloudflareTitle: "Cloudflare-ready", cloudflareBody: "Worker configuration and secure deployment workflow are included.",
-    browserWorkspace: "Browser workspace", yourProjects: "Your website projects", twoSites: "The free Community plan supports up to two active website projects.", activeSites: "active sites", projectName: "Project name", hostname: "Primary hostname", siteType: "Website type", purpose: "Purpose and audience", createProject: "Create project", importManifest: "Import manifest", emptyTitle: "No projects yet", emptyBody: "Create your first project above. Nothing is uploaded automatically.", plannedEditions: "Planned editions", startFree: "Start free, expand when your portfolio grows.", publicBeta: "Public beta", planned: "Planned", freePlan: "Up to 2 active websites, local workspace and community support.", creatorPlan: "Up to 10 websites, backups and extended templates.", studioPlan: "Teams, client workspaces and higher site limits.", licenseNotice: "Source code is available under Business Source License 1.1. Production use beyond the free grant requires a commercial licence.", footer: "Public Community Edition maintained by CLARYEL S.R.L.S.", close: "Close", exportManifest: "Export manifest", chatBrief: "ChatGPT brief", remove: "Delete", draft: "Draft", created: "Created", limitTitle: "Free plan limit reached", limitBody: "The Community plan supports two active websites. Delete a project or obtain a commercial licence for a higher limit.", invalidTitle: "Invalid project", invalidHost: "Enter a valid hostname such as example.com.", importTitle: "Import failed", importBody: "The selected file is not a valid CLARYEL Web Community manifest.", deleteQuestion: "Delete project?", deleteBody: "This removes the project only from this browser."
-  },
-  it: { beta: "Beta pubblica · nessuna API IA richiesta", title: "Trasforma un’idea in un progetto web documentato.", intro: "Pianifica i siti in locale, esporta un manifesto riutilizzabile e lavora con l’app ChatGPT, GitHub e Cloudflare senza esporre l’infrastruttura privata CLARYEL.", create: "Crea un progetto", source: "Vedi il codice", privacy: "I dati della beta restano in questo browser finché non li esporti.", features: "Funzioni", workspace: "Area di lavoro", plans: "Piani", yourProjects: "I tuoi progetti web", twoSites: "Il piano Community gratuito supporta fino a due siti attivi.", activeSites: "siti attivi", projectName: "Nome del progetto", hostname: "Hostname principale", siteType: "Tipo di sito", purpose: "Scopo e pubblico", createProject: "Crea progetto", importManifest: "Importa manifesto", emptyTitle: "Nessun progetto", emptyBody: "Crea il primo progetto qui sopra. Nulla viene caricato automaticamente.", startFree: "Inizia gratis e cresci con il tuo portafoglio.", publicBeta: "Beta pubblica", planned: "Previsto", close: "Chiudi", exportManifest: "Esporta manifesto", chatBrief: "Brief ChatGPT", remove: "Elimina", draft: "Bozza", created: "Creato", limitTitle: "Limite del piano gratuito raggiunto", limitBody: "Il piano Community supporta due siti attivi. Elimina un progetto o richiedi una licenza commerciale.", invalidTitle: "Progetto non valido", invalidHost: "Inserisci un hostname valido, ad esempio example.com.", importTitle: "Importazione non riuscita", importBody: "Il file selezionato non è un manifesto CLARYEL Web Community valido.", deleteQuestion: "Eliminare il progetto?", deleteBody: "Il progetto verrà rimosso solo da questo browser." },
-  de: { beta: "Öffentliche Beta · keine KI-API erforderlich", title: "Verwandle eine Idee in ein dokumentiertes Website-Projekt.", create: "Projekt erstellen", source: "Quellcode ansehen", features: "Funktionen", workspace: "Arbeitsbereich", plans: "Tarife", yourProjects: "Deine Website-Projekte", twoSites: "Der kostenlose Community-Tarif unterstützt bis zu zwei aktive Websites.", activeSites: "aktive Websites", projectName: "Projektname", hostname: "Primärer Hostname", siteType: "Website-Typ", purpose: "Zweck und Zielgruppe", createProject: "Projekt erstellen", importManifest: "Manifest importieren", emptyTitle: "Noch keine Projekte", startFree: "Kostenlos starten und mit dem Portfolio wachsen.", close: "Schließen", exportManifest: "Manifest exportieren", chatBrief: "ChatGPT-Briefing", remove: "Löschen", limitTitle: "Limit des kostenlosen Tarifs erreicht", limitBody: "Der Community-Tarif unterstützt zwei aktive Websites. Lösche ein Projekt oder erwirb eine kommerzielle Lizenz." },
-  fr: { beta: "Bêta publique · aucune API IA requise", title: "Transformez une idée en projet de site web documenté.", create: "Créer un projet", source: "Voir le code", features: "Fonctions", workspace: "Espace de travail", plans: "Offres", yourProjects: "Vos projets de sites", twoSites: "L’offre Community gratuite prend en charge jusqu’à deux sites actifs.", activeSites: "sites actifs", projectName: "Nom du projet", hostname: "Nom d’hôte principal", siteType: "Type de site", purpose: "Objectif et public", createProject: "Créer le projet", importManifest: "Importer un manifeste", emptyTitle: "Aucun projet", startFree: "Commencez gratuitement et évoluez avec votre portfolio.", close: "Fermer", exportManifest: "Exporter le manifeste", chatBrief: "Brief ChatGPT", remove: "Supprimer", limitTitle: "Limite de l’offre gratuite atteinte", limitBody: "L’offre Community prend en charge deux sites actifs. Supprimez un projet ou obtenez une licence commerciale." },
-  es: { beta: "Beta pública · no requiere API de IA", title: "Convierte una idea en un proyecto web documentado.", create: "Crear un proyecto", source: "Ver código", features: "Funciones", workspace: "Espacio de trabajo", plans: "Planes", yourProjects: "Tus proyectos web", twoSites: "El plan Community gratuito admite hasta dos sitios activos.", activeSites: "sitios activos", projectName: "Nombre del proyecto", hostname: "Hostname principal", siteType: "Tipo de sitio", purpose: "Objetivo y audiencia", createProject: "Crear proyecto", importManifest: "Importar manifiesto", emptyTitle: "Aún no hay proyectos", startFree: "Empieza gratis y amplía cuando crezca tu portafolio.", close: "Cerrar", exportManifest: "Exportar manifiesto", chatBrief: "Informe ChatGPT", remove: "Eliminar", limitTitle: "Límite del plan gratuito alcanzado", limitBody: "El plan Community admite dos sitios activos. Elimina un proyecto u obtén una licencia comercial." },
-  nl: { beta: "Publieke bèta · geen AI-API nodig", title: "Maak van een idee een gedocumenteerd websiteproject.", create: "Project maken", features: "Functies", workspace: "Werkruimte", plans: "Plannen", yourProjects: "Jouw websiteprojecten", twoSites: "Het gratis Community-plan ondersteunt maximaal twee actieve websites.", activeSites: "actieve websites", close: "Sluiten" },
-  pt: { beta: "Beta pública · sem API de IA", title: "Transforme uma ideia num projeto de site documentado.", create: "Criar projeto", features: "Funcionalidades", workspace: "Área de trabalho", plans: "Planos", yourProjects: "Os seus projetos de sites", twoSites: "O plano Community gratuito suporta até dois sites ativos.", activeSites: "sites ativos", close: "Fechar" },
-  pl: { beta: "Publiczna beta · bez API AI", title: "Zmień pomysł w udokumentowany projekt strony.", create: "Utwórz projekt", features: "Funkcje", workspace: "Obszar roboczy", plans: "Plany", yourProjects: "Twoje projekty stron", twoSites: "Bezpłatny plan Community obsługuje do dwóch aktywnych stron.", activeSites: "aktywne strony", close: "Zamknij" },
-  ro: { beta: "Beta publică · fără API AI", title: "Transformă o idee într-un proiect web documentat.", create: "Creează proiect", features: "Funcții", workspace: "Spațiu de lucru", plans: "Planuri", yourProjects: "Proiectele tale web", twoSites: "Planul Community gratuit acceptă până la două site-uri active.", activeSites: "site-uri active", close: "Închide" },
-  cs: { beta: "Veřejná beta · bez AI API", title: "Proměňte nápad v dokumentovaný webový projekt.", create: "Vytvořit projekt", features: "Funkce", workspace: "Pracovní prostor", plans: "Tarify", yourProjects: "Vaše webové projekty", twoSites: "Bezplatný plán Community podporuje až dva aktivní weby.", activeSites: "aktivní weby", close: "Zavřít" },
-  sv: { beta: "Offentlig beta · inget AI-API krävs", title: "Gör en idé till ett dokumenterat webbprojekt.", create: "Skapa projekt", features: "Funktioner", workspace: "Arbetsyta", plans: "Planer", yourProjects: "Dina webbprojekt", twoSites: "Den kostnadsfria Community-planen stöder upp till två aktiva webbplatser.", activeSites: "aktiva webbplatser", close: "Stäng" },
-  el: { beta: "Δημόσια beta · χωρίς API AI", title: "Μετατρέψτε μια ιδέα σε τεκμηριωμένο έργο ιστοτόπου.", create: "Δημιουργία έργου", features: "Λειτουργίες", workspace: "Χώρος εργασίας", plans: "Πλάνα", yourProjects: "Τα έργα ιστοτόπων σας", twoSites: "Το δωρεάν πλάνο Community υποστηρίζει έως δύο ενεργούς ιστοτόπους.", activeSites: "ενεργοί ιστότοποι", close: "Κλείσιμο" },
-  da: { beta: "Offentlig beta · ingen AI-API nødvendig", title: "Gør en idé til et dokumenteret webprojekt.", create: "Opret projekt", features: "Funktioner", workspace: "Arbejdsområde", plans: "Planer", yourProjects: "Dine webprojekter", twoSites: "Den gratis Community-plan understøtter op til to aktive websites.", activeSites: "aktive websites", close: "Luk" },
-  fi: { beta: "Julkinen beta · ei tekoäly-APIa", title: "Muuta idea dokumentoiduksi verkkosivuprojektiksi.", create: "Luo projekti", features: "Ominaisuudet", workspace: "Työtila", plans: "Paketit", yourProjects: "Verkkosivuprojektisi", twoSites: "Ilmainen Community-paketti tukee enintään kahta aktiivista sivustoa.", activeSites: "aktiiviset sivustot", close: "Sulje" },
-  "zh-CN": { beta: "公开测试版 · 无需 AI API", title: "把创意变成有完整文档的网站项目。", create: "创建项目", features: "功能", workspace: "工作区", plans: "方案", yourProjects: "您的网站项目", twoSites: "免费 Community 方案最多支持两个活跃网站。", activeSites: "活跃网站", close: "关闭" },
-  ru: { beta: "Публичная бета · API ИИ не требуется", title: "Превратите идею в документированный проект сайта.", intro: "Планируйте сайты локально, экспортируйте универсальный манифест и работайте с приложением ChatGPT, GitHub и Cloudflare без раскрытия приватной инфраструктуры CLARYEL.", create: "Создать проект", source: "Посмотреть код", privacy: "Данные бета-версии остаются в этом браузере, пока вы их не экспортируете.", features: "Возможности", workspace: "Рабочая область", plans: "Тарифы", yourProjects: "Ваши проекты сайтов", twoSites: "Бесплатный тариф Community поддерживает до двух активных сайтов.", activeSites: "активных сайтов", projectName: "Название проекта", hostname: "Основной hostname", siteType: "Тип сайта", purpose: "Цель и аудитория", createProject: "Создать проект", importManifest: "Импортировать манифест", emptyTitle: "Проектов пока нет", emptyBody: "Создайте первый проект выше. Ничего не загружается автоматически.", startFree: "Начните бесплатно и расширяйтесь по мере роста портфеля.", publicBeta: "Публичная бета", planned: "Планируется", close: "Закрыть", exportManifest: "Экспорт манифеста", chatBrief: "Задание для ChatGPT", remove: "Удалить", draft: "Черновик", created: "Создан", limitTitle: "Достигнут лимит бесплатного тарифа", limitBody: "Тариф Community поддерживает два активных сайта. Удалите проект или получите коммерческую лицензию.", invalidTitle: "Некорректный проект", invalidHost: "Введите корректный hostname, например example.com.", importTitle: "Ошибка импорта", importBody: "Выбранный файл не является корректным манифестом CLARYEL Web Community.", deleteQuestion: "Удалить проект?", deleteBody: "Проект будет удалён только из этого браузера." }
-};
+let manifest={default:"en",public:[],hidden:[]};
+let messages={};
+let localeCode="en";
+let projects=loadProjects();
+let recognition=null;
+let activeVoiceTarget=null;
+let selectedFiles=[];
 
-let locale = detectLocale();
-let projects = loadProjects();
-
-function t(key) { return I18N[locale]?.[key] || I18N.en[key] || ""; }
-function detectLocale() {
-  const requested = new URL(location.href).searchParams.get("lang");
-  if (requested && (PUBLIC_LOCALES.includes(requested) || requested === "ru")) return requested;
-  const saved = localStorage.getItem(LOCALE_KEY);
-  if (saved && (PUBLIC_LOCALES.includes(saved) || saved === "ru")) return saved;
-  if (navigator.language.toLowerCase().startsWith("zh")) return "zh-CN";
-  const short = navigator.language.split("-")[0];
-  return PUBLIC_LOCALES.includes(short) ? short : "en";
+function escapeHtml(value=""){
+  return String(value).replace(/[&<>'"]/g,character=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[character]));
 }
-function applyLocale(next) {
-  locale = next;
-  document.documentElement.lang = next;
-  document.querySelectorAll("[data-i18n]").forEach((node) => { const value = t(node.dataset.i18n); if (value) node.textContent = value; });
-  localStorage.setItem(LOCALE_KEY, next);
+
+function escapeAttribute(value=""){
+  return escapeHtml(value).replace(/`/g,"&#96;");
+}
+
+function pathLocale(pathname=location.pathname){
+  const segment=pathname.toLowerCase().split("/").filter(Boolean)[0]||"";
+  if(segment==="zh-cn")return"zh-CN";
+  if(segment==="ru")return"ru";
+  return manifest.public.some(item=>item.code===segment)?segment:"en";
+}
+
+function currentMeta(){
+  return [...manifest.public,...(manifest.hidden||[])].find(item=>item.code===localeCode)||manifest.public[0]||null;
+}
+
+function t(key,fallback=""){
+  const value=messages[key];
+  return typeof value==="string"?value:(fallback||key);
+}
+
+async function loadManifest(){
+  const response=await fetch(MANIFEST_URL,{cache:"no-store"});
+  if(!response.ok)throw new Error(`Language manifest ${response.status}`);
+  manifest=await response.json();
+  localeCode=pathLocale();
+}
+
+async function loadMessages(code){
+  const response=await fetch(`/i18n/${encodeURIComponent(code)}.json?v=${I18N_VERSION}`,{cache:"no-store"});
+  if(!response.ok)throw new Error(`Language file ${response.status}`);
+  return response.json();
+}
+
+function applyAttributes(node,specification){
+  for(const part of String(specification||"").split(";")){
+    const [attribute,key]=part.split(":").map(value=>value?.trim());
+    if(!attribute||!key)continue;
+    const value=messages[key];
+    if(typeof value==="string")node.setAttribute(attribute,value);
+  }
+}
+
+function applyTranslations(){
+  const meta=currentMeta();
+  document.documentElement.lang=meta?.locale||"en-GB";
+  document.documentElement.dataset.locale=localeCode;
+  document.documentElement.dataset.hiddenLocale=String(localeCode==="ru");
+  $$('[data-i18n]').forEach(node=>{const value=messages[node.dataset.i18n];if(typeof value==="string")node.textContent=value;});
+  $$('[data-i18n-attr]').forEach(node=>applyAttributes(node,node.dataset.i18nAttr));
+  if(messages["meta.title"])document.title=messages["meta.title"];
+  const description=$("meta[name='description']");
+  if(description&&messages["meta.description"])description.content=messages["meta.description"];
+  renderLanguagePicker();
   renderProjects();
 }
-function loadProjects() { try { const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); return Array.isArray(value) ? value.filter(validManifest) : []; } catch { return []; } }
-function saveProjects() { localStorage.setItem(STORAGE_KEY, JSON.stringify(projects)); }
-function slugify(value) { return value.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 48) || `site-${Date.now()}`; }
-function normalizeHost(value) { return value.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/.*$/, "").replace(/\.$/, ""); }
-function validHost(value) { return /^(?=.{1,253}$)(?!-)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i.test(value); }
-function validManifest(value) { return Boolean(value && value.schemaVersion === 1 && typeof value.id === "string" && typeof value.name === "string" && typeof value.canonicalHost === "string" && Array.isArray(value.publicLocales)); }
-function createManifest(data) {
-  const now = new Date().toISOString();
-  const host = normalizeHost(data.host);
-  return { schemaVersion: 1, generator: "CLARYEL Web Community 0.1.0", id: slugify(data.name), name: data.name.trim(), kind: data.kind, status: "draft", canonicalHost: host, hosts: [host, `www.${host}`], description: data.description.trim(), defaultLocale: locale === "ru" ? "en" : locale, publicLocales: [...PUBLIC_LOCALES], hiddenLocales: ["ru"], features: { multilingual: true, seo: true, contactForm: false, authentication: false, commerce: false }, indexable: true, createdAt: now, updatedAt: now };
+
+function renderLanguagePicker(){
+  const meta=currentMeta();
+  const currentName=$("#currentLanguageName");
+  const currentFlag=$("#currentLanguageFlag");
+  if(currentName)currentName.textContent=meta?.name||"English";
+  if(currentFlag&&meta){
+    currentFlag.replaceChildren(Object.assign(document.createElement("img"),{src:`/assets/flags/${meta.flag}.svg`,alt:"",width:24,height:17}));
+  }
+  const menu=$("#languageMenu");
+  if(!menu)return;
+  menu.replaceChildren();
+  for(const item of manifest.public){
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="language-option";
+    button.role="option";
+    button.dataset.language=item.code;
+    button.setAttribute("aria-selected",String(item.code===localeCode));
+    button.innerHTML=`<img src="/assets/flags/${escapeAttribute(item.flag)}.svg" alt="" width="24" height="17"><span>${escapeHtml(item.name)}</span>`;
+    button.addEventListener("click",()=>switchLanguage(item));
+    menu.append(button);
+  }
 }
-function download(name, content, type) { const url = URL.createObjectURL(new Blob([content], { type })); const link = document.createElement("a"); link.href = url; link.download = name; link.click(); URL.revokeObjectURL(url); }
-function exportManifest(project) { download(`${project.id}.site.json`, `${JSON.stringify(project, null, 2)}\n`, "application/json"); }
-function exportBrief(project) {
-  const brief = `# Website development brief\n\nBuild and document a production-ready website using the official ChatGPT application, GitHub and Cloudflare. No OpenAI API key is required.\n\n## Project\n- Name: ${project.name}\n- Hostname: ${project.canonicalHost}\n- Type: ${project.kind}\n- Purpose: ${project.description}\n- Public locales: ${project.publicLocales.join(", ")}\n- Hidden locale: ru; never expose it in public selectors, sitemap or hreflang.\n\n## Requirements\n1. Keep secrets out of Git.\n2. Add architecture, deployment, security and rollback documentation.\n3. Implement mobile accessibility, SEO, security headers and automated checks.\n4. Review every destructive operation.\n\n## Manifest\n\`\`\`json\n${JSON.stringify(project, null, 2)}\n\`\`\`\n`;
-  download(`${project.id}.chatgpt-brief.md`, brief, "text/markdown");
+
+function switchLanguage(item){
+  const hash=location.hash||"";
+  location.assign(`${item.path}${hash}`);
 }
-function showMessage(title, message) { document.querySelector("#dialog-title").textContent = title; document.querySelector("#dialog-message").textContent = message; document.querySelector("#message-dialog").showModal(); }
-function renderProjects() {
-  const list = document.querySelector("#site-list");
+
+function toggleLanguageMenu(force){
+  const menu=$("#languageMenu");
+  const button=$("#languageButton");
+  if(!menu||!button)return;
+  const open=typeof force==="boolean"?force:menu.hidden;
+  menu.hidden=!open;
+  button.setAttribute("aria-expanded",String(open));
+  if(open)$('.language-option[aria-selected="true"]',menu)?.focus();
+}
+
+function loadProjects(){
+  try{
+    const parsed=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
+    return Array.isArray(parsed)?parsed.filter(validProject):[];
+  }catch{return[];}
+}
+
+function saveProjects(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(projects));
+}
+
+function validProject(project){
+  return Boolean(project&&project.schemaVersion===2&&typeof project.id==="string"&&typeof project.name==="string"&&typeof project.story==="string"&&Array.isArray(project.publicLocales)&&Array.isArray(project.changeRequests));
+}
+
+function slugify(value){
+  return value.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,48)||`website-${Date.now()}`;
+}
+
+function normalizeHost(value){
+  return String(value||"").trim().toLowerCase().replace(/^https?:\/\//,"").replace(/\/.*$/,"").replace(/\.$/,"");
+}
+
+function validHost(host){
+  return !host||/^(?=.{1,253}$)(?!-)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i.test(host);
+}
+
+function createProject(data){
+  const now=new Date().toISOString();
+  const meta=currentMeta();
+  const host=normalizeHost(data.host);
+  return{
+    schemaVersion:2,
+    generator:"CLARYEL Web Community 0.2.0",
+    id:slugify(data.name),
+    name:data.name.trim(),
+    status:"brief",
+    canonicalHost:host,
+    story:data.story.trim(),
+    visualDirection:String(data.style||"").trim(),
+    referenceFiles:selectedFiles.map(file=>({name:file.name,type:file.type||"application/octet-stream",size:file.size})),
+    defaultLocale:localeCode==="ru"?"en":localeCode,
+    publicLocales:manifest.public.map(item=>item.code),
+    hiddenLocales:["ru"],
+    voiceFirst:true,
+    features:{multilingual:true,seo:true,designReview:true,continuousChanges:true,githubReview:true,cloudflareDelivery:true},
+    changeRequests:[],
+    createdAt:now,
+    updatedAt:now,
+    localePath:meta?.path||"/"
+  };
+}
+
+function download(filename,content,type){
+  const url=URL.createObjectURL(new Blob([content],{type}));
+  const anchor=document.createElement("a");
+  anchor.href=url;anchor.download=filename;anchor.click();
+  setTimeout(()=>URL.revokeObjectURL(url),0);
+}
+
+function projectBrief(project){
+  const refs=project.referenceFiles.length?project.referenceFiles.map(file=>`- ${file.name} (${file.type})`).join("\n"):"- No files selected";
+  const changes=project.changeRequests.length?project.changeRequests.map((item,index)=>`${index+1}. ${item.text}`).join("\n"):"No later change requests yet.";
+  return`# Voice-first website brief\n\nUse the official ChatGPT application or another AI connected to GitHub. Create or update a production-ready website through reviewed repository changes and Cloudflare deployment. The account holder must be able to continue changing content, design and functionality through natural-language or dictated commands.\n\n## Project\n- Name: ${project.name}\n- Preferred domain: ${project.canonicalHost||"Not selected"}\n- Story and business goal: ${project.story}\n- Visual direction: ${project.visualDirection||"Derive a professional direction from the story and references"}\n- Default locale: ${project.defaultLocale}\n- Public locales: ${project.publicLocales.join(", ")}\n- Hidden maintenance locale: ru; never expose it in public menus, sitemap or hreflang.\n\n## Brand references\n${refs}\n\nAttach the files listed above to the same AI conversation. Do not invent a replacement logo when an official logo is supplied.\n\n## Voice-first operating contract\n1. Translate plain-language intent into an explicit implementation plan.\n2. Allow changes to copy, structure, layout, colours, typography, imagery, responsive behaviour and functionality.\n3. Review design hierarchy, spacing, contrast, accessibility and mobile behaviour before finalising.\n4. Keep a documented Git history, tests, deployment steps and rollback path.\n5. Explain destructive or legally significant changes before applying them.\n6. Never expose secrets, private repositories or customer data.\n\n## Later change requests\n${changes}\n\n## Portable project manifest\n\`\`\`json\n${JSON.stringify(project,null,2)}\n\`\`\`\n`;
+}
+
+function showMessage(title,message){
+  $("#dialogTitle").textContent=title;
+  $("#dialogMessage").textContent=message;
+  $("#messageDialog").showModal();
+}
+
+function renderProjects(){
+  const list=$("#projectList");
+  if(!list)return;
   list.replaceChildren();
-  for (const project of projects) {
-    const card = document.createElement("article"); card.className = "site-card";
-    const date = new Intl.DateTimeFormat(locale === "zh-CN" ? "zh-CN" : locale, { dateStyle: "medium" }).format(new Date(project.createdAt));
-    card.innerHTML = `<h3></h3><code></code><p></p><div class="meta"><span>${t("draft") || "Draft"}</span><span>${t("created") || "Created"}: ${date}</span></div><div class="actions"><button class="button secondary" data-action="manifest">${t("exportManifest")}</button><button class="button secondary" data-action="brief">${t("chatBrief")}</button><button class="button danger" data-action="delete">${t("remove")}</button></div>`;
-    card.querySelector("h3").textContent = project.name; card.querySelector("code").textContent = project.canonicalHost; card.querySelector("p").textContent = project.description;
-    card.querySelector('[data-action="manifest"]').onclick = () => exportManifest(project);
-    card.querySelector('[data-action="brief"]').onclick = () => exportBrief(project);
-    card.querySelector('[data-action="delete"]').onclick = () => { if (confirm(`${t("deleteQuestion")}\n${t("deleteBody")}`)) { projects = projects.filter((item) => item.id !== project.id); saveProjects(); renderProjects(); } };
+  for(const project of projects){
+    const card=document.createElement("article");
+    card.className="project-card";
+    const created=new Intl.DateTimeFormat(currentMeta()?.locale||"en-GB",{dateStyle:"medium"}).format(new Date(project.createdAt));
+    const files=project.referenceFiles.map(file=>file.name).join(", ")||"—";
+    card.innerHTML=`
+      <h3>${escapeHtml(project.name)}</h3>
+      <code>${escapeHtml(project.canonicalHost||"domain not selected")}</code>
+      <p>${escapeHtml(project.story)}</p>
+      <div class="project-meta"><span>${escapeHtml(t("project.created"))}: ${escapeHtml(created)}</span><span>${escapeHtml(files)}</span></div>
+      <div class="project-command">
+        <label><span>${escapeHtml(t("project.change"))}</span><textarea data-change-input="${escapeAttribute(project.id)}" placeholder="${escapeAttribute(t("project.changePlaceholder"))}"></textarea></label>
+        <div class="card-actions">
+          <button type="button" data-action="record" data-project="${escapeAttribute(project.id)}">● ${escapeHtml(t("workspace.record"))}</button>
+          <button type="button" data-action="add-change" data-project="${escapeAttribute(project.id)}">${escapeHtml(t("project.addChange"))}</button>
+          <button type="button" data-action="brief" data-project="${escapeAttribute(project.id)}">${escapeHtml(t("project.brief"))}</button>
+          <button type="button" data-action="manifest" data-project="${escapeAttribute(project.id)}">${escapeHtml(t("project.manifest"))}</button>
+          <button class="danger" type="button" data-action="delete" data-project="${escapeAttribute(project.id)}">${escapeHtml(t("project.delete"))}</button>
+        </div>
+        ${project.changeRequests.length?`<p><strong>${escapeHtml(t("project.changes"))}</strong></p><ol class="change-list">${project.changeRequests.map(item=>`<li>${escapeHtml(item.text)}</li>`).join("")}</ol>`:""}
+      </div>`;
     list.append(card);
   }
-  document.querySelector("#empty-state").hidden = projects.length > 0;
-  document.querySelector("#site-count").textContent = `${projects.length} / ${FREE_SITE_LIMIT}`;
+  $("#emptyState").hidden=projects.length>0;
+  $("#siteCount").textContent=`${projects.length} / ${FREE_SITE_LIMIT}`;
 }
 
-const languageSelect = document.querySelector("#language-select");
-for (const code of PUBLIC_LOCALES) { const option = document.createElement("option"); option.value = code; option.textContent = LOCALE_NAMES[code]; languageSelect.append(option); }
-languageSelect.value = PUBLIC_LOCALES.includes(locale) ? locale : "en";
-languageSelect.onchange = () => { const url = new URL(location.href); if (languageSelect.value === "en") url.searchParams.delete("lang"); else url.searchParams.set("lang", languageSelect.value); history.replaceState(null, "", url); applyLocale(languageSelect.value); };
+function setVoiceStatus(text=""){
+  $("#voiceStatus").textContent=text;
+}
 
-document.querySelector("#site-form").onsubmit = (event) => {
-  event.preventDefault();
-  if (projects.length >= FREE_SITE_LIMIT) return showMessage(t("limitTitle"), t("limitBody"));
-  const data = Object.fromEntries(new FormData(event.currentTarget)); data.host = normalizeHost(data.host);
-  if (!validHost(data.host)) return showMessage(t("invalidTitle"), t("invalidHost"));
-  const project = createManifest(data); if (projects.some((item) => item.id === project.id)) project.id += `-${Date.now()}`;
-  projects.push(project); saveProjects(); event.currentTarget.reset(); renderProjects();
-};
-const importFile = document.querySelector("#import-file");
-document.querySelector("#import-button").onclick = () => importFile.click();
-importFile.onchange = async () => {
-  const file = importFile.files?.[0]; if (!file) return;
-  try { const project = JSON.parse(await file.text()); if (!validManifest(project) || !validHost(project.canonicalHost)) throw new Error(); if (projects.length >= FREE_SITE_LIMIT) return showMessage(t("limitTitle"), t("limitBody")); if (projects.some((item) => item.id === project.id)) project.id += `-${Date.now()}`; projects.push(project); saveProjects(); renderProjects(); }
-  catch { showMessage(t("importTitle"), t("importBody")); }
-  finally { importFile.value = ""; }
-};
+function speechConstructor(){
+  return window.SpeechRecognition||window.webkitSpeechRecognition||null;
+}
 
-applyLocale(locale);
-renderProjects();
+function stopRecognition(){
+  recognition?.stop();
+}
+
+function startRecognition(target,button){
+  const Recognition=speechConstructor();
+  if(!Recognition){showMessage(t("workspace.record"),t("workspace.voiceUnavailable"));return;}
+  if(recognition){recognition.stop();recognition=null;}
+  activeVoiceTarget=target;
+  recognition=new Recognition();
+  recognition.lang=currentMeta()?.locale||"en-GB";
+  recognition.interimResults=true;
+  recognition.continuous=true;
+  const initial=target.value.trim();
+  recognition.onstart=()=>{button?.classList.add("active");setVoiceStatus(t("workspace.listening"));};
+  recognition.onresult=event=>{
+    let finalText="";let interim="";
+    for(let index=event.resultIndex;index<event.results.length;index++){
+      const value=event.results[index][0].transcript;
+      if(event.results[index].isFinal)finalText+=value;else interim+=value;
+    }
+    if(finalText){target.value=[initial,target.value.slice(initial.length).trim(),finalText.trim()].filter(Boolean).join(" ").replace(/\s+/g," ");}
+    setVoiceStatus(interim?`${t("workspace.listening")} ${interim}`:t("workspace.listening"));
+  };
+  recognition.onerror=event=>setVoiceStatus(`${t("workspace.voiceUnavailable")} (${event.error})`);
+  recognition.onend=()=>{button?.classList.remove("active");recognition=null;activeVoiceTarget=null;setVoiceStatus("");};
+  recognition.start();
+}
+
+function bindEvents(){
+  $("#languageButton")?.addEventListener("click",event=>{event.stopPropagation();toggleLanguageMenu();});
+  document.addEventListener("click",event=>{if(!$("#languagePicker")?.contains(event.target))toggleLanguageMenu(false);});
+  document.addEventListener("keydown",event=>{if(event.key==="Escape"){toggleLanguageMenu(false);stopRecognition();}});
+
+  $("#referenceFiles")?.addEventListener("change",event=>{
+    selectedFiles=[...(event.target.files||[])].slice(0,8);
+    $("#fileList").replaceChildren(...selectedFiles.map(file=>Object.assign(document.createElement("span"),{textContent:file.name})));
+  });
+
+  $("#storyMic")?.addEventListener("click",event=>{
+    if(recognition){stopRecognition();return;}
+    startRecognition($("#storyInput"),event.currentTarget);
+  });
+
+  $("#projectForm")?.addEventListener("submit",event=>{
+    event.preventDefault();
+    if(projects.length>=FREE_SITE_LIMIT){showMessage(t("error.limitTitle"),t("error.limitBody"));return;}
+    const form=Object.fromEntries(new FormData(event.currentTarget));
+    if(!validHost(normalizeHost(form.host))){showMessage(t("workspace.host"),t("error.invalidHost"));return;}
+    const project=createProject(form);
+    if(projects.some(item=>item.id===project.id))project.id+=`-${Date.now()}`;
+    projects.push(project);saveProjects();event.currentTarget.reset();selectedFiles=[];$("#fileList").replaceChildren();renderProjects();
+  });
+
+  $("#importButton")?.addEventListener("click",()=>$("#importFile").click());
+  $("#importFile")?.addEventListener("change",async event=>{
+    const file=event.target.files?.[0];if(!file)return;
+    try{
+      const project=JSON.parse(await file.text());
+      if(!validProject(project))throw new Error("invalid");
+      if(projects.length>=FREE_SITE_LIMIT){showMessage(t("error.limitTitle"),t("error.limitBody"));return;}
+      if(projects.some(item=>item.id===project.id))project.id+=`-${Date.now()}`;
+      projects.push(project);saveProjects();renderProjects();
+    }catch{showMessage(t("workspace.import"),t("error.invalidProject"));}
+    finally{event.target.value="";}
+  });
+
+  $("#projectList")?.addEventListener("click",event=>{
+    const button=event.target.closest("button[data-action]");if(!button)return;
+    const project=projects.find(item=>item.id===button.dataset.project);if(!project)return;
+    const input=$(`[data-change-input="${CSS.escape(project.id)}"]`);
+    if(button.dataset.action==="record"){if(recognition){stopRecognition();return;}startRecognition(input,button);}
+    if(button.dataset.action==="add-change"){
+      const text=input.value.trim();if(!text)return;
+      project.changeRequests.push({text,createdAt:new Date().toISOString()});project.updatedAt=new Date().toISOString();saveProjects();renderProjects();
+    }
+    if(button.dataset.action==="brief")download(`${project.id}.voice-website-brief.md`,projectBrief(project),"text/markdown");
+    if(button.dataset.action==="manifest")download(`${project.id}.site.json`,`${JSON.stringify(project,null,2)}\n`,"application/json");
+    if(button.dataset.action==="delete"&&confirm(t("error.delete"))){projects=projects.filter(item=>item.id!==project.id);saveProjects();renderProjects();}
+  });
+}
+
+async function start(){
+  await loadManifest();
+  messages=await loadMessages(localeCode).catch(()=>loadMessages("en"));
+  applyTranslations();
+  bindEvents();
+}
+
+start().catch(error=>{console.error(error);showMessage("CLARYEL Web Community",String(error.message||error));});

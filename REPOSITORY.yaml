@@ -19,12 +19,13 @@ does_not_own:
   - CLARYEL Box runtime
   - CLARYEL ID production identity
   - private customer infrastructure
-  - agent orchestration
+  - general agent orchestration
   - remote support infrastructure
 allowed_sources:
   - reviewed public-safe shared website contracts
   - reviewed public documentation templates
   - reviewed generic Cloudflare deployment patterns
+  - approved public CLARYEL brand assets
 forbidden_sources:
   - private repository history
   - secrets and account identifiers

@@ -3,22 +3,24 @@
 ## Community — public beta / Community — публичная бета
 
 - Price: free.
-- Limit: two Active Websites per Legal Entity under the Additional Use Grant.
-- Workspace: browser-local.
+- Limit: two Active Websites per Account Holder through one Free Community Account.
+- Account Holder: an individual or an organisation.
+- Workspace: local browser storage.
+- Workflow: voice or text briefs for ChatGPT or another AI connected to GitHub.
 - Support: public documentation and community issue tracker.
-- AI workflow: user-owned ChatGPT application account; no bundled API usage.
 
 - Цена: бесплатно.
-- Лимит: два активных сайта для одного юридического субъекта по Additional Use Grant.
-- Рабочая область: локально в браузере.
+- Лимит: два активных сайта на одного владельца аккаунта через один бесплатный Community-аккаунт.
+- Владелец аккаунта: физическое лицо или организация.
+- Рабочая область: локальное хранилище браузера.
+- Процесс: голосовые или текстовые задания для ChatGPT или другого ИИ, подключённого к GitHub.
 - Поддержка: публичная документация и community issue tracker.
-- ИИ-процесс: собственный аккаунт пользователя в приложении ChatGPT; API не включено.
 
 ## Creator — planned / Creator — планируется
 
-Target scope: up to ten websites, encrypted backup, extended templates and assisted upgrades.
+Target scope: more websites, encrypted backup, richer design systems, assisted upgrades and a streamlined continuous-change workflow.
 
-Целевой состав: до десяти сайтов, зашифрованное резервное копирование, расширенные шаблоны и сопровождаемые обновления.
+Целевой состав: больше сайтов, зашифрованные резервные копии, расширенные дизайн-системы, сопровождаемые обновления и упрощённый процесс постоянных изменений.
 
 ## Studio — planned / Studio — планируется
 

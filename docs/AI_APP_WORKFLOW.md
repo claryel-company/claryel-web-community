@@ -1,23 +1,33 @@
-# ChatGPT application workflow / Работа через приложение ChatGPT
+# Voice-first AI application workflow / Голосовой процесс работы через приложение ИИ
 
-The default Community workflow intentionally requires no OpenAI API key.
+The default Community workflow requires no OpenAI API key. The user can work through the official ChatGPT application or another AI application that can read the exported brief and work with the user's GitHub repository.
 
-Основной Community-процесс намеренно не требует ключа OpenAI API.
+Основной Community-процесс не требует ключа OpenAI API. Пользователь может работать через официальное приложение ChatGPT или другое приложение ИИ, способное прочитать экспортированное задание и работать с репозиторием пользователя в GitHub.
 
-1. Create a website project in the browser workspace.
-2. Export the `*.chatgpt-brief.md` file.
-3. Open the official ChatGPT application in a browser, Android, iPhone, iPad or desktop application.
-4. Attach the brief and ask ChatGPT to create or update the GitHub repository.
-5. Review changes, tests, deployment configuration and documentation before merging.
-6. Use GitHub and Cloudflare as the source-control and deployment systems.
+## First website / Первый сайт
 
-1. Создать проект сайта в браузерной рабочей области.
-2. Экспортировать файл `*.chatgpt-brief.md`.
-3. Открыть официальное приложение ChatGPT в браузере, Android, iPhone, iPad или настольном приложении.
-4. Приложить задание и поручить ChatGPT создать или обновить репозиторий GitHub.
-5. До объединения проверить изменения, тесты, конфигурацию публикации и документацию.
-6. Использовать GitHub и Cloudflare как системы управления кодом и публикации.
+1. Open `web.claryel.space` in the preferred language path.
+2. Dictate or type the business story and intended visitor action.
+3. Select a logo and visual references.
+4. Export the voice-first AI brief.
+5. Attach the same logo and reference files to the AI conversation.
+6. Ask the AI to create the repository, documentation, tests and Cloudflare deployment.
+7. Review the Pull Request and production result.
 
-A ChatGPT Free or paid application plan may be used according to the terms and limits of that service. This repository does not bundle, resell or authenticate ChatGPT accounts.
+1. Открыть `web.claryel.space` по пути нужного языка.
+2. Продиктовать или написать историю бизнеса и целевое действие посетителя.
+3. Выбрать логотип и визуальные примеры.
+4. Экспортировать voice-first задание для ИИ.
+5. Приложить те же файлы логотипа и примеров к диалогу с ИИ.
+6. Поручить ИИ создать репозиторий, документацию, тесты и публикацию Cloudflare.
+7. Проверить Pull Request и production-результат.
 
-Можно использовать бесплатный или платный тариф приложения ChatGPT в соответствии с условиями и лимитами сервиса. Репозиторий не включает, не перепродаёт и не авторизует аккаунты ChatGPT.
+## Continuing voice control / Постоянное голосовое управление
+
+Open the saved project card, dictate the next change and export the updated brief. A request may concern copy, imagery, page structure, typography, spacing, colour, responsive behaviour, SEO, accessibility, forms or business functionality. The AI must translate the request into an implementation plan, show important consequences and preserve a rollback path.
+
+Откройте сохранённую карточку проекта, продиктуйте следующее изменение и экспортируйте обновлённое задание. Запрос может касаться текстов, изображений, структуры страниц, типографики, отступов, цветов, адаптивности, SEO, доступности, форм или бизнес-функций. ИИ должен превратить запрос в план реализации, показать важные последствия и сохранить возможность отката.
+
+A free or paid ChatGPT application plan may be used according to that service's terms and limits. CLARYEL Web Community does not bundle, resell or authenticate third-party AI accounts.
+
+Можно использовать бесплатный или платный тариф приложения ChatGPT в соответствии с условиями и лимитами сервиса. CLARYEL Web Community не включает, не перепродаёт и не авторизует сторонние аккаунты ИИ.

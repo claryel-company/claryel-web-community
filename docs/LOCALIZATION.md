@@ -1,25 +1,34 @@
-# Localisation contract / Контракт локализации
+# Localisation and public-language standard / Стандарт локализации и публичных языков
 
-Public locales:
+## Canonical paths / Канонические пути
 
-Публичные локали:
+- English: `/`
+- Other public languages: `/<two-letter-code>/`
+- Simplified Chinese: `/zh-cn/`
+- Hidden Russian maintenance locale: `/ru/`
 
-```text
-en, it, de, fr, es, nl, pt, pl, ro, cs, sv, el, da, fi, zh-CN
-```
+`?lang=` is never canonical. Legacy requests are permanently redirected to the path form. Public canonical URLs, Open Graph URLs, sitemap entries and `hreflang` all use paths.
 
-Hidden maintenance locale:
+`?lang=` никогда не является каноническим адресом. Старые запросы постоянно перенаправляются на форму с путём. Canonical URL, Open Graph URL, sitemap и `hreflang` используют пути.
 
-Скрытая локаль сопровождения:
+## Language control / Переключатель языков
 
-```text
-ru
-```
+Every public language picker shows the approved SVG flag and the native language name. A plain browser `<select>` without flags is not an accepted CLARYEL public-site language control.
 
-Russian is available only through an explicit `?lang=ru` request or a previously stored Russian preference. It is not shown in the public language selector, sitemap or public locale list. Responses in the Russian context receive `noindex, nofollow, noarchive`.
+Каждый публичный переключатель показывает утверждённый SVG-флаг и нативное название языка. Обычный браузерный `<select>` без флагов не считается допустимым переключателем публичного сайта CLARYEL.
 
-Русский доступен только через явный запрос `?lang=ru` или ранее сохранённое русское предпочтение. Он не показывается в публичном переключателе, sitemap или публичном списке локалей. Ответы в русском контексте получают `noindex, nofollow, noarchive`.
+Public locales: `en`, `it`, `de`, `fr`, `es`, `nl`, `pt`, `pl`, `ro`, `cs`, `sv`, `el`, `da`, `fi`, `zh-CN`.
 
-Every changed public phrase must be reviewed across the full locale set. English is the fallback only while a beta translation is incomplete; release candidates require complete natural translations.
+Hidden locale: `ru`. It is available by direct path but is absent from the public picker, sitemap, `hreflang` and public configuration. Russian responses receive `noindex, nofollow, noarchive`.
 
-Каждая изменённая публичная фраза должна проверяться по всему набору локалей. Английский допускается как fallback только при незавершённом переводе бета-версии; релиз-кандидаты требуют полных естественных переводов.
+## Beta banner and branding / Beta-плашка и бренд
+
+All beta CLARYEL sites display the fixed translated beta banner above the sticky header. Until a replacement brand system is approved, sites use the shared `claryel-mark-v3.svg` symbol for the favicon and primary brand mark.
+
+Все beta-сайты CLARYEL показывают фиксированную переведённую beta-плашку над закреплённым header. До утверждения новой бренд-системы сайты используют общий знак `claryel-mark-v3.svg` как favicon и основной знак бренда.
+
+## Definition of done / Критерий готовности
+
+A user-facing change is complete only when locale key parity passes, canonical routes work, the flag picker works on desktop and mobile, hidden Russian remains isolated, and the beta banner remains readable at supported widths.
+
+Пользовательское изменение завершено только после проверки одинакового набора ключей локалей, работы канонических маршрутов, переключателя с флагами на desktop и mobile, изоляции скрытого русского и читаемости beta-плашки на поддерживаемых ширинах.

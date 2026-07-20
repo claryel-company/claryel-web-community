@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="80 20 840 800" role="img" aria-labelledby="title desc">
+  <title id="title">CLARYEL</title><desc id="desc">CLARYEL gradient symbol.</desc>
+  <defs><linearGradient id="arc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#18e4f4"/><stop offset=".46" stop-color="#087dff"/><stop offset="1" stop-color="#4030ff"/></linearGradient><linearGradient id="mark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#18dcf4"/><stop offset=".45" stop-color="#2855ef"/><stop offset="1" stop-color="#a52cff"/></linearGradient></defs>
+  <path d="M724 110C632 43 512 20 398 45 209 85 87 246 92 431c4 168 111 315 268 368 112 38 237 19 334-49l-87-115c-67 43-151 54-227 28-103-35-174-130-177-239-3-120 76-224 191-249 77-17 158-2 222 41z" fill="url(#arc)"/>
+  <path d="M369 271h164l82 133-97 151z" fill="#18d9ef"/><path d="M690 270h213L603 753H435z" fill="url(#mark)"/><path d="M755 635h118l-97 118H650z" fill="url(#mark)"/>
+</svg>

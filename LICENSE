@@ -12,27 +12,40 @@ Additional Use Grant: You may make Production Use of the Licensed Work without
 purchasing a commercial license only when all of the following conditions are
 satisfied:
 
-1. The Licensed Work is used by one Legal Entity to create, deploy, operate or
-   manage no more than two Active Websites in total.
-2. You do not offer the Licensed Work, or a substantially similar product or
+1. One Account Holder uses the Licensed Work through no more than one Free
+   Community Account to create, deploy, operate or manage no more than two
+   Active Websites in total.
+2. The Account Holder does not create, control or coordinate additional Free
+   Community Accounts, installations or workspaces for the purpose of avoiding
+   the two-Active-Website limit.
+3. You do not offer the Licensed Work, or a substantially similar product or
    service based on the Licensed Work, to third parties as a paid hosted,
    managed, white-label, agency, platform or software-as-a-service offering.
-3. You do not remove, disable, bypass or materially circumvent a technical
+4. You do not remove, disable, bypass or materially circumvent a technical
    control whose primary purpose is to enforce the two-Active-Website limit.
 
 For this Additional Use Grant:
 
+"Account Holder" means either (a) a natural person acting personally or in a
+business or professional capacity, or (b) a company, organisation, public body
+or other legal organisation, together with every account, installation or
+workspace controlled by that person or organisation and by entities under
+common control.
+
+"Free Community Account" means the account, installation or workspace used to
+manage the free Community Edition allowance. When the Licensed Work is
+self-hosted without an official CLARYEL account, all self-hosted installations
+under the control of the same Account Holder are treated together as one Free
+Community Account.
+
 "Active Website" means a website or web application that is publicly available
-or used for the internal operations of a Legal Entity in a production
+or used for the internal operations of an Account Holder in a production
 environment. Development, test, preview and staging copies that reproduce the
 same website and are not separately used as production websites count together
 as one Active Website.
 
-"Legal Entity" means an individual acting for personal purposes, or a company,
-organisation, public body or other entity together with all entities that
-control, are controlled by or are under common control with it. "Control" means
-direct or indirect ownership of more than fifty percent of the voting interests
-or the power to direct management and policies.
+"Control" means direct or indirect ownership of more than fifty percent of the
+voting interests or the power to direct management and policies.
 
 Any Production Use not expressly permitted by this Additional Use Grant
 requires a separate written commercial licence from CLARYEL S.R.L.S.

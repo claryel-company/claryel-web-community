@@ -1,17 +1,11 @@
 {
-  "name": "CLARYEL Web Community",
-  "short_name": "CLARYEL Web",
-  "description": "Local-first website project workspace for GitHub, Cloudflare and the ChatGPT application.",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#0d1020",
-  "theme_color": "#151a2d",
-  "icons": [
-    {
-      "src": "/assets/logo.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ]
+  "name":"CLARYEL Web Community",
+  "short_name":"CLARYEL Web",
+  "description":"Create, publish and continuously improve websites through voice-first AI conversations.",
+  "start_url":"/",
+  "scope":"/",
+  "display":"standalone",
+  "background_color":"#f5f5f7",
+  "theme_color":"#f5f5f7",
+  "icons":[{"src":"/assets/claryel-mark-v3.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
 }

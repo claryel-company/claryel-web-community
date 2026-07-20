@@ -11,6 +11,6 @@
   "vars": {
     "PUBLIC_ORIGIN": "https://web.claryel.space",
     "FREE_SITE_LIMIT": "2",
-    "PRODUCT_VERSION": "0.2.0"
+    "PRODUCT_VERSION": "0.2.1"
   }
 }

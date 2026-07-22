@@ -1,5 +1,15 @@
 # Changelog / Журнал изменений
 
+## Unreleased / Не выпущено
+
+- Clarified that GitHub integration is capability-based and may use an approved application connector, governed API or local Git/`gh`.
+- Removed any implied GitHub CLI or Linux installation prerequisite from the public voice-first workflow.
+- Documented the boundary between the public Community product and the separately managed CLARYEL website platform.
+
+- Уточнено, что интеграция GitHub определяется возможностями и может использовать одобренный коннектор приложения, управляемый API или локальный Git/`gh`.
+- Из публичного голосового процесса устранена любая подразумеваемая предпосылка установки GitHub CLI или настройки Linux.
+- Задокументирована граница между публичным продуктом Community и отдельно управляемой платформой сайтов CLARYEL.
+
 ## 0.2.1 — 2026-07-20
 
 - Made server-rendered localized SEO metadata deterministic for every language path.

@@ -24,6 +24,7 @@
 - hidden Russian maintenance path `/ru/` with no public discovery or indexing;
 - Cloudflare Worker deployment, security headers, SEO metadata, tests and rollback documentation;
 - no required OpenAI API key for the Community beta workflow.
+- GitHub operations may use a connected application or connector; the Community website and its server require neither GitHub CLI nor a Linux-side GitHub installation.
 
 <!-- RU:BEGIN -->
 - голосовая диктовка первого задания на сайт и последующих изменений;
@@ -35,6 +36,7 @@
 - скрытый русский путь `/ru/` без публичного обнаружения и индексации;
 - публикация Cloudflare Worker, заголовки безопасности, SEO, тесты и документация отката;
 - для Community-беты не требуется ключ OpenAI API.
+- операции GitHub могут выполняться подключённым приложением или коннектором; сайту Community и его серверу не требуются GitHub CLI или установка GitHub в Linux.
 <!-- RU:END -->
 
 ## Live site

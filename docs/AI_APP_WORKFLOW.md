@@ -4,6 +4,16 @@ The default Community workflow requires no OpenAI API key. The user can work thr
 
 Основной Community-процесс не требует ключа OpenAI API. Пользователь может работать через официальное приложение ChatGPT или другое приложение ИИ, способное прочитать экспортированное задание и работать с репозиторием пользователя в GitHub.
 
+## GitHub connection / Подключение GitHub
+
+The workflow requires sufficient governed GitHub capabilities rather than a specific client. When ChatGPT or another selected AI application exposes an authenticated GitHub App or connector that can create a branch, write commits, open a Pull Request and inspect the required checks, that connection is sufficient. No local `gh` binary is required in the browser, Community server or CLARYEL Box Linux environment.
+
+Процессу требуются достаточные управляемые возможности GitHub, а не конкретный клиент. Если ChatGPT или другое выбранное приложение ИИ предоставляет авторизованный GitHub App либо коннектор, способный создать ветку, записать коммиты, открыть Pull Request и проверить обязательные проверки, такого подключения достаточно. Локальный бинарник `gh` не требуется в браузере, сервере Community или Linux-среде CLARYEL Box.
+
+A governed API adapter or local Git with `gh` remains a valid alternative when the connected application lacks an operation required by the task. Changing interfaces must not bypass protected branches, review, CI, least-privilege credentials or rollback.
+
+Управляемый API-адаптер или локальный Git с `gh` остаётся допустимой альтернативой, когда подключённому приложению не хватает необходимой операции. Смена интерфейса не должна обходить защищённые ветки, review, CI, учётные данные с минимальными полномочиями или откат.
+
 ## First website / Первый сайт
 
 1. Open `web.claryel.space` in the preferred language path.

@@ -24,6 +24,16 @@ User-selected AI application connected to GitHub
 Cloudflare Worker deployment
 ```
 
+## GitHub operations boundary / Граница операций GitHub
+
+GitHub operations are capability-based, not tied to one executable. The selected AI may use an approved GitHub App or application connector, a governed API adapter, or local Git with `gh`, provided the active interface can perform every operation required by the task while preserving branches, Pull Requests, CI, auditability, least privilege and rollback.
+
+Операции GitHub определяются возможностями, а не одним исполняемым файлом. Выбранный ИИ может использовать одобренный GitHub App или коннектор приложения, управляемый API-адаптер либо локальный Git с `gh`, если действующий интерфейс выполняет все необходимые операции задачи с сохранением веток, Pull Request, CI, аудита, минимальных полномочий и отката.
+
+The browser application, Community server and CLARYEL Box Linux runtime do not require GitHub CLI. A missing `gh` binary is not a blocker when a connected application already provides the required GitHub capabilities. Linux provisioning and any future CLI-dependent maintenance workflow remain separate architectural concerns owned outside this public product runtime.
+
+Браузерное приложение, сервер Community и Linux runtime CLARYEL Box не требуют GitHub CLI. Отсутствие бинарника `gh` не является блокером, если подключённое приложение уже предоставляет нужные возможности GitHub. Установка Linux и любой будущий CLI-зависимый процесс сопровождения остаются отдельными архитектурными задачами вне публичного runtime этого продукта.
+
 Version `0.2.0` stores project records, file names and change requests in browser local storage. Selected files are not uploaded by the website; the user attaches the same files to the AI conversation when using the exported brief. Voice recognition uses the browser's supported speech-recognition interface and falls back to text input.
 
 Версия `0.2.0` хранит записи проектов, имена файлов и запросы изменений в локальном хранилище браузера. Выбранные файлы не загружаются сайтом; пользователь прикладывает их к диалогу с ИИ вместе с экспортированным заданием. Распознавание речи использует поддерживаемый браузером интерфейс и при недоступности заменяется текстовым вводом.

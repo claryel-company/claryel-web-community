@@ -2,7 +2,7 @@ import{access,readFile,readdir}from"node:fs/promises";
 import path from"node:path";
 import process from"node:process";
 const root=process.cwd();
-const required=["README.md","AGENTS.md","REPOSITORY.yaml","LICENSE","SECURITY.md","CONTRIBUTING.md","wrangler.jsonc","src/worker.js","public/index.html","public/app.js","public/styles.css","public/assets/claryel-mark-v3.svg","public/i18n/manifest.json","docs/ARCHITECTURE.md","docs/DEPLOYMENT.md","docs/LOCALIZATION.md","docs/MARKET_POSITIONING.md","docs/PRIVATE_EXPORT_BOUNDARY.md"];
+const required=["README.md","AGENTS.md","REPOSITORY.yaml","LICENSE","SECURITY.md","CONTRIBUTING.md","wrangler.jsonc","src/worker.js","public/index.html","public/app.js","public/styles.css","public/assets/claryel-mark-v3.svg","public/i18n/manifest.json","docs/ARCHITECTURE.md","docs/AI_APP_WORKFLOW.md","docs/DEPLOYMENT.md","docs/LOCALIZATION.md","docs/MARKET_POSITIONING.md","docs/PRIVATE_EXPORT_BOUNDARY.md","NEXT_STEPS.md"];
 for(const file of required)await access(path.join(root,file));
 const read=file=>readFile(path.join(root,file),"utf8");
 const worker=await read("src/worker.js");
@@ -10,6 +10,8 @@ const html=await read("public/index.html");
 const css=await read("public/styles.css");
 const app=await read("public/app.js");
 const license=await read("LICENSE");
+const architecture=await read("docs/ARCHITECTURE.md");
+const aiWorkflow=await read("docs/AI_APP_WORKFLOW.md");
 for(const header of["Content-Security-Policy","Strict-Transport-Security","X-Content-Type-Options","Permissions-Policy"])if(!worker.includes(header))throw new Error(`Missing security header: ${header}`);
 if(!worker.includes('microphone=(self)'))throw new Error("Voice input permissions policy is missing.");
 if(!html.includes('id="betaBanner"')||!css.includes(".beta-banner"))throw new Error("Standard beta banner is missing.");
@@ -32,5 +34,8 @@ for(const code of[...expected,"ru"]){
 }
 if(!worker.includes('freeLimitBasis:"account-holder"'))throw new Error("Account-based free limit is missing from public config.");
 if(!license.includes('Account Holder')||license.includes('two Active Websites per Legal Entity'))throw new Error("Licence is not account-holder based.");
+if(!architecture.includes('GitHub operations are capability-based')||!architecture.includes('do not require GitHub CLI'))throw new Error("Capability-based GitHub architecture is missing.");
+if(!aiWorkflow.includes('No local `gh` binary is required')||!aiWorkflow.includes('authenticated GitHub App or connector'))throw new Error("Connector-first AI application workflow is missing.");
+if(architecture.includes('GitHub CLI is mandatory')||aiWorkflow.includes('GitHub CLI is mandatory'))throw new Error("Community documentation must not require GitHub CLI.");
 for(const privateMarker of["claryel-company/claryel-box","claryel-company/claryel-servicehub","claryel-company/claryel-remote-infrastructure","claryel-company/n8n-config"]){if(worker.includes(privateMarker)||app.includes(privateMarker))throw new Error(`Private marker in runtime: ${privateMarker}`);}
-console.log(`Validated ${required.length} required files, ${keys.length} translated keys, ${expected.length} public locale paths, voice workflow and public/private boundary.`);
+console.log(`Validated ${required.length} required files, ${keys.length} translated keys, ${expected.length} public locale paths, voice workflow, capability-based GitHub operations and public/private boundary.`);

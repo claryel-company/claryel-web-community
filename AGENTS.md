@@ -22,6 +22,7 @@ CLARYEL maintainers must additionally open the private `claryel-company/claryel-
 - Never use `?lang=` as a canonical public address; redirect legacy queries to the path form.
 - Preserve all 15 public locales and hidden Russian isolation.
 - Do not add an OpenAI API dependency to the default Community workflow; it uses the ChatGPT application or another user-selected AI connected to GitHub.
+- Treat GitHub integration as capability-based: an approved application connector, governed API or local Git/`gh` may be used when it covers the task. Do not stop solely because `gh` is absent, and do not install GitHub tooling in product or server runtime for this workflow.
 - Keep claims truthful: distinguish the working beta workflow from planned hosted automation.
 - Do not weaken the Business Source License, account-based free limit, trademark policy or commercial boundary.
 - Run `npm run check` before proposing a change.
@@ -37,6 +38,7 @@ CLARYEL maintainers must additionally open the private `claryel-company/claryel-
 - Никогда не использовать `?lang=` как канонический публичный адрес; старые query-адреса перенаправлять на путь.
 - Сохранять все 15 публичных локалей и изоляцию скрытого русского.
 - Не добавлять зависимость от OpenAI API в основной Community-процесс; он использует приложение ChatGPT или другой выбранный пользователем ИИ, подключённый к GitHub.
+- Считать интеграцию GitHub основанной на возможностях: допускается одобренный коннектор приложения, управляемый API или локальный Git/`gh`, если он покрывает задачу. Не останавливаться только из-за отсутствия `gh` и не устанавливать инструменты GitHub в runtime продукта или сервера ради этого процесса.
 - Сохранять правдивость заявлений: отделять работающий beta-процесс от планируемой размещённой автоматизации.
 - Не ослаблять Business Source License, бесплатный лимит по аккаунту, политику товарных знаков или коммерческие границы.
 - Выполнять `npm run check` до предложения изменения.

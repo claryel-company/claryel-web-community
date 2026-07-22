@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository / Получить репозиторий
         uses: actions/checkout@v7
       - name: Set up Node.js / Настроить Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
       - name: Run product checks / Запустить проверки продукта

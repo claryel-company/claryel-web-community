@@ -13,7 +13,7 @@
 **Создавайте, публикуйте и постоянно улучшайте сайты голосовыми командами искусственному интеллекту.** Расскажите о бизнесе, приложите логотип или визуальный пример, работайте через ChatGPT или другой ИИ, подключённый к GitHub, публикуйте через Cloudflare и продолжайте менять любую часть сайта обычными словами или голосом.
 <!-- RU:END -->
 
-## Public beta 0.2.0
+## Public beta 0.2.1
 
 - voice dictation for the first website brief and later change requests;
 - logo and visual-reference selection;
@@ -23,7 +23,7 @@
 - canonical language paths: `/`, `/it/`, `/de/`, `/fr/` and the other supported locales;
 - hidden Russian maintenance path `/ru/` with no public discovery or indexing;
 - Cloudflare Worker deployment, security headers, SEO metadata, tests and rollback documentation;
-- no required OpenAI API key for the Community beta workflow.
+- no required OpenAI API key for the Community beta workflow;
 - GitHub operations may use a connected application or connector; the Community website and its server require neither GitHub CLI nor a Linux-side GitHub installation.
 
 <!-- RU:BEGIN -->
@@ -35,7 +35,7 @@
 - канонические адреса языков: `/`, `/it/`, `/de/`, `/fr/` и остальные поддерживаемые локали;
 - скрытый русский путь `/ru/` без публичного обнаружения и индексации;
 - публикация Cloudflare Worker, заголовки безопасности, SEO, тесты и документация отката;
-- для Community-беты не требуется ключ OpenAI API.
+- для Community-беты не требуется ключ OpenAI API;
 - операции GitHub могут выполняться подключённым приложением или коннектором; сайту Community и его серверу не требуются GitHub CLI или установка GitHub в Linux.
 <!-- RU:END -->
 

@@ -2,34 +2,25 @@
 
 ## Current state / Текущее состояние
 
-- Date / Дата: 2026-07-22
-- Responsible agent or person / Ответственный агент или человек: Codex
-- Request and scope / Запрос и границы: Align the public voice-first product with capability-based GitHub operations and remove the false Linux/GitHub CLI dependency. / Согласовать публичный голосовой продукт с операциями GitHub на основе возможностей и устранить ложную зависимость от Linux/GitHub CLI.
-- Current release or branch / Текущий выпуск или ветка: `main` after PR #12, commit `f98b50398925e5157e277d52236dae2e6247f34e`
+- Date / Дата: 2026-07-26
+- Responsible agent or person / Ответственный агент или человек: ChatGPT
+- Scope / Границы: normalize repository metadata, release version and agent entry; no Community product behavior change. / Нормализовать metadata репозитория, версию выпуска и точку входа агента; без изменения поведения продукта Community.
+- Current release / Текущий выпуск: `0.2.1`
 
-## Completed in this task / Выполнено в этой задаче
+## Completed / Выполнено
 
-- Documented GitHub App and application connectors as complete interfaces when they cover the required task operations. / GitHub App и коннекторы приложений задокументированы как полноценные интерфейсы, когда они покрывают необходимые операции задачи.
-- Kept governed API and local Git/`gh` as optional alternatives rather than universal prerequisites. / Управляемый API и локальный Git/`gh` сохранены как необязательные альтернативы, а не универсальные предпосылки.
-- Explicitly excluded the browser, Community server and CLARYEL Box Linux runtime from any GitHub CLI requirement. / Браузер, сервер Community и Linux runtime CLARYEL Box явно исключены из любого требования GitHub CLI.
-- Added a deterministic documentation contract to `npm run check`. / В `npm run check` добавлен детерминированный контракт документации.
+- README, `package.json`, Wrangler and `VERSION` now agree on `0.2.1`. / README, `package.json`, Wrangler и `VERSION` теперь согласованы на версии `0.2.1`.
+- The repository passport follows the minimal central schema while public/private export rules remain in implementation documentation. / Паспорт соответствует минимальной центральной схеме, а правила публичной/приватной границы остаются в документации реализации.
+- The agent entry identifies this repository as a bounded CLARYEL component, requires local documents for public contributors and central private governance for CLARYEL maintainers. / Точка входа агента определяет репозиторий как отдельный компонент CLARYEL, требует локальные документы для публичных участников и центральный приватный governance для сопровождающих CLARYEL.
+- Community Edition remains independently buildable without private repository access. / Community Edition остаётся автономно собираемой без доступа к приватным репозиториям.
 
-## Decisions and impact / Решения и влияние
+## Validation and rollback / Проверка и откат
 
-- Product behavior, browser storage, voice recognition, pricing, licensing and deployment remain unchanged. / Поведение продукта, браузерное хранение, распознавание речи, тарифы, лицензирование и развёртывание не изменены.
-- No token, credential, Linux package or runtime dependency was added. / Токены, учётные данные, Linux-пакеты и runtime-зависимости не добавлены.
-- Rollback: revert PR #12; no production or data rollback is required. / Откат: отменить PR №12; откат production или данных не требуется.
-
-## Validation evidence / Доказательства проверки
-
-- Local `npm run check` passed: 8 Node tests, 95 translated keys, 15 public locale paths and the public/private boundary. / Локальный `npm run check` прошёл: 8 Node-тестов, 95 переведённых ключей, 15 публичных языковых путей и публичная/приватная граница.
-- GitHub CI run `29951390129` passed before merge. / GitHub CI `29951390129` прошёл до слияния.
-- The branch, seven file updates, PR and squash merge were completed through the authenticated GitHub App connector without local `gh`. / Ветка, семь обновлений файлов, PR и squash-слияние выполнены через авторизованный коннектор GitHub App без локального `gh`.
-
-## Unresolved risks and blockers / Нерешённые риски и блокировки
-
-None. / Отсутствуют.
+- Required validation: `npm run check`, Node tests, public/private boundary checks and Worker dry-run. / Обязательная проверка: `npm run check`, Node tests, проверка публичной/приватной границы и Worker dry-run.
+- Rollback: revert the repository-consistency Pull Request; no data or production migration is involved. / Откат: отменить Pull Request согласования репозитория; изменение данных или production-миграция отсутствуют.
 
 ## Ordered next actions / Упорядоченные дальнейшие действия
 
-No follow-up action is required for this correction. Continue product development in `claryel-web-community`; route managed CLARYEL sites and the Box 3D presentation to `claryel-space`. / Для этого исправления дальнейшие действия не требуются. Разработку продукта продолжать в `claryel-web-community`; управляемые сайты CLARYEL и 3D-презентацию Box направлять в `claryel-space`.
+1. Continue Community product development only in this repository and preserve independent public builds. / Продолжать разработку продукта Community только в этом репозитории и сохранять автономную публичную сборку.
+2. Route managed CLARYEL sites and the CLARYEL Box immersive presentation to `claryel-space`; route project-wide decisions to `claryel-platform`. / Направлять управляемые сайты CLARYEL и иммерсивную презентацию CLARYEL Box в `claryel-space`, общепроектные решения — в `claryel-platform`.
+3. A future public-Russian or 20-locale Community migration must be a separate complete product change with translations, SEO, tests and public-boundary review. / Будущая миграция Community на публичный русский или 20 языков должна быть отдельным полным продуктовым изменением с переводами, SEO, тестами и проверкой публичной границы.

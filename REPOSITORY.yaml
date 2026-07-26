@@ -1,11 +1,9 @@
 schema_version: 1
 project: CLARYEL
 repository: claryel-company/claryel-web-community
-visibility: public
 central_navigation: claryel-company/claryel-platform
 level: product-edition
 category: website-development-community-edition
-status: beta
 owns:
   - standalone public Community Edition runtime
   - public Community product website
@@ -21,14 +19,3 @@ does_not_own:
   - private customer infrastructure
   - general agent orchestration
   - remote support infrastructure
-allowed_sources:
-  - reviewed public-safe shared website contracts
-  - reviewed public documentation templates
-  - reviewed generic Cloudflare deployment patterns
-  - approved public CLARYEL brand assets
-forbidden_sources:
-  - private repository history
-  - secrets and account identifiers
-  - customer or production data
-  - internal service topology
-  - private commercial modules

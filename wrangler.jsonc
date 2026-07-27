@@ -7,7 +7,12 @@
   "compatibility_date": "2026-07-20",
   "workers_dev": true,
   "routes": [{"pattern": "web.claryel.space", "custom_domain": true}],
-  "assets": {"directory": "./public", "binding": "ASSETS", "run_worker_first": true},
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "none"
+  },
   "vars": {
     "PUBLIC_ORIGIN": "https://web.claryel.space",
     "FREE_SITE_LIMIT": "2",

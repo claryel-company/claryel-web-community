@@ -1,4 +1,4 @@
-const I18N_VERSION="0.2.0";
+const I18N_VERSION="0.3.0";
 const MANIFEST_URL=`/i18n/manifest.json?v=${I18N_VERSION}`;
 const STORAGE_KEY="claryel.web.community.projects.v2";
 const FREE_SITE_LIMIT=2;
@@ -24,12 +24,11 @@ function escapeAttribute(value=""){
 function pathLocale(pathname=location.pathname){
   const segment=pathname.toLowerCase().split("/").filter(Boolean)[0]||"";
   if(segment==="zh-cn")return"zh-CN";
-  if(segment==="ru")return"ru";
   return manifest.public.some(item=>item.code===segment)?segment:"en";
 }
 
 function currentMeta(){
-  return [...manifest.public,...(manifest.hidden||[])].find(item=>item.code===localeCode)||manifest.public[0]||null;
+  return manifest.public.find(item=>item.code===localeCode)||manifest.public[0]||null;
 }
 
 function t(key,fallback=""){
@@ -62,8 +61,9 @@ function applyAttributes(node,specification){
 function applyTranslations(){
   const meta=currentMeta();
   document.documentElement.lang=meta?.locale||"en-GB";
+  document.documentElement.dir=meta?.direction==="rtl"?"rtl":"ltr";
   document.documentElement.dataset.locale=localeCode;
-  document.documentElement.dataset.hiddenLocale=String(localeCode==="ru");
+  document.documentElement.dataset.hiddenLocale="false";
   $$('[data-i18n]').forEach(node=>{const value=messages[node.dataset.i18n];if(typeof value==="string")node.textContent=value;});
   $$('[data-i18n-attr]').forEach(node=>applyAttributes(node,node.dataset.i18nAttr));
   if(messages["meta.title"])document.title=messages["meta.title"];
@@ -127,6 +127,20 @@ function validProject(project){
   return Boolean(project&&project.schemaVersion===2&&typeof project.id==="string"&&typeof project.name==="string"&&typeof project.story==="string"&&Array.isArray(project.publicLocales)&&Array.isArray(project.changeRequests));
 }
 
+// Migrate saved local projects to the current public locale contract.
+// Переводить сохранённые локальные проекты на действующий публичный контракт локалей.
+function migrateProjects(){
+  const publicLocales=manifest.public.map(item=>item.code);
+  let changed=false;
+  projects=projects.map(project=>{
+    const next={...project,generator:"CLARYEL Web Community 0.3.0",publicLocales:[...publicLocales],hiddenLocales:[]};
+    if(!publicLocales.includes(next.defaultLocale))next.defaultLocale=localeCode;
+    if(JSON.stringify(next)!==JSON.stringify(project))changed=true;
+    return next;
+  });
+  if(changed)saveProjects();
+}
+
 function slugify(value){
   return value.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,48)||`website-${Date.now()}`;
 }
@@ -145,7 +159,7 @@ function createProject(data){
   const host=normalizeHost(data.host);
   return{
     schemaVersion:2,
-    generator:"CLARYEL Web Community 0.2.0",
+    generator:"CLARYEL Web Community 0.3.0",
     id:slugify(data.name),
     name:data.name.trim(),
     status:"brief",
@@ -153,9 +167,9 @@ function createProject(data){
     story:data.story.trim(),
     visualDirection:String(data.style||"").trim(),
     referenceFiles:selectedFiles.map(file=>({name:file.name,type:file.type||"application/octet-stream",size:file.size})),
-    defaultLocale:localeCode==="ru"?"en":localeCode,
+    defaultLocale:localeCode,
     publicLocales:manifest.public.map(item=>item.code),
-    hiddenLocales:["ru"],
+    hiddenLocales:[],
     voiceFirst:true,
     features:{multilingual:true,seo:true,designReview:true,continuousChanges:true,githubReview:true,cloudflareDelivery:true},
     changeRequests:[],
@@ -175,7 +189,7 @@ function download(filename,content,type){
 function projectBrief(project){
   const refs=project.referenceFiles.length?project.referenceFiles.map(file=>`- ${file.name} (${file.type})`).join("\n"):"- No files selected";
   const changes=project.changeRequests.length?project.changeRequests.map((item,index)=>`${index+1}. ${item.text}`).join("\n"):"No later change requests yet.";
-  return`# Voice-first website brief\n\nUse the official ChatGPT application or another AI connected to GitHub. Create or update a production-ready website through reviewed repository changes and Cloudflare deployment. The account holder must be able to continue changing content, design and functionality through natural-language or dictated commands.\n\n## Project\n- Name: ${project.name}\n- Preferred domain: ${project.canonicalHost||"Not selected"}\n- Story and business goal: ${project.story}\n- Visual direction: ${project.visualDirection||"Derive a professional direction from the story and references"}\n- Default locale: ${project.defaultLocale}\n- Public locales: ${project.publicLocales.join(", ")}\n- Hidden maintenance locale: ru; never expose it in public menus, sitemap or hreflang.\n\n## Brand references\n${refs}\n\nAttach the files listed above to the same AI conversation. Do not invent a replacement logo when an official logo is supplied.\n\n## Voice-first operating contract\n1. Translate plain-language intent into an explicit implementation plan.\n2. Allow changes to copy, structure, layout, colours, typography, imagery, responsive behaviour and functionality.\n3. Review design hierarchy, spacing, contrast, accessibility and mobile behaviour before finalising.\n4. Keep a documented Git history, tests, deployment steps and rollback path.\n5. Explain destructive or legally significant changes before applying them.\n6. Never expose secrets, private repositories or customer data.\n\n## Later change requests\n${changes}\n\n## Portable project manifest\n\`\`\`json\n${JSON.stringify(project,null,2)}\n\`\`\`\n`;
+  return`# Voice-first website brief\n\nUse the official ChatGPT application or another AI connected to GitHub. Create or update a production-ready website through reviewed repository changes and Cloudflare deployment. The account holder must be able to continue changing content, design and functionality through natural-language or dictated commands.\n\n## Project\n- Name: ${project.name}\n- Preferred domain: ${project.canonicalHost||"Not selected"}\n- Story and business goal: ${project.story}\n- Visual direction: ${project.visualDirection||"Derive a professional direction from the story and references"}\n- Default locale: ${project.defaultLocale}\n- Public locales: ${project.publicLocales.join(", ")}\n- Hidden locales: none. Russian is public and Arabic uses RTL.\n\n## Brand references\n${refs}\n\nAttach the files listed above to the same AI conversation. Do not invent a replacement logo when an official logo is supplied.\n\n## Voice-first operating contract\n1. Translate plain-language intent into an explicit implementation plan.\n2. Allow changes to copy, structure, layout, colours, typography, imagery, responsive behaviour and functionality.\n3. Review design hierarchy, spacing, contrast, accessibility and mobile behaviour before finalising.\n4. Keep a documented Git history, tests, deployment steps and rollback path.\n5. Explain destructive or legally significant changes before applying them.\n6. Never expose secrets, private repositories or customer data.\n\n## Later change requests\n${changes}\n\n## Portable project manifest\n\`\`\`json\n${JSON.stringify(project,null,2)}\n\`\`\`\n`;
 }
 
 function showMessage(title,message){
@@ -285,6 +299,10 @@ function bindEvents(){
       if(!validProject(project))throw new Error("invalid");
       if(projects.length>=FREE_SITE_LIMIT){showMessage(t("error.limitTitle"),t("error.limitBody"));return;}
       if(projects.some(item=>item.id===project.id))project.id+=`-${Date.now()}`;
+      project.generator="CLARYEL Web Community 0.3.0";
+      project.publicLocales=manifest.public.map(item=>item.code);
+      project.hiddenLocales=[];
+      if(!project.publicLocales.includes(project.defaultLocale))project.defaultLocale=localeCode;
       projects.push(project);saveProjects();renderProjects();
     }catch{showMessage(t("workspace.import"),t("error.invalidProject"));}
     finally{event.target.value="";}
@@ -307,6 +325,7 @@ function bindEvents(){
 
 async function start(){
   await loadManifest();
+  migrateProjects();
   messages=await loadMessages(localeCode).catch(()=>loadMessages("en"));
   applyTranslations();
   bindEvents();

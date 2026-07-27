@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
   group: claryel-web-community-production
@@ -26,22 +27,26 @@ jobs:
         with:
           node-version: 22
       - name: Validate product / Проверить продукт
+        id: product_checks
         shell: bash
         run: |
           set -o pipefail
           npm run check 2>&1 | tee community-production-check.log
       - name: Validate Worker bundle / Проверить сборку Worker
+        id: worker_dry_run
         shell: bash
         run: |
           set -o pipefail
           npm run deploy:dry-run 2>&1 | tee community-worker-dry-run.log
       - name: Deploy with repository secrets / Опубликовать через секреты репозитория
+        id: deploy_worker
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
       - name: Verify live Community contract / Проверить рабочий контракт Community
+        id: live_verification
         shell: bash
         run: |
           set -euo pipefail
@@ -96,3 +101,44 @@ jobs:
             community-sitemap.xml
           if-no-files-found: warn
           retention-days: 30
+      - name: Report production status / Сообщить статус production
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CHECKS_OUTCOME: ${{ steps.product_checks.outcome }}
+          DRY_RUN_OUTCOME: ${{ steps.worker_dry_run.outcome }}
+          DEPLOY_OUTCOME: ${{ steps.deploy_worker.outcome }}
+          VERIFY_OUTCOME: ${{ steps.live_verification.outcome }}
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs=require('node:fs');
+          const checks=process.env.CHECKS_OUTCOME||'unknown';
+          const dryRun=process.env.DRY_RUN_OUTCOME||'unknown';
+          const deploy=process.env.DEPLOY_OUTCOME||'unknown';
+          const verify=process.env.VERIFY_OUTCOME||'unknown';
+          const success=[checks,dryRun,deploy,verify].every(value=>value==='success');
+          let health='unavailable';
+          let locales='unavailable';
+          try{health=JSON.parse(fs.readFileSync('community-health.json','utf8')).version||'unknown';}catch{}
+          try{locales=JSON.parse(fs.readFileSync('community-config.json','utf8')).publicLocales?.length??'unknown';}catch{}
+          const body=[
+            `Community production deployment: **${success?'SUCCESS / УСПЕХ':'FAILURE / ОШИБКА'}**`,
+            `Commit: \`${process.env.GITHUB_SHA}\``,
+            `Run: ${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
+            `Product checks: ${checks}`,
+            `Worker dry-run: ${dryRun}`,
+            `Cloudflare deploy: ${deploy}`,
+            `Live verification: ${verify}`,
+            `Live version: ${health}`,
+            `Public locales: ${locales}`,
+            `Universe URL: https://claryel.space/universe/`
+          ].join('\n\n');
+          fs.writeFileSync('/tmp/community-deploy-comment.json',JSON.stringify({body}));
+          NODE
+          curl --fail-with-body --silent --show-error --request POST \
+            --header "Authorization: Bearer ${GH_TOKEN}" \
+            --header "Accept: application/vnd.github+json" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues/17/comments" \
+            --data-binary @/tmp/community-deploy-comment.json

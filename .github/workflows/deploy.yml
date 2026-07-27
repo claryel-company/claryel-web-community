@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     timeout-minutes: 25
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - name: Checkout repository / Получить репозиторий
         uses: actions/checkout@v7
@@ -38,13 +41,16 @@ jobs:
         run: |
           set -o pipefail
           npm run deploy:dry-run 2>&1 | tee community-worker-dry-run.log
-      - name: Deploy with repository secrets / Опубликовать через секреты репозитория
+      - name: Deploy Worker directly / Опубликовать Worker напрямую
         id: deploy_worker
-        uses: cloudflare/wrangler-action@v4
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
+        shell: bash
+        run: |
+          set -o pipefail
+          {
+            test -n "${CLOUDFLARE_API_TOKEN}"
+            test -n "${CLOUDFLARE_ACCOUNT_ID}"
+            npx --yes wrangler@4.112.0 deploy
+          } 2>&1 | tee community-worker-deploy.log
       - name: Verify live Community contract / Проверить рабочий контракт Community
         id: live_verification
         shell: bash
@@ -92,6 +98,7 @@ jobs:
           path: |
             community-production-check.log
             community-worker-dry-run.log
+            community-worker-deploy.log
             community-production-verification.log
             community-health.json
             community-config.json
@@ -120,8 +127,10 @@ jobs:
           const success=[checks,dryRun,deploy,verify].every(value=>value==='success');
           let health='unavailable';
           let locales='unavailable';
+          let deployTail='';
           try{health=JSON.parse(fs.readFileSync('community-health.json','utf8')).version||'unknown';}catch{}
           try{locales=JSON.parse(fs.readFileSync('community-config.json','utf8')).publicLocales?.length??'unknown';}catch{}
+          try{deployTail=fs.readFileSync('community-worker-deploy.log','utf8').trim().split(/\r?\n/).slice(-18).join('\n');}catch{}
           const body=[
             `Community production deployment: **${success?'SUCCESS / УСПЕХ':'FAILURE / ОШИБКА'}**`,
             `Commit: \`${process.env.GITHUB_SHA}\``,
@@ -132,8 +141,9 @@ jobs:
             `Live verification: ${verify}`,
             `Live version: ${health}`,
             `Public locales: ${locales}`,
-            `Universe URL: https://claryel.space/universe/`
-          ].join('\n\n');
+            `Universe URL: https://claryel.space/universe/`,
+            !success&&deployTail?`Deploy output tail:\n\n\`\`\`text\n${deployTail.slice(-3500)}\n\`\`\``:''
+          ].filter(Boolean).join('\n\n');
           fs.writeFileSync('/tmp/community-deploy-comment.json',JSON.stringify({body}));
           NODE
           curl --fail-with-body --silent --show-error --request POST \

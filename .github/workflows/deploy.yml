@@ -1,15 +1,23 @@
-name: Manual public-repository deployment
+name: Deploy public Community production
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: claryel-web-community-production
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
+    timeout-minutes: 25
     steps:
       - name: Checkout repository / Получить репозиторий
         uses: actions/checkout@v7
@@ -18,10 +26,73 @@ jobs:
         with:
           node-version: 22
       - name: Validate product / Проверить продукт
-        run: npm run check
+        shell: bash
+        run: |
+          set -o pipefail
+          npm run check 2>&1 | tee community-production-check.log
+      - name: Validate Worker bundle / Проверить сборку Worker
+        shell: bash
+        run: |
+          set -o pipefail
+          npm run deploy:dry-run 2>&1 | tee community-worker-dry-run.log
       - name: Deploy with repository secrets / Опубликовать через секреты репозитория
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
+      - name: Verify live Community contract / Проверить рабочий контракт Community
+        shell: bash
+        run: |
+          set -euo pipefail
+          origin="https://web.claryel.space"
+          for attempt in $(seq 1 18); do
+            if curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/api/health" --output community-health.json \
+              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/api/public-config" --output community-config.json \
+              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/" --output community-home.html \
+              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/ar/" --output community-ar.html \
+              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/ru/" --output community-ru.html \
+              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/sitemap.xml" --output community-sitemap.xml; then
+              if node <<'NODE'
+          const fs=require('node:fs');
+          const health=JSON.parse(fs.readFileSync('community-health.json','utf8'));
+          const config=JSON.parse(fs.readFileSync('community-config.json','utf8'));
+          const home=fs.readFileSync('community-home.html','utf8');
+          const arabic=fs.readFileSync('community-ar.html','utf8');
+          const russian=fs.readFileSync('community-ru.html','utf8');
+          const sitemap=fs.readFileSync('community-sitemap.xml','utf8');
+          const expected=['en','it','de','fr','es','nl','pt','pl','ro','cs','sv','el','da','fi','zh-CN','hi','ar','id','uk','ru'];
+          if(health.status!=='ok'||health.version!=='0.3.0')process.exit(1);
+          if(JSON.stringify(config.publicLocales)!==JSON.stringify(expected)||config.hiddenLocales.length!==0)process.exit(1);
+          if(config.universeUrl!=='https://claryel.space/universe/')process.exit(1);
+          if(!home.includes('/claryel-standard.css?v=1.0.0')||!home.includes('/claryel-standard.js?v=1.0.0'))process.exit(1);
+          if(!arabic.includes('lang="ar-SA" dir="rtl"')||!arabic.includes('data-hidden-locale="false"'))process.exit(1);
+          if(!russian.includes('lang="ru-RU"')||!russian.includes('data-hidden-locale="false"')||!russian.includes('index,follow,max-image-preview:large'))process.exit(1);
+          if((sitemap.match(/<url>/g)||[]).length!==20)process.exit(1);
+          NODE
+              then
+                printf 'Community production verification succeeded on attempt %s.\n' "$attempt" | tee community-production-verification.log
+                exit 0
+              fi
+            fi
+            sleep 10
+          done
+          printf 'Community production verification failed after retries.\n' | tee community-production-verification.log
+          exit 1
+      - name: Upload production evidence / Загрузить production evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: community-production-evidence-${{ github.sha }}
+          path: |
+            community-production-check.log
+            community-worker-dry-run.log
+            community-production-verification.log
+            community-health.json
+            community-config.json
+            community-home.html
+            community-ar.html
+            community-ru.html
+            community-sitemap.xml
+          if-no-files-found: warn
+          retention-days: 30

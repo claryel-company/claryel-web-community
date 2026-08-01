@@ -153,7 +153,9 @@ function replaceMeta(html,{code,origin}){
     .replace(/(<link rel="canonical" href=")[^"]*(">)/,`$1${canonical}$2`)
     .replace('  <meta name="claryel-hreflang-placeholder" content="">',hreflangMarkup(origin));
   if(!output.includes('/claryel-standard.css'))output=output.replace('</head>','  <link rel="stylesheet" href="/claryel-standard.css?v=1.0.0">\n</head>');
+  if(!output.includes('data-claryel-view-standard="style"'))output=output.replace('</head>','  <link rel="stylesheet" href="/assets/claryel-view-standard.css?v=1.0.0" data-claryel-view-standard="style">\n</head>');
   if(!output.includes('/claryel-standard.js'))output=output.replace('</body>','  <script src="/claryel-standard.js?v=1.0.0" defer></script>\n</body>');
+  if(!output.includes('data-claryel-view-standard="runtime"'))output=output.replace('</body>','  <script src="/assets/claryel-view-standard.js?v=1.0.0" defer data-claryel-view-standard="runtime"></script>\n</body>');
   return output;
 }
 

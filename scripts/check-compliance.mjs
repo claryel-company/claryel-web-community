@@ -21,6 +21,8 @@ for(const marker of[
   "const OPTIONAL=['preferences','analytics','marketing','external']",
   'data-claryel-compliance="style"',
   'data-claryel-compliance="runtime"',
+  'claryel-compliance.css?v=2026-08-01.2',
+  'claryel-compliance.js?v=2026-08-01.2',
   "event:'privacy.consent_updated'"
 ])if(!compliance.includes(marker))throw new Error(`Community compliance contract is missing: ${marker}`);
 
@@ -30,4 +32,4 @@ if(!entry.includes('handleComplianceRequest')||!entry.includes('injectCompliance
 if(!wrangler.includes('"COMPLIANCE_CONTENT_ORIGIN": "https://claryel.space"'))throw new Error('Community does not use the central compliance content source.');
 if(!wrangler.includes('"COMPLIANCE_VERSION": "2026-08-01.1"'))throw new Error('Community compliance version is not configured.');
 
-console.log(`Validated Community compliance compatibility for ${expected.length} public locales, consent APIs and localized policy routes.`);
+console.log(`Validated Community compliance compatibility for ${expected.length} public locales, consent APIs, fixed modal assets and localized policy routes.`);

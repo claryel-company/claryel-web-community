@@ -1,5 +1,8 @@
 name: Reconcile architecture showcase branch
 
+# Reconcile the current main branch before publication.
+# Свести текущую ветку main перед публикацией.
+
 on:
   push:
     branches:

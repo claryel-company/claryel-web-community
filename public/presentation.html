@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" data-site="community" data-locale="en" data-view-mode="immersive" data-scene-index="0">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Explore the public architecture of CLARYEL Web Community: voice-first website creation, twenty-language delivery, 3D and classic 2D presentation, compliance, monitoring, Git review and Cloudflare publication.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#030713">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CLARYEL Web Community">
+  <meta property="og:title" content="CLARYEL Web Community — Public website architecture">
+  <meta property="og:description" content="A voice-first public website platform with multilingual, 3D, 2D, compliance, monitoring and governed delivery architecture.">
+  <meta property="og:url" content="https://web.claryel.space/">
+  <meta property="og:locale" content="en_GB">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="claryel-hreflang-placeholder" content="">
+  <link rel="canonical" href="https://web.claryel.space/">
+  <link rel="icon" type="image/svg+xml" href="/assets/claryel-mark-v3.svg">
+  <link rel="stylesheet" href="/presentation.css?v=0.5.0">
+  <title>CLARYEL Web Community — Public website architecture</title>
+</head>
+<body>
+  <a class="skip-link" id="skipLink" href="#immersiveView">Skip to presentation</a>
+
+  <header class="top-controls">
+    <a class="compact-brand" href="/" aria-label="CLARYEL Web Community home">
+      <img src="/assets/claryel-mark-v3.svg" width="34" height="34" alt="">
+      <span><strong>CLARYEL</strong><small>WEB COMMUNITY</small></span>
+    </a>
+    <div class="view-switch" role="group" aria-label="Presentation view">
+      <span data-copy="controls.view">VIEW</span>
+      <button type="button" data-view="immersive" aria-pressed="true">Immersive 3D</button>
+      <button type="button" data-view="classic" aria-pressed="false">Classic 2D</button>
+    </div>
+    <div class="language-control">
+      <button id="languageTrigger" type="button" aria-expanded="false" aria-controls="languagePanel" aria-label="Choose language">
+        <img id="currentFlag" src="/assets/flags/gb.svg" width="24" height="18" alt="">
+        <span id="currentLanguage">English</span>
+      </button>
+      <div id="languagePanel" class="language-panel" role="listbox" hidden></div>
+    </div>
+  </header>
+
+  <main id="immersiveView" class="immersive-view" data-view-panel="immersive">
+    <div class="space-field" aria-hidden="true"></div>
+    <section class="immersive-copy">
+      <p class="eyebrow" data-copy="hero.eyebrow">PUBLIC WEBSITE ARCHITECTURE</p>
+      <h1 data-copy="hero.title">Build by voice. Review in Git. Publish with evidence.</h1>
+      <p class="immersive-lead" data-copy="hero.lead">CLARYEL Web Community turns a website request into a governed, multilingual and continuously maintainable public web project.</p>
+      <div class="status-row">
+        <span class="status public" data-copy="status.public">PUBLIC NOW</span>
+        <span class="status adopted" data-copy="status.adopted">ARCHITECTURE ADOPTED</span>
+        <span class="status planned" data-copy="status.planned">PLANNED PUBLIC EXPORT</span>
+      </div>
+      <div class="hero-actions">
+        <a class="button primary" href="/classic/" data-copy="actions.workspace">Open voice workspace</a>
+        <a class="button" href="https://github.com/claryel-company/claryel-web-community" target="_blank" rel="noopener noreferrer" data-copy="actions.repository">Public repository</a>
+      </div>
+    </section>
+
+    <section class="architecture-stage" id="architectureStage" tabindex="0" aria-label="Interactive architecture model">
+      <div class="architecture-core" aria-hidden="true">
+        <div class="core-cube"><span>VOICE</span><span>GIT</span><span>WEB</span></div>
+        <div class="core-pulse"></div>
+      </div>
+      <div class="orbit orbit-one" aria-hidden="true"></div>
+      <div class="orbit orbit-two" aria-hidden="true"></div>
+      <div class="architecture-nodes" id="architectureNodes"></div>
+    </section>
+
+    <aside class="scene-card" aria-live="polite">
+      <small id="sceneKicker">01 · VOICE-FIRST</small>
+      <h2 id="sceneTitle">Conversation becomes a reviewable website change.</h2>
+      <p id="sceneText">Voice and text requests become structured work, Git changes, tests and a controlled deployment rather than direct unreviewed mutation.</p>
+      <div class="scene-controls">
+        <button type="button" data-scene-step="-1" aria-label="Previous architecture feature">←</button>
+        <span id="sceneCounter">1 / 8</span>
+        <button type="button" data-scene-step="1" aria-label="Next architecture feature">→</button>
+      </div>
+    </aside>
+
+    <a class="universe-link" href="https://claryel.space/universe/" target="_blank" rel="noopener noreferrer">
+      <span class="universe-orb" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span><small>CLARYEL UNIVERSE</small><strong data-copy="actions.universe">Open the 3D site map</strong></span>
+    </a>
+  </main>
+
+  <main id="classicView" class="classic-view" data-view-panel="classic" hidden>
+    <div id="classicContent"></div>
+  </main>
+
+  <div class="release-strip" role="note">
+    <strong data-copy="release.label">PUBLIC BETA</strong>
+    <span data-copy="release.text">Architecture is separated into implemented, adopted and planned-public-export states.</span>
+    <span>© 2026 CLARYEL S.R.L.S.</span>
+  </div>
+
+  <script type="module" src="/presentation.js?v=0.5.0"></script>
+</body>
+</html>

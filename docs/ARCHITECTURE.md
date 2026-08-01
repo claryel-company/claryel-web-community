@@ -149,23 +149,24 @@ The public Worker exposes no state-changing website repository API in release `0
 - optional 3D site map pattern with a complete 2D fallback;
 - governed Git review and exact-commit publication model;
 - deterministic checks, Cloudflare dry-run and production verification;
-- mobile, keyboard, touch, RTL and reduced-motion support.
+- mobile, keyboard, touch, RTL and reduced-motion support;
+- local consent runtime, compatibility APIs and localized Cookie Policy routes.
 
 ### Architecture adopted
 
-The following are accepted requirements but are not described as complete reusable public runtime implementations yet:
+The following are accepted requirements whose reusable generic public implementations remain subject to further export work:
 
-- consent and legal compliance as release gates;
+- consent and legal compliance as release gates across generated customer websites;
 - a central inventory of sites, domains, locales and cookie/storage use;
-- prior blocking of optional cookie categories;
-- equal acceptance and rejection controls;
-- consent modification and withdrawal;
-- localized Cookie, Privacy and Legal information;
+- prior blocking adapters for every optional third-party technology;
+- localized Privacy and Legal information contracts beyond the current Cookie Policy compatibility layer;
 - low-cost availability monitoring with a confirmation retry;
 - daily, weekly and monthly technical and legal reviews;
 - portability to local GitHub Actions runners and Uptime Kuma.
 
 ### Planned public export
+
+This private-to-public path requires implementation and testing in the managed private platform before sanitized generic capabilities are transferred here.
 
 After private implementation, testing, legal review and sanitization, the public repository should receive:
 
@@ -181,18 +182,11 @@ See [`PRIVATE_TO_PUBLIC_ROADMAP.md`](PRIVATE_TO_PUBLIC_ROADMAP.md).
 
 ## Consent and compliance boundary
 
-The architecture defines four storage and cookie categories:
-
-- necessary;
-- analytics;
-- functional;
-- marketing.
-
-Only necessary storage may operate without optional consent. Other categories remain blocked until the user chooses them. Rejecting optional categories must be as direct as accepting them, and the user must be able to change or withdraw the choice later.
+The public compatibility runtime defines necessary, preferences, analytics, marketing and external-content categories. Necessary storage may operate without optional consent; other categories remain blocked until the user chooses them. Rejecting optional categories is as direct as accepting them, and the user can change or withdraw the choice later.
 
 Every active locale requires equivalent legal meaning. Critical compliance failures block publication rather than producing a warning-only result.
 
-This is an adopted architecture contract. It does not claim that all reusable public consent adapters or legal texts have already been completed.
+Release `0.5.0` includes the Community consent runtime and localized Cookie Policy compatibility routes. Broader reusable legal-content packages and generated-site adapters remain governed public-export work.
 
 ## Monitoring boundary
 

@@ -51,7 +51,7 @@ function withSecurityHeaders(response,options={}){
 
 // Retain the canonical managed security policy when proxying the public Box source.
 // Сохранять каноническую управляемую политику безопасности при проксировании публичного источника Box.
-function withProxyHeaders(response,{document=false}={}){
+function withProxyHeaders(response,{document=false,contentLanguage}={}){
   const headers=new Headers(response.headers);
   headers.delete('Set-Cookie');
   headers.delete('Content-Length');
@@ -59,6 +59,7 @@ function withProxyHeaders(response,{document=false}={}){
   headers.set('X-Content-Type-Options','nosniff');
   headers.set('Referrer-Policy','strict-origin-when-cross-origin');
   headers.set('Cache-Control',document?'no-cache':'public, max-age=3600, stale-while-revalidate=86400');
+  if(contentLanguage)headers.set('Content-Language',contentLanguage);
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 
@@ -102,20 +103,21 @@ function redirectForLegacyLanguage(url){
 // Проксировать точный публичный документ или ресурс Box через домен Community.
 async function proxyBox(request,env,{document=false}={}){
   const incoming=new URL(request.url);
+  const code=localeFromPath(incoming.pathname);
   const upstreamOrigin=String(env.BOX_ORIGIN||BOX_ORIGIN).replace(/\/$/,'');
   const upstream=new URL(`${incoming.pathname}${incoming.search}`,upstreamOrigin);
   const headers=new Headers(request.headers);
   headers.delete('Cookie');
-  headers.set('Host',upstream.host);
-  const response=await fetch(new Request(upstream,{method:request.method,headers,redirect:'manual'}));
+  const fetchUpstream=typeof env.BOX_FETCH==='function'?env.BOX_FETCH:fetch;
+  const response=await fetchUpstream(new Request(upstream,{method:request.method,headers,redirect:'manual'}));
   if(response.status>=300&&response.status<400&&response.headers.get('Location')){
     const location=new URL(response.headers.get('Location'),upstream);
     const target=new URL(`${location.pathname}${location.search}${location.hash}`,incoming.origin);
-    return withProxyHeaders(Response.redirect(target.toString(),response.status),{document:true});
+    return withProxyHeaders(Response.redirect(target.toString(),response.status),{document:true,contentLanguage:LOCALES[code].locale});
   }
   if(!document)return withProxyHeaders(response);
   const contentType=response.headers.get('Content-Type')||'';
-  if(!response.ok||!contentType.includes('text/html'))return withProxyHeaders(response,{document:true});
+  if(!response.ok||!contentType.includes('text/html'))return withProxyHeaders(response,{document:true,contentLanguage:LOCALES[code].locale});
   let html=await response.text();
   html=html
     .replaceAll('https://www.claryel.com',incoming.origin)
@@ -124,7 +126,7 @@ async function proxyBox(request,env,{document=false}={}){
   const headersOut=new Headers(response.headers);
   headersOut.delete('Content-Length');
   headersOut.set('Content-Type','text/html; charset=utf-8');
-  return withProxyHeaders(new Response(request.method==='HEAD'?null:html,{status:response.status,statusText:response.statusText,headers:headersOut}),{document:true});
+  return withProxyHeaders(new Response(request.method==='HEAD'?null:html,{status:response.status,statusText:response.statusText,headers:headersOut}),{document:true,contentLanguage:LOCALES[code].locale});
 }
 
 function hreflangMarkup(origin){
@@ -167,7 +169,7 @@ async function serveClassic(request,env,route,origin){
 }
 
 function createRobots(origin){return new Response(`User-agent: *\nAllow: /\nDisallow: /api/\nSitemap: ${origin}/sitemap.xml\n`,{headers:{'Content-Type':'text/plain; charset=utf-8'}})}
-function createSitemap(origin){const entries=PUBLIC_LOCALES.flatMap(code=>[`${origin}${LOCALES[code].path}`,`${origin}${code==='en'?'/classic/':`${LOCALES[code].path}classic/`}`]).map(url=>`  <url><loc>${url}</loc></url>`).join('\n');return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>\n`,{headers:{'Content-Type':'application/xml; charset=utf-8'}})}
+function createSitemap(origin){const entries=PUBLIC_LOCALES.map(code=>`${origin}${LOCALES[code].path}`).map(url=>`  <url><loc>${url}</loc></url>`).join('\n');return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>\n`,{headers:{'Content-Type':'application/xml; charset=utf-8'}})}
 
 // Route the Box baseline, preserved Community application and existing public APIs.
 // Маршрутизировать основу Box, сохранённое приложение Community и действующие публичные API.
@@ -177,7 +179,7 @@ export async function handleRequest(request,env){
   if(request.method!=='GET'&&request.method!=='HEAD')return withSecurityHeaders(json({error:'method_not_allowed'},405),{cacheControl:'no-store'});
   const legacyRedirect=redirectForLegacyLanguage(url);
   if(legacyRedirect)return withSecurityHeaders(legacyRedirect,{cacheControl:'no-store'});
-  if(url.pathname==='/api/health')return withSecurityHeaders(json({status:'ok',product:'CLARYEL Web Community',version:env.PRODUCT_VERSION||'0.3.0',landingSource:env.BOX_ORIGIN||BOX_ORIGIN,preservedPath:'/classic/'}),{cacheControl:'no-store'});
+  if(url.pathname==='/api/health')return withSecurityHeaders(json({status:'ok',product:'CLARYEL Web Community',version:env.PRODUCT_VERSION||'0.4.0',landingSource:env.BOX_ORIGIN||BOX_ORIGIN,preservedPath:'/classic/'}),{cacheControl:'no-store'});
   if(url.pathname==='/api/public-config')return withSecurityHeaders(json({product:'CLARYEL Web Community',edition:'community',freeSiteLimit:Number.parseInt(env.FREE_SITE_LIMIT||'2',10),freeLimitBasis:'account-holder',publicOrigin:origin,localePaths:Object.fromEntries(PUBLIC_LOCALES.map(code=>[code,LOCALES[code].path])),publicLocales:PUBLIC_LOCALES,hiddenLocales:[],universeUrl:'https://claryel.space/universe/',landingSource:env.BOX_ORIGIN||BOX_ORIGIN,preservedPath:'/classic/',aiMode:'voice-first-chatgpt-application'}),{cacheControl:'public, max-age=60, must-revalidate'});
   if(url.pathname==='/robots.txt')return withSecurityHeaders(createRobots(origin),{cacheControl:'public, max-age=3600'});
   if(url.pathname==='/sitemap.xml')return withSecurityHeaders(createSitemap(origin),{cacheControl:'public, max-age=3600'});

@@ -9,6 +9,7 @@ const worker=await read('src/worker.js');const wrangler=await read('wrangler.jso
 for(const header of['Content-Security-Policy','Strict-Transport-Security','X-Content-Type-Options','Permissions-Policy'])if(!worker.includes(header))throw new Error(`Missing security header: ${header}`);
 if(!worker.includes('microphone=(self)'))throw new Error('Voice input permissions policy is missing.');
 if(!worker.includes('/claryel-standard.css?v=1.0.0')||!worker.includes('/claryel-standard.js?v=1.0.0'))throw new Error('Worker does not inject the public CLARYEL standard into the preserved Community application.');
+if(!worker.includes('/assets/claryel-view-standard.css?v=1.0.0')||!worker.includes('/assets/claryel-view-standard.js?v=1.0.0'))throw new Error('Worker does not inject the shared Immersive 3D and Classic 2D standard into the preserved Community application.');
 for(const marker of["const BOX_ORIGIN='https://claryel.com'",'proxyBox','isBoxDocumentPath','isBoxAssetPath',"preservedPath:'/classic/'",'/sites/box/','data-community-proxy="box-baseline"'])if(!worker.includes(marker))throw new Error(`Box baseline worker contract is missing: ${marker}`);
 if(!wrangler.includes('"BOX_ORIGIN": "https://claryel.com"'))throw new Error('Wrangler does not define the canonical Box source.');
 if(!html.includes('/assets/claryel-mark-v3.svg'))throw new Error('Official CLARYEL mark is missing from the preserved Community application.');
@@ -37,4 +38,4 @@ if(!deployment.includes('BOX_ORIGIN')||!deployment.includes('/classic/'))throw n
 if(!aiWorkflow.includes('No local `gh` binary is required')||!aiWorkflow.includes('authenticated GitHub App or connector'))throw new Error('Connector-first AI application workflow is missing.');
 if(architecture.includes('GitHub CLI is mandatory')||aiWorkflow.includes('GitHub CLI is mandatory'))throw new Error('Community documentation must not require GitHub CLI.');
 for(const privateMarker of['claryel-company/claryel-box','claryel-company/claryel-servicehub','claryel-company/claryel-remote-infrastructure','claryel-company/n8n-config'])if(worker.includes(privateMarker)||app.includes(privateMarker))throw new Error(`Private marker in runtime: ${privateMarker}`);
-console.log(`Validated ${required.length} required files, ${keys.length} translated keys, ${expected.length} public Classic paths, the preserved Community application, same-origin Box proxy, audible CLARYEL orbit, Universe link and public/private boundary.`);
+console.log(`Validated ${required.length} required files, ${keys.length} translated keys, ${expected.length} public Classic paths, the preserved Community application, shared dual-view control, same-origin Box proxy, audible CLARYEL orbit, Universe link and public/private boundary.`);

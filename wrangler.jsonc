@@ -1,6 +1,5 @@
 {
   // English: Cloudflare Worker configuration for the public Community Edition.
-  // Русский: Конфигурация Cloudflare Worker для публичной Community Edition.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "claryel-web-community",
   "main": "src/entry.js",
@@ -15,6 +14,8 @@
   },
   "vars": {
     "PUBLIC_ORIGIN": "https://web.claryel.space",
+    "COMPLIANCE_CONTENT_ORIGIN": "https://claryel.space",
+    "COMPLIANCE_VERSION": "2026-08-01.1",
     "FREE_SITE_LIMIT": "2",
     "PRODUCT_VERSION": "0.5.0"
   }

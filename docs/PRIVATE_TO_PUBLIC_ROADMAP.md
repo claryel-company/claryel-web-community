@@ -92,7 +92,7 @@ A public export is not complete until it has:
 
 ## Planned public exports
 
-### Voice-driven repository changes
+### voice-driven repository changes
 
 After the private workflow is implemented and tested, publish a governed website-change contract that can:
 
@@ -155,7 +155,7 @@ Planned reusable results:
 - privacy-safe public topology model;
 - validation that essential navigation never depends on WebGL.
 
-## Must never be exported
+## must never be exported
 
 The following must never be exported from the private platform into this public repository:
 

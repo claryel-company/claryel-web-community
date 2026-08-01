@@ -1,9 +1,9 @@
-# Prepared self-hosted runner migration
+# GitHub Actions execution policy
 
-Status: prepared, not deployed.
+Status: deployed and hardened.
 
-Target runner groups: `claryel-build` for trusted branches and `claryel-public-safe` or GitHub-hosted runners for untrusted public pull requests; trusted publication uses `claryel-deploy`.
+`claryel-web-community` is a public repository. Every workflow in this repository remains on isolated GitHub-hosted runners so fork-controlled workflow changes cannot reach a persistent CLARYEL machine, the Ubuntu Station local network, or long-lived runner state.
 
-Activation will add path filters, concurrency cancellation and short artifact retention while preventing public pull-request code from reaching deployment credentials or the local network.
+Trusted production mutation is delegated to protected workflows in the private `claryel-space` repository. Public pull requests and public branch maintenance therefore retain reproducible validation without exposing CLARYEL self-hosted infrastructure.
 
-No workflow on `main` is changed by this branch.
+A future `claryel-public-safe` runner may be introduced only as an ephemeral, one-job environment with no local-network access and no retained workspace. Until that isolation exists and is verified, persistent self-hosted runners are prohibited for this repository.

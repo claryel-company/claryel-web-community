@@ -20,7 +20,8 @@ concurrency:
 
 jobs:
   reconcile:
-    runs-on: [self-hosted, linux, x64, claryel-build]
+    # Public repositories must not expose persistent infrastructure to fork-controlled workflow changes.
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - name: Check out the exact feature branch

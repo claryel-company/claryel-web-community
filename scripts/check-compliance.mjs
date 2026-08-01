@@ -1,14 +1,19 @@
+// Validate the public compliance contract and local consent assets.
+// Проверять публичный compliance-контракт и локальные ресурсы согласий.
 import{access,readFile}from'node:fs/promises';
 import path from'node:path';
 
 const root=process.cwd();
 const read=file=>readFile(path.join(root,file),'utf8');
-const required=['src/compliance.js','src/entry.js','wrangler.jsonc','docs/COMPLIANCE.md'];
+const required=['src/compliance.js','src/entry.js','wrangler.jsonc','docs/COMPLIANCE.md','public/assets/claryel-compliance.css','public/assets/claryel-compliance.js'];
 for(const file of required)await access(path.join(root,file));
 
 const compliance=await read('src/compliance.js');
 const entry=await read('src/entry.js');
 const wrangler=await read('wrangler.jsonc');
+const runtime=await read('public/assets/claryel-compliance.js');
+const style=await read('public/assets/claryel-compliance.css');
+const documentation=await read('docs/COMPLIANCE.md');
 const expected=['en','it','de','fr','es','nl','pt','pl','ro','cs','sv','el','da','fi','zh-CN','hi','ar','id','uk','ru'];
 
 for(const marker of[
@@ -31,5 +36,8 @@ if(JSON.stringify(codes)!==JSON.stringify(expected))throw new Error('Community c
 if(!entry.includes('handleComplianceRequest')||!entry.includes('injectComplianceAssets'))throw new Error('Community entry point does not apply the compliance layer.');
 if(!wrangler.includes('"COMPLIANCE_CONTENT_ORIGIN": "https://claryel.space"'))throw new Error('Community does not use the central compliance content source.');
 if(!wrangler.includes('"COMPLIANCE_VERSION": "2026-08-01.1"'))throw new Error('Community compliance version is not configured.');
+for(const marker of['__Host-claryel_consent','data-consent-action="reject"','data-consent-action="accept"','claryel:open-privacy-settings','data-claryel-external-src'])if(!runtime.includes(marker))throw new Error(`Community compliance runtime is missing: ${marker}`);
+for(const marker of['.claryel-consent-banner','.claryel-consent-dialog','.claryel-privacy-manage','prefers-reduced-motion'])if(!style.includes(marker))throw new Error(`Community compliance style is missing: ${marker}`);
+if(!documentation.includes('release `0.5.0`')||!documentation.includes('версионируются непосредственно'))throw new Error('Community compliance documentation is not aligned with release 0.5.0.');
 
-console.log(`Validated Community compliance compatibility for ${expected.length} public locales, consent APIs, fixed modal assets and localized policy routes.`);
+console.log(`Validated Community compliance compatibility for ${expected.length} public locales, local consent assets, consent APIs and localized policy routes.`);

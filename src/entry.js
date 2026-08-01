@@ -1,4 +1,5 @@
 // Preserve the requested locale route while resolving every virtual document path to the canonical HTML asset.
+// Сохранять запрошенный языковой маршрут, разрешая каждый виртуальный document-path в канонический HTML-ресурс.
 import communityWorker,{handleRequest as handleCommunityRequest} from './worker.js';
 import {handleComplianceRequest,injectComplianceAssets} from './compliance.js';
 

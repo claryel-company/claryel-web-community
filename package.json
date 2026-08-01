@@ -5,7 +5,7 @@
   "description": "Voice-first Community Edition for creating, publishing and continuously improving multilingual websites through governed AI, Git and Cloudflare workflows.",
   "type": "module",
   "scripts": {
-    "check": "node scripts/check.mjs && node --test",
+    "check": "node scripts/check.mjs && node scripts/check-compliance.mjs && node --test",
     "test": "node --test",
     "dev": "npx --yes wrangler@4.112.0 dev",
     "deploy": "npx --yes wrangler@4.112.0 deploy",

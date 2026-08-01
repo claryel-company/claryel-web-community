@@ -1,30 +1,26 @@
-name: Deploy public Community production
+name: Validate public Community release
 
-# Validate and publish the native 3D/2D Community architecture.
-# Проверять и публиковать нативную 3D/2D-архитектуру Community.
+# Validate the public repository while the protected managed platform owns production deployment.
+# Проверять публичный репозиторий, пока production-публикацией владеет защищённая управляемая платформа.
 
 on:
   push:
     branches:
       - main
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  issues: write
 
 concurrency:
-  group: claryel-web-community-production
+  group: claryel-web-community-validation-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  validate:
     runs-on: ubuntu-latest
-    environment: production
-    timeout-minutes: 25
-    env:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    timeout-minutes: 20
     steps:
       - name: Checkout repository / Получить репозиторий
         uses: actions/checkout@v4
@@ -35,168 +31,47 @@ jobs:
           node-version: 22
 
       - name: Validate product / Проверить продукт
-        id: product_checks
-        shell: bash
-        run: |
-          set -o pipefail
-          npm run check 2>&1 | tee community-production-check.log
-
-      - name: Validate Worker bundle / Проверить сборку Worker
-        id: worker_dry_run
-        shell: bash
-        run: |
-          set -o pipefail
-          npm run deploy:dry-run 2>&1 | tee community-worker-dry-run.log
-
-      - name: Deploy Worker directly / Опубликовать Worker напрямую
-        id: deploy_worker
-        shell: bash
-        run: |
-          set -o pipefail
-          {
-            test -n "${CLOUDFLARE_API_TOKEN}"
-            test -n "${CLOUDFLARE_ACCOUNT_ID}"
-            npx --yes wrangler@4.112.0 deploy
-          } 2>&1 | tee community-worker-deploy.log
-
-      - name: Verify live architecture and compliance / Проверить архитектуру и compliance
-        id: live_verification
         shell: bash
         run: |
           set -euo pipefail
-          origin="https://web.claryel.space"
-          for attempt in $(seq 1 18); do
-            if curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/api/health?attempt=${attempt}" --output community-health.json \
-              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/api/public-config?attempt=${attempt}" --output community-config.json \
-              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/api/platform/compliance/manifest?attempt=${attempt}" --output community-compliance.json \
-              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/legal/cookies/?attempt=${attempt}" --output community-cookie-policy.html \
-              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/?attempt=${attempt}" --output community-home.html \
-              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/?view=classic&attempt=${attempt}" --output community-classic-view.html \
-              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/ru/?view=classic&attempt=${attempt}" --output community-ru.html \
-              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/ar/?view=classic&attempt=${attempt}" --output community-ar.html \
-              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/classic/?attempt=${attempt}" --output community-workspace.html \
-              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/presentation.js?v=0.5.0&attempt=${attempt}" --output community-presentation.js \
-              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/presentation-locales.js?attempt=${attempt}" --output community-presentation-locales.js \
-              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/sitemap.xml?attempt=${attempt}" --output community-sitemap.xml; then
-              if node <<'NODE'
+          npm run check
+
+      - name: Validate Worker bundle / Проверить сборку Worker
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run deploy:dry-run
+
+      - name: Verify managed production / Проверить управляемый production
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          origin='https://web.claryel.space'
+          curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/api/health?validation=${GITHUB_SHA}" --output community-health.json
+          curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/api/public-config?validation=${GITHUB_SHA}" --output community-config.json
+          curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/sitemap.xml?validation=${GITHUB_SHA}" --output community-sitemap.xml
+          node <<'NODE'
           const fs=require('node:fs');
           const health=JSON.parse(fs.readFileSync('community-health.json','utf8'));
           const config=JSON.parse(fs.readFileSync('community-config.json','utf8'));
-          const compliance=JSON.parse(fs.readFileSync('community-compliance.json','utf8'));
-          const policy=fs.readFileSync('community-cookie-policy.html','utf8');
-          const home=fs.readFileSync('community-home.html','utf8');
-          const classic=fs.readFileSync('community-classic-view.html','utf8');
-          const russian=fs.readFileSync('community-ru.html','utf8');
-          const arabic=fs.readFileSync('community-ar.html','utf8');
-          const workspace=fs.readFileSync('community-workspace.html','utf8');
-          const runtime=fs.readFileSync('community-presentation.js','utf8');
-          const locales=fs.readFileSync('community-presentation-locales.js','utf8');
           const sitemap=fs.readFileSync('community-sitemap.xml','utf8');
           const expected=['en','it','de','fr','es','nl','pt','pl','ro','cs','sv','el','da','fi','zh-CN','hi','ar','id','uk','ru'];
-          const capability=(id,status)=>config.architectureCapabilities?.some(item=>item.id===id&&item.status===status);
-          if(health.status!=='ok'||health.version!=='0.5.0')process.exit(1);
-          if(JSON.stringify(health.presentationModes)!==JSON.stringify(['immersive','classic'])||health.voiceWorkspace!=='/classic/')process.exit(1);
-          if(JSON.stringify(config.publicLocales)!==JSON.stringify(expected)||config.hiddenLocales.length!==0)process.exit(1);
-          if(JSON.stringify(config.presentationModes)!==JSON.stringify(['immersive','classic']))process.exit(1);
-          if(config.universeUrl!=='https://claryel.space/universe/'||config.voiceWorkspace!=='/classic/')process.exit(1);
-          if(!capability('consent-and-legal-release-gates','architecture-adopted'))process.exit(1);
-          if(!capability('low-cost-confirmed-outage-monitoring','architecture-adopted'))process.exit(1);
-          if(!capability('voice-driven-repository-mutation','planned-public-export'))process.exit(1);
-          if(compliance.version!=='2026-08-01.1'||compliance.site?.id!=='community'||JSON.stringify(compliance.languages)!==JSON.stringify(expected)||compliance.retentionDays!==180)process.exit(1);
-          if(!policy.includes('2026-08-01.1')||!policy.includes('data-site="community"')||!policy.includes('claryel-compliance.js?v=2026-08-01.2'))process.exit(1);
-          if(!home.includes('data-presentation-surface="architecture"')||!home.includes('Immersive 3D')||!home.includes('Classic 2D')||!home.includes('data-claryel-compliance="runtime"'))process.exit(1);
-          if(!classic.includes('data-presentation-surface="architecture"')||!classic.includes('data-claryel-compliance="runtime"'))process.exit(1);
-          if(!russian.includes('lang="ru-RU"')||!russian.includes('data-locale="ru"')||!russian.includes('публичная архитектура сайтов'))process.exit(1);
-          if(!arabic.includes('lang="ar-SA" dir="rtl"')||!arabic.includes('data-locale="ar"')||!arabic.includes('معمارية المواقع العامة'))process.exit(1);
-          if(!workspace.includes('data-preserved-route="classic"')||!workspace.includes('id="projectForm"')||!workspace.includes('data-claryel-compliance="runtime"'))process.exit(1);
-          if(!runtime.includes("url.searchParams.set('view','classic')")||!runtime.includes('renderClassic')||!runtime.includes('navigateLanguage'))process.exit(1);
-          if(!locales.includes('ПУБЛИЧНАЯ АРХИТЕКТУРА САЙТОВ')||!locales.includes('معمارية الويب العامة'))process.exit(1);
-          if((sitemap.match(/<url>/g)||[]).length!==40)process.exit(1);
-          if(home.includes('data-community-proxy="box-baseline"')||home.includes('https://claryel.com'))process.exit(1);
+          if(health.status!=='ok'||health.version!=='0.5.0')throw new Error('Managed Community health contract failed.');
+          if(JSON.stringify(health.presentationModes)!==JSON.stringify(['immersive','classic']))throw new Error('Managed presentation modes are incomplete.');
+          if(JSON.stringify(config.publicLocales)!==JSON.stringify(expected)||config.hiddenLocales?.length!==0)throw new Error('Managed locale contract failed.');
+          if(config.voiceWorkspace!=='/classic/'||config.universeUrl!=='https://claryel.space/universe/')throw new Error('Managed navigation contract failed.');
+          if((sitemap.match(/<url>/g)||[]).length!==40)throw new Error('Managed sitemap must contain forty routes.');
+          console.log('Managed Community production contract passed.');
           NODE
-              then
-                printf 'Community 0.5.0 production verification succeeded on attempt %s.\n' "$attempt" | tee community-production-verification.log
-                exit 0
-              fi
-            fi
-            sleep 10
-          done
-          printf 'Community 0.5.0 production verification failed after retries.\n' | tee community-production-verification.log
-          exit 1
 
-      - name: Upload production evidence / Загрузить production evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: community-production-evidence-${{ github.sha }}
-          path: |
-            community-production-check.log
-            community-worker-dry-run.log
-            community-worker-deploy.log
-            community-production-verification.log
-            community-health.json
-            community-config.json
-            community-compliance.json
-            community-cookie-policy.html
-            community-home.html
-            community-classic-view.html
-            community-ru.html
-            community-ar.html
-            community-workspace.html
-            community-presentation.js
-            community-presentation-locales.js
-            community-sitemap.xml
-          if-no-files-found: warn
-          retention-days: 30
-
-      - name: Report production status / Сообщить статус production
-        if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-          CHECKS_OUTCOME: ${{ steps.product_checks.outcome }}
-          DRY_RUN_OUTCOME: ${{ steps.worker_dry_run.outcome }}
-          DEPLOY_OUTCOME: ${{ steps.deploy_worker.outcome }}
-          VERIFY_OUTCOME: ${{ steps.live_verification.outcome }}
+      - name: Record deployment ownership / Зафиксировать владельца публикации
         shell: bash
         run: |
-          node <<'NODE'
-          const fs=require('node:fs');
-          const checks=process.env.CHECKS_OUTCOME||'unknown';
-          const dryRun=process.env.DRY_RUN_OUTCOME||'unknown';
-          const deploy=process.env.DEPLOY_OUTCOME||'unknown';
-          const verify=process.env.VERIFY_OUTCOME||'unknown';
-          const success=[checks,dryRun,deploy,verify].every(value=>value==='success');
-          let health='unavailable';
-          let locales='unavailable';
-          let modes='unavailable';
-          let compliance='unavailable';
-          let deployTail='';
-          try{const body=JSON.parse(fs.readFileSync('community-health.json','utf8'));health=body.version||'unknown';modes=(body.presentationModes||[]).join(', ')||'unknown';}catch{}
-          try{locales=JSON.parse(fs.readFileSync('community-config.json','utf8')).publicLocales?.length??'unknown';}catch{}
-          try{compliance=JSON.parse(fs.readFileSync('community-compliance.json','utf8')).version||'unknown';}catch{}
-          try{deployTail=fs.readFileSync('community-worker-deploy.log','utf8').trim().split(/\r?\n/).slice(-18).join('\n');}catch{}
-          const body=[
-            `Community 3D/2D architecture deployment: **${success?'SUCCESS / УСПЕХ':'FAILURE / ОШИБКА'}**`,
-            `Commit: \`${process.env.GITHUB_SHA}\``,
-            `Run: ${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
-            `Product checks: ${checks}`,
-            `Worker dry-run: ${dryRun}`,
-            `Cloudflare deploy: ${deploy}`,
-            `Live verification: ${verify}`,
-            `Live product version: ${health}`,
-            `Presentation modes: ${modes}`,
-            `Compliance version: ${compliance}`,
-            `Public locales: ${locales}`,
-            `Sitemap routes: 40`,
-            `Voice workspace: https://web.claryel.space/classic/`,
-            `Universe URL: https://claryel.space/universe/`,
-            !success&&deployTail?`Deploy output tail:\n\n\`\`\`text\n${deployTail.slice(-3500)}\n\`\`\``:''
-          ].filter(Boolean).join('\n\n');
-          fs.writeFileSync('/tmp/community-deploy-comment.json',JSON.stringify({body}));
-          NODE
-          curl --fail-with-body --silent --show-error --request POST \
-            --header "Authorization: Bearer ${GH_TOKEN}" \
-            --header "Accept: application/vnd.github+json" \
-            --header "X-GitHub-Api-Version: 2022-11-28" \
-            "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues/17/comments" \
-            --data-binary @/tmp/community-deploy-comment.json
+          {
+            echo '## Production ownership / Владение production'
+            echo
+            echo 'Production deployment is executed by the protected `claryel-space` managed release workflow using the exact commit from its release manifest.'
+            echo
+            echo 'Production-публикация выполняется защищённым managed release workflow репозитория `claryel-space` по точному коммиту из release-манифеста.'
+          } >> "${GITHUB_STEP_SUMMARY}"

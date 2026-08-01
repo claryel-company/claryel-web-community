@@ -16,6 +16,8 @@
   "vars": {
     "PUBLIC_ORIGIN": "https://web.claryel.space",
     "BOX_ORIGIN": "https://claryel.com",
+    "COMPLIANCE_CONTENT_ORIGIN": "https://claryel.space",
+    "COMPLIANCE_VERSION": "2026-08-01.1",
     "FREE_SITE_LIMIT": "2",
     "PRODUCT_VERSION": "0.4.0"
   }

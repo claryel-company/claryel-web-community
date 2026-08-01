@@ -11,7 +11,7 @@ The existing voice-first website workspace remains a separate functional surface
 
 ## Status vocabulary
 
-The presentation must distinguish three states and may not merge their meaning:
+The presentation must distinguish three states and may not merge their meaning. The implemented, architecture adopted and planned public export states remain visibly separate in both presentation modes and every locale.
 
 | State | Meaning |
 |---|---|

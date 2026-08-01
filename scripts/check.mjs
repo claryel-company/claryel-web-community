@@ -60,7 +60,7 @@ if(/\sstyle=/i.test(presentationHtml))throw new Error('Presentation contains an 
 for(const marker of[
   'PRESENTATION_LOCALES','sceneSlugs','validViews','renderArchitectureNodes','renderClassic',
   'setupLanguageControl','navigateLanguage','history.replaceState','localeWorkspacePath',
-  'classic.complianceItems','classic.monitoringItems','map-panel','roadmap-grid','boundary'
+  'c.complianceItems','c.monitoringItems','map-panel','roadmap-grid','boundary'
 ])if(!presentationJs.includes(marker))throw new Error(`Presentation runtime is missing ${marker}`);
 for(const marker of[
   '.architecture-stage','.core-cube','.architecture-node','.classic-view','.feature-grid','.policy-grid',

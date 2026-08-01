@@ -21,6 +21,9 @@ export async function injectComplianceAssets(response,request){
   const contentType=String(response.headers.get('Content-Type')||'').toLowerCase();
   if(!contentType.includes('text/html'))return response;
   let html=await response.text();
+  html=html.replace(/<meta\s+name=["']claryel-site-id["']\s+content=["'][^"']*["']\s*\/?>/i,'<meta name="claryel-site-id" content="community">');
+  html=html.replace(/<meta\s+name=["']claryel-site-locales["']\s+content=["'][^"']*["']\s*\/?>/i,`<meta name="claryel-site-locales" content="${PUBLIC_LOCALES.join(',')}">`);
+  html=html.replace(/<meta\s+name=["']claryel-compliance-version["']\s+content=["'][^"']*["']\s*\/?>/i,`<meta name="claryel-compliance-version" content="${VERSION}">`);
   if(!/<meta\s+name=["']claryel-site-id["']/i.test(html))html=html.replace(/<\/head>/i,`<meta name="claryel-site-id" content="community"><meta name="claryel-site-locales" content="${PUBLIC_LOCALES.join(',')}"><meta name="claryel-compliance-version" content="${VERSION}"></head>`);
   if(!html.includes('data-claryel-compliance="style"'))html=html.replace(/<\/head>/i,'<link rel="stylesheet" href="/assets/claryel-compliance.css?v=2026-08-01.1" data-claryel-compliance="style"></head>');
   if(!html.includes('data-claryel-compliance="runtime"'))html=html.replace(/<\/body>/i,'<script src="/assets/claryel-compliance.js?v=2026-08-01.1" defer data-claryel-compliance="runtime"></script></body>');

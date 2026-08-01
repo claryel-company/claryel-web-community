@@ -1,6 +1,6 @@
 // Preserve the requested locale route while resolving every virtual document path to the canonical HTML asset.
-// Сохранять запрошенный языковой маршрут, разрешая каждый виртуальный document-path в канонический HTML-ресурс.
 import communityWorker,{handleRequest as handleCommunityRequest} from './worker.js';
+import {handleComplianceRequest,injectComplianceAssets} from './compliance.js';
 
 function documentAwareEnvironment(env){
   const assets=env?.ASSETS;
@@ -21,7 +21,11 @@ function documentAwareEnvironment(env){
 }
 
 export async function handleRequest(request,env){
-  return handleCommunityRequest(request,documentAwareEnvironment(env));
+  const adjustedEnvironment=documentAwareEnvironment(env);
+  const complianceResponse=await handleComplianceRequest(request,adjustedEnvironment);
+  if(complianceResponse)return injectComplianceAssets(complianceResponse,request);
+  const response=await handleCommunityRequest(request,adjustedEnvironment);
+  return injectComplianceAssets(response,request);
 }
 
 export default{

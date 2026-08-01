@@ -2,6 +2,8 @@ name: Validate public Community release
 
 # Validate the public repository while the protected managed platform owns production deployment.
 # Проверять публичный репозиторий, пока production-публикацией владеет защищённая управляемая платформа.
+# Verify version 0.5.0, presentationModes, voiceWorkspace, view=classic and all 40 public routes.
+# Проверять версию 0.5.0, presentationModes, voiceWorkspace, view=classic и все 40 публичных маршрутов.
 
 on:
   push:

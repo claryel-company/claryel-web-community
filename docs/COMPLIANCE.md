@@ -4,14 +4,14 @@
 ## Public implementation status
 ## Статус публичной реализации
 
-CLARYEL Web Community release `0.5.0` contains a public consent runtime and localized Cookie Policy compatibility layer using policy version `2026-08-01.1`.
-CLARYEL Web Community версии `0.5.0` содержит публичный runtime согласий и локализованный совместимый слой Cookie Policy версии `2026-08-01.1`.
+CLARYEL Web Community release `0.5.0` contains a public consent runtime and localized Privacy Policy and Cookie Policy compatibility layer using policy version `2026-08-01.1`.
+CLARYEL Web Community версии `0.5.0` содержит публичный runtime согласий и локализованный совместимый слой Privacy Policy и Cookie Policy версии `2026-08-01.1`.
 
 The public repository owns the Community compliance API adapter, local consent UI assets, Community policy routes, browser enforcement of consent categories, structured consent-event logging without raw IP addresses and deterministic compatibility checks.
 Публичный репозиторий владеет Community-адаптером compliance API, локальными ресурсами интерфейса согласий, маршрутами политик Community, браузерным применением категорий согласия, структурированным журналированием без исходных IP-адресов и детерминированными проверками совместимости.
 
-The managed platform remains the source of the current translated legal-content catalogue and the owner of platform-wide monitoring and legal review. A safe English fallback is used when the central content endpoint is temporarily unavailable.
-Управляемая платформа остаётся источником актуального каталога переведённых юридических текстов и владельцем общеплатформенного мониторинга и юридической проверки. При временной недоступности центрального endpoint используется безопасный английский fallback.
+The managed platform remains the single source of the current twenty-language legal documents and the owner of platform-wide monitoring and monthly legal review. Community serves the documents on its own domain through a controlled managed-policy adapter, so the Community pages remain synchronized with the central legal version.
+Управляемая платформа остаётся единым источником актуальных юридических документов на двадцати языках и владельцем общеплатформенного мониторинга и ежемесячной юридической проверки. Community публикует документы на собственном домене через контролируемый адаптер управляемых политик, поэтому страницы Community синхронизированы с центральной юридической версией.
 
 ## Public routes
 ## Публичные маршруты
@@ -19,11 +19,16 @@ The managed platform remains the source of the current translated legal-content 
 - `/api/platform/compliance/manifest`
 - `/api/platform/compliance/content`
 - `/api/platform/compliance/consent`
+- `/legal/privacy/`
+- `/<locale>/legal/privacy/`
 - `/legal/cookies/`
 - `/<locale>/legal/cookies/`
 
-The manifest declares the `community` site identity, exactly twenty public locales, necessary and optional consent categories, 180-day consent retention, localized policy paths, the settings-reopen event and monitoring compatibility metadata.
-Manifest объявляет идентификатор сайта `community`, ровно двадцать публичных языков, обязательные и необязательные категории согласия, хранение выбора 180 дней, локализованные пути политик, событие повторного открытия настроек и метаданные совместимости мониторинга.
+The manifest declares the `community` site identity, exactly twenty public locales, necessary and optional consent categories, 180-day consent retention, localized Privacy Policy and Cookie Policy paths, the settings-reopen event and monitoring compatibility metadata.
+Manifest объявляет идентификатор сайта `community`, ровно двадцать публичных языков, обязательные и необязательные категории согласия, хранение выбора 180 дней, локализованные пути Privacy Policy и Cookie Policy, событие повторного открытия настроек и метаданные совместимости мониторинга.
+
+The Cookie Policy and the embedded cookie-information view contain a direct localized link to the Privacy Policy. Wording that offers contacting the controller as an alternative to reading the published policy is prohibited.
+Cookie Policy и встроенное окно информации о cookie содержат прямую локализованную ссылку на Privacy Policy. Формулировка, предлагающая обращение к оператору как альтернативу чтению опубликованной политики, запрещена.
 
 ## Consent behaviour
 ## Поведение согласий
@@ -54,6 +59,12 @@ public/assets/claryel-compliance.js
 
 The architecture presentation and every localized voice workspace receive these assets through `src/entry.js`. The active root no longer depends on the former broad Box `/assets/` proxy.
 Архитектурная презентация и каждое локализованное голосовое рабочее пространство получают эти ресурсы через `src/entry.js`. Активная корневая страница больше не зависит от прежнего широкого Box-прокси `/assets/`.
+
+## Monthly legal review
+## Ежемесячная юридическая проверка
+
+The private managed platform checks both legal documents for every Community locale and domain as part of the monthly compliance workflow. Missing routes, missing required Privacy Policy sections, absent direct links, forbidden wording or changed official EU and Italian legal sources create a blocking compliance finding and a review issue.
+Приватная управляемая платформа проверяет оба юридических документа для каждого языка и домена Community в составе ежемесячного compliance-процесса. Отсутствующий маршрут, обязательный раздел Privacy Policy, прямая ссылка, запрещённая формулировка либо изменение официальных источников права ЕС и Италии создают блокирующую ошибку соответствия и задачу на проверку.
 
 ## Private-to-public boundary
 ## Граница приватного и публичного контуров

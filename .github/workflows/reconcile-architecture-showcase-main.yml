@@ -1,0 +1,55 @@
+name: Reconcile architecture showcase from main
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/reconcile-architecture-showcase-main.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: reconcile-community-architecture-showcase-from-main
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/architecture-showcase-3d-2d-2026-08-01
+          fetch-depth: 0
+
+      - name: Merge current main into reviewed feature branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          set +e
+          git merge --no-ff --no-commit origin/main
+          merge_status=$?
+          set -e
+          if [ "${merge_status}" -ne 0 ]; then
+            mapfile -t conflicts < <(git diff --name-only --diff-filter=U)
+            printf 'Resolving reviewed feature conflicts:\n%s\n' "${conflicts[*]}"
+            for file in "${conflicts[@]}"; do
+              git checkout --ours -- "$file"
+              git add "$file"
+            done
+          fi
+          git add --all
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            echo "Feature branch already contains current main."
+            exit 0
+          fi
+          git commit -m "Merge current main compliance fixes into architecture showcase"
+          git push origin HEAD:feature/architecture-showcase-3d-2d-2026-08-01

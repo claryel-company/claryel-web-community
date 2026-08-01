@@ -1,52 +1,123 @@
-# Next steps / Дальнейшие шаги
+# Next steps
 
-## Current state / Текущее состояние
+## Current state
 
-- Date / Дата: `2026-08-01`
-- Responsible agent or person / Ответственный агент или человек: ChatGPT
-- Primary scope / Основные границы: preserve the independently buildable voice-first Community product while documenting compatible public contracts with CLARYEL Box Core. / Сохранить автономно собираемый голосовой продукт Community и документировать совместимые публичные контракты с CLARYEL Box Core.
-- Target release / Целевой выпуск: `0.4.0`
-- Architecture authority / Архитектурное основание: ADR-0023 and ADR-0024 in `claryel-company/claryel-platform`
-- Canonical Box origin / Канонический origin Box: `https://claryel.com`
-- Public Box Core repository / Публичный репозиторий Box Core: `https://github.com/claryel-company/claryel-boxcore`
-- Public Box Core site / Публичный сайт Box Core: `https://boxcore.claryel.space`
-- Preserved application / Сохранённое приложение: `/classic/`
-- Pre-change archive / Архив до изменений: `archive/community-before-box-clone-20260801` at `0a5da4f49a9b3c4bf1cf3107a8ccef857cf3ca32`
+- Date: `2026-08-01`
+- Responsible owner: CLARYEL architecture owner
+- Working branch: `feature/architecture-showcase-3d-2d-2026-08-01`
+- Target release: `0.5.0`
+- Public product: `claryel-company/claryel-web-community`
+- Public domain: `https://web.claryel.space`
+- Architecture presentation: `/` and the twenty locale roots
+- Voice workspace: `/classic/` and the twenty localized workspace routes
+- Managed private implementation owner: `claryel-company/claryel-space`
+- Project-wide architecture authority: `claryel-company/claryel-platform`
+- Historical pre-Box-clone archive: `archive/community-before-box-clone-20260801` at `0a5da4f49a9b3c4bf1cf3107a8ccef857cf3ca32`
 
-## Completed on the feature branches / Выполнено в функциональных ветках
+## Completed in release source
 
-- Root and all twenty canonical locale landing paths proxy the exact public Box document. / Корень и все двадцать канонических языковых стартовых путей проксируют точный публичный документ Box.
-- The voice-first Community application remains available at `/classic/` and localized classic paths. / Голосовое приложение Community остаётся доступным по `/classic/` и локализованным classic-путям.
-- Community APIs, the two-active-site account contract, twenty public locales, public Russian, Arabic RTL, language orbit, Universe launcher and beta strip remain intact. / API Community, лимит двух активных сайтов, двадцать публичных языков, публичный русский, арабский RTL, языковая орбита, кнопка Universe и beta-полоска сохранены.
-- The public repository remains independently buildable and contains no private implementation copy. / Публичный репозиторий остаётся автономно собираемым и не содержит копии закрытой реализации.
-- `docs/BOXCORE_INTEGRATION.md` records the shared and non-overlapping contracts between Community and Box Core. / `docs/BOXCORE_INTEGRATION.md` фиксирует общие и непересекающиеся контракты Community и Box Core.
-- README links to the public Box Core repository and managed site. / README содержит ссылки на публичный репозиторий и управляемый сайт Box Core.
+- Replaced the former root Box proxy with a native CLARYEL Web Community architecture presentation.
+- Added a stateful **Immersive 3D** presentation.
+- Added a complete **Classic 2D** presentation selected on the same page.
+- Preserved `view` and `scene` state across the twenty public locale routes.
+- Preserved the existing voice-first website workspace at `/classic/`.
+- Added an optional privacy-safe 3D site map pattern with a complete 2D fallback.
+- Published the unique public architecture: voice-first work, twenty locales, 3D/2D parity, Git review, Cloudflare delivery, accessibility and production evidence.
+- Published consent and legal compliance requirements as `architecture-adopted`, not as a completed public runtime claim.
+- Published low-cost monitoring requirements as `architecture-adopted`, including confirmation retries, outage/recovery email, self-hosted runner portability and Uptime Kuma.
+- Added a formal private-to-public export roadmap.
+- Removed the active root dependency on the former `BOX_ORIGIN` proxy.
+- Expanded the sitemap contract to forty URLs: twenty architecture routes and twenty voice-workspace routes.
+- Added machine-readable capability states to `/api/public-config`.
 
-## Shared public contract work / Работа над общими публичными контрактами
+## Planned public-export work
 
-1. Define a versioned voice/text intent envelope that contains no customer content by default. / Определить версионированный envelope голосового/текстового intent, по умолчанию не содержащий клиентский контент.
-2. Define an explainable change-plan schema usable by website and infrastructure workflows. / Определить схему понятного плана изменений для workflows сайтов и инфраструктуры.
-3. Align risk labels and approval states without sharing product-specific policy decisions. / Согласовать risk labels и состояния подтверждения без совместного использования продуктовых policy decisions.
-4. Support replaceable Git adapters, including Forgejo and GitHub, without making one hosted forge mandatory. / Поддерживать заменяемые Git-адаптеры, включая Forgejo и GitHub, не делая один hosted forge обязательным.
-5. Add cross-repository compatibility tests only after both repositories publish stable schema versions. / Добавить межрепозиторные compatibility tests только после публикации стабильных версий схем обоими репозиториями.
+The following work must be implemented and tested in the managed private platform before a generic public result is transferred here.
 
-## Non-overlap / Непересечение
+### Governed voice-driven repository changes
 
-- Community does not own NixOS, hardware profiles, secret stores, deployment validation or rollback. / Community не владеет NixOS, аппаратными профилями, secret stores, проверкой deployment или rollback.
-- Box Core does not own Community pricing, account limits, browser-local website workspaces or website-builder product behaviour. / Box Core не владеет тарифами Community, лимитами аккаунтов, browser-local workspace сайтов или логикой website-builder продукта.
-- Customer data and secret values never move between the products through Git. / Клиентские данные и значения секретов никогда не передаются между продуктами через Git.
+- accept voice or text website intent;
+- create an explainable scope and risk plan;
+- identify affected repository paths, pages, locales and presentation modes;
+- create a branch and Pull Request through a replaceable Git adapter;
+- update all active locales and all user-facing modes;
+- run accessibility, security, consent, legal, monitoring and Worker checks;
+- require human approval according to risk;
+- deploy the exact reviewed commit;
+- verify production and retain rollback evidence;
+- never implement unrestricted speech-to-shell or speech-to-production execution.
 
-## Required validation and publication / Обязательная проверка и публикация
+### Consent and legal architecture
 
-1. Complete `npm run check`, all Node tests and `npm run deploy:dry-run` for the exact PR head. / Завершить `npm run check`, все Node-тесты и `npm run deploy:dry-run` для точного head PR.
-2. Validate root, all twenty locale paths, Box assets, `/classic/`, localized classic paths, APIs, robots and sitemap. / Проверить корень, все двадцать языковых путей, ресурсы Box, `/classic/`, локализованные classic-пути, API, robots и sitemap.
-3. Validate all Box Core cross-links and ensure no private repository URL or data was introduced. / Проверить все ссылки Box Core и отсутствие ссылок на приватные репозитории или приватных данных.
-4. Merge only after CI is green. / Сливать только после зелёного CI.
-5. Publish the exact merge commit through the protected Cloudflare workflow. / Опубликовать точный merge-commit через защищённый Cloudflare workflow.
-6. Record the accepted merge commit, workflow run, live audit and rollback ref. / Зафиксировать принятый merge-commit, workflow run, live-аудит и rollback ref.
+- machine-readable site and cookie/storage inventory;
+- necessary, analytics, functional and marketing category schema;
+- prior-blocking adapter for optional cookies and scripts;
+- equal accept and reject controls;
+- consent modification and withdrawal;
+- localized Cookie, Privacy and Legal page contracts;
+- critical compliance failures blocking release;
+- Pull Request, deployment, daily, weekly and monthly checks.
 
-## Rollback / Откат
+### Monitoring architecture
 
-For the Box Core boundary documentation, revert the focused Pull Request; it changes no Community runtime. For the Box landing baseline, restore `archive/community-before-box-clone-20260801`, run deterministic and Worker dry-run checks, publish through the protected workflow and verify the previous root Community application.
+- intentionally low-frequency first availability check;
+- short confirmation retry before outage status;
+- email only for confirmed outage and recovery;
+- structured evidence format;
+- daily operational drift review;
+- weekly broad technical review;
+- monthly legal, cookie, public-company-data and certificate review;
+- GitHub-hosted and self-hosted runner compatibility;
+- Uptime Kuma compatibility.
 
-Для документации границы Box Core отменить focused Pull Request; он не меняет runtime Community. Для общей основы Box восстановить `archive/community-before-box-clone-20260801`, выполнить детерминированные проверки и Worker dry-run, опубликовать через защищённый workflow и проверить прежнее приложение Community на корне.
+### Presentation and locale parity
+
+- automatic active-locale discovery instead of hard-coded assumptions;
+- structural parity validation across 3D, Classic 2D and every future user-facing mode;
+- localized SEO and reciprocal `hreflang` validation;
+- Arabic RTL layout validation;
+- state-preserving language navigation;
+- browser matrix evidence.
+
+### Optional multi-site map
+
+- machine-readable public site registry;
+- explicit privacy-safe relationships;
+- optional 3D renderer;
+- complete Classic 2D index;
+- direct accessible links;
+- reduced-motion support;
+- validation that essential navigation does not depend on WebGL.
+
+## Private boundary
+
+Never transfer:
+
+- credentials, tokens or secret values;
+- customer content, prompts or project records;
+- private topology or internal host identifiers;
+- private legal correspondence or account identifiers;
+- support tickets or staff-only notes;
+- commercial CMDB, warehouse, logistics or SLA data;
+- private Git history;
+- code with unresolved licence or provenance;
+- unreviewed experiments.
+
+## Required validation and publication
+
+1. Run `npm run check` for the exact Pull Request head.
+2. Run `npm run deploy:dry-run`.
+3. Validate English, Russian and Arabic root presentation routes.
+4. Validate `?view=classic`, view switching and scene-state restoration.
+5. Validate all twenty locale contracts and forty sitemap URLs.
+6. Validate the preserved voice workspace and representative localized routes.
+7. Merge only after required CI is green.
+8. Deploy the exact merge commit through the protected Cloudflare workflow.
+9. Verify the public domain, both presentation modes, public APIs and voice workspace.
+10. Record source commit, merge commit, workflow run, public evidence and rollback reference separately.
+
+## Rollback
+
+Revert the exact release merge commit through a focused Pull Request, rerun deterministic and Worker dry-run checks, deploy through the protected workflow and verify both presentation modes, representative locales, `/classic/`, public APIs and the forty-entry sitemap.
+
+The historical Box-proxy archive is retained for forensic comparison and is not the normal rollback target.

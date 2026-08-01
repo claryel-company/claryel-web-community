@@ -1,43 +1,101 @@
-# Voice-first AI application workflow / Голосовой процесс работы через приложение ИИ
+# Voice-first AI application workflow
 
-The default Community workflow requires no OpenAI API key. The user can work through the official ChatGPT application or another AI application that can read the exported brief and work with the user's GitHub repository.
+## Current public workflow
 
-Основной Community-процесс не требует ключа OpenAI API. Пользователь может работать через официальное приложение ChatGPT или другое приложение ИИ, способное прочитать экспортированное задание и работать с репозиторием пользователя в GitHub.
+The Community beta requires no OpenAI API key. The user can work through the official ChatGPT application or another AI application that can read the exported brief and operate the selected Git repository through governed capabilities.
 
-## GitHub connection / Подключение GitHub
+The public browser workspace currently:
 
-The workflow requires sufficient governed GitHub capabilities rather than a specific client. When ChatGPT or another selected AI application exposes an authenticated GitHub App or connector that can create a branch, write commits, open a Pull Request and inspect the required checks, that connection is sufficient. No local `gh` binary is required in the browser, Community server or CLARYEL Box Linux environment.
+1. records the project or brand name;
+2. records the preferred public domain;
+3. accepts a dictated or typed website description;
+4. records a visual direction;
+5. records selected logo and reference file names without silently uploading them;
+6. exports a portable website manifest and AI development brief;
+7. stores continuing change requests locally in the browser.
 
-Процессу требуются достаточные управляемые возможности GitHub, а не конкретный клиент. Если ChatGPT или другое выбранное приложение ИИ предоставляет авторизованный GitHub App либо коннектор, способный создать ветку, записать коммиты, открыть Pull Request и проверить обязательные проверки, такого подключения достаточно. Локальный бинарник `gh` не требуется в браузере, сервере Community или Linux-среде CLARYEL Box.
+## Git connection
 
-A governed API adapter or local Git with `gh` remains a valid alternative when the connected application lacks an operation required by the task. Changing interfaces must not bypass protected branches, review, CI, least-privilege credentials or rollback.
+The workflow requires sufficient governed Git capabilities rather than a specific client.
 
-Управляемый API-адаптер или локальный Git с `gh` остаётся допустимой альтернативой, когда подключённому приложению не хватает необходимой операции. Смена интерфейса не должна обходить защищённые ветки, review, CI, учётные данные с минимальными полномочиями или откат.
+An authenticated GitHub App or connector is sufficient when it can:
 
-## First website / Первый сайт
+- create a branch;
+- write reviewed source changes;
+- open a Pull Request;
+- inspect required checks;
+- merge according to repository policy;
+- retain the exact commit and rollback reference.
 
-1. Open `web.claryel.space` in the preferred language path.
+No local `gh` binary is required when the connected application already provides these capabilities.
+
+A governed API adapter or local Git with `gh` remains a valid alternative when a connected application lacks an operation. Changing the interface must never bypass protected branches, review, CI, least-privilege credentials, deployment evidence or rollback.
+
+The public architecture is intended to support replaceable Git adapters, including GitHub and a self-hosted forge such as Forgejo, without making one hosted provider the owner of the website's desired state.
+
+## First website
+
+1. Open the localized voice workspace at `/classic/` or its locale route.
 2. Dictate or type the business story and intended visitor action.
 3. Select a logo and visual references.
 4. Export the voice-first AI brief.
-5. Attach the same logo and reference files to the AI conversation.
-6. Ask the AI to create the repository, documentation, tests and Cloudflare deployment.
-7. Review the Pull Request and production result.
+5. Attach the same selected files to the AI conversation when required.
+6. Ask the AI to create or update the repository, documentation, tests and Cloudflare deployment.
+7. Review the proposed plan and Pull Request.
+8. Confirm the exact production result and rollback reference.
 
-1. Открыть `web.claryel.space` по пути нужного языка.
-2. Продиктовать или написать историю бизнеса и целевое действие посетителя.
-3. Выбрать логотип и визуальные примеры.
-4. Экспортировать voice-first задание для ИИ.
-5. Приложить те же файлы логотипа и примеров к диалогу с ИИ.
-6. Поручить ИИ создать репозиторий, документацию, тесты и публикацию Cloudflare.
-7. Проверить Pull Request и production-результат.
+## Continuing voice control
 
-## Continuing voice control / Постоянное голосовое управление
+Open the saved project card, dictate the next change and export the updated brief.
 
-Open the saved project card, dictate the next change and export the updated brief. A request may concern copy, imagery, page structure, typography, spacing, colour, responsive behaviour, SEO, accessibility, forms or business functionality. The AI must translate the request into an implementation plan, show important consequences and preserve a rollback path.
+A request may concern:
 
-Откройте сохранённую карточку проекта, продиктуйте следующее изменение и экспортируйте обновлённое задание. Запрос может касаться текстов, изображений, структуры страниц, типографики, отступов, цветов, адаптивности, SEO, доступности, форм или бизнес-функций. ИИ должен превратить запрос в план реализации, показать важные последствия и сохранить возможность отката.
+- copy and imagery;
+- page structure;
+- 3D or Classic 2D presentation;
+- active locale content;
+- typography, spacing, colour and responsive behaviour;
+- SEO and accessibility;
+- cookies, consent and legal pages;
+- monitoring and public verification;
+- forms and business functionality.
 
-A free or paid ChatGPT application plan may be used according to that service's terms and limits. CLARYEL Web Community does not bundle, resell or authenticate third-party AI accounts.
+The AI must translate the request into an implementation plan, identify affected surfaces and locales, explain important consequences and preserve a rollback path.
 
-Можно использовать бесплатный или платный тариф приложения ChatGPT в соответствии с условиями и лимитами сервиса. CLARYEL Web Community не включает, не перепродаёт и не авторизует сторонние аккаунты ИИ.
+## Planned governed repository workflow
+
+A future public release is planned to automate more of this process only after the complete workflow has been implemented and tested in the managed private platform.
+
+The planned public contract will:
+
+1. accept voice or text intent;
+2. create an explainable change plan;
+3. identify affected repository paths, public pages, locales and presentation modes;
+4. classify risk and required approval;
+5. create a branch and Pull Request through a replaceable Git adapter;
+6. update all active locales and both 3D and 2D modes when relevant;
+7. run accessibility, security, consent, legal, monitoring and Worker checks;
+8. deploy the exact reviewed commit;
+9. verify production;
+10. retain deployment and rollback evidence.
+
+This planned workflow must not become unrestricted speech-to-shell or speech-to-production execution.
+
+## Private-to-public condition
+
+Before public automation is released, the private implementation must pass:
+
+- deterministic and integration tests;
+- desktop and mobile browser tests;
+- security and failure tests;
+- legal and privacy review;
+- credential, topology and customer-data sanitization;
+- licence and provenance review;
+- independent public build tests;
+- exact-commit deployment and rollback verification.
+
+See [`PRIVATE_TO_PUBLIC_ROADMAP.md`](PRIVATE_TO_PUBLIC_ROADMAP.md).
+
+## Third-party AI accounts
+
+A free or paid ChatGPT application plan or another AI service may be used according to that service's terms and limits. CLARYEL Web Community does not bundle, resell or authenticate third-party AI accounts.

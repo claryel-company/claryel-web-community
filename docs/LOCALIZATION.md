@@ -1,48 +1,134 @@
-# Localisation and public-language standard / Стандарт локализации и публичных языков
+# Localisation and public-language standard
 
-## Canonical paths / Канонические пути
-
-- English: `/`
-- Other public languages: `/<two-letter-code>/`
-- Simplified Chinese: `/zh-cn/`
-- Public Russian: `/ru/`
-
-`?lang=` is never canonical. Legacy requests are permanently redirected to the path form. Public canonical URLs, Open Graph URLs, sitemap entries and `hreflang` all use paths.
-
-`?lang=` никогда не является каноническим адресом. Старые запросы постоянно перенаправляются на форму с путём. Canonical URL, Open Graph URL, sitemap и `hreflang` используют пути.
-
-## Twenty public locales / Двадцать публичных локалей
+## Canonical catalogue
 
 The exact ordered public catalogue is:
 
-`en`, `it`, `de`, `fr`, `es`, `nl`, `pt`, `pl`, `ro`, `cs`, `sv`, `el`, `da`, `fi`, `zh-CN`, `hi`, `ar`, `id`, `uk`, `ru`.
+```text
+en it de fr es nl pt pl ro cs sv el da fi zh-CN hi ar id uk ru
+```
 
-Arabic uses `dir="rtl"`. Russian is a normal public and indexable locale. No hidden locale is declared by the Community runtime.
+The catalogue is defined once and consumed by the Worker, the architecture presentation, the voice workspace, deterministic checks, public configuration, sitemap and deployment verification.
 
-Точный упорядоченный публичный каталог:
+A future architecture revision should derive the active locale set from the authoritative catalogue rather than duplicating a numeric assumption in unrelated templates.
 
-`en`, `it`, `de`, `fr`, `es`, `nl`, `pt`, `pl`, `ro`, `cs`, `sv`, `el`, `da`, `fi`, `zh-CN`, `hi`, `ar`, `id`, `uk`, `ru`.
+## Canonical routes
 
-Арабский использует `dir="rtl"`. Русский является обычной публичной и индексируемой локалью. Community runtime не объявляет скрытых локалей.
+### Architecture presentation
 
-## Language control / Переключатель языков
+```text
+/              English
+/it/           Italian
+/zh-cn/        Simplified Chinese
+/ar/           Arabic RTL
+/ru/           Russian
+```
 
-Every page uses the unchanged circular CLARYEL Box orbit with twenty SVG flags and native language names. It is fixed in the top-right global-control area and supports pointer, touch, wheel and keyboard interaction. Rotation provides audible ratchet feedback after a user gesture and a short vibration where the browser supports it.
+### Voice workspace
 
-Каждая страница использует неизменённую круговую орбиту CLARYEL Box с двадцатью SVG-флагами и нативными названиями языков. Она закреплена в правой верхней зоне глобального управления и поддерживает указатель, касание, колесо и клавиатуру. Вращение озвучивается трещоткой после пользовательского действия и сопровождается короткой вибрацией там, где она поддерживается браузером.
+```text
+/classic/              English
+/it/classic/           Italian
+/zh-cn/classic/        Simplified Chinese
+/ar/classic/           Arabic RTL
+/ru/classic/           Russian
+```
 
-The classic in-page picker remains only as progressive fallback markup and is replaced by the orbit after the shared runtime starts. A plain browser `<select>` without flags is not an accepted CLARYEL public-site language control.
+`?lang=` is compatibility input only and redirects permanently to the canonical path. Public canonical URLs, Open Graph URLs, sitemap entries and reciprocal `hreflang` use paths.
 
-Классический переключатель внутри страницы сохраняется только как progressive fallback-разметка и заменяется орбитой после запуска общего runtime. Обычный браузерный `<select>` без флагов не считается допустимым переключателем публичного сайта CLARYEL.
+The sitemap contains both surfaces for every locale.
 
-## Universe launcher and beta strip / Кнопка Universe и beta-полоска
+## Surface parity
 
-The fixed top-right controls include a link to `https://claryel.space/universe/`. Every page also displays the thin bright fixed bottom beta strip in the active language. It states that publication is performed through a platform in beta testing or active development and temporary technical issues may occur.
+A user-facing architecture change must update all relevant surfaces in the same Pull Request:
 
-Фиксированные правые верхние элементы содержат ссылку на `https://claryel.space/universe/`. Каждая страница также показывает тонкую яркую фиксированную нижнюю beta-полоску на активном языке. Она сообщает, что публикация выполняется через платформу на стадии beta-тестирования или активной разработки и возможны временные технические накладки.
+- Immersive 3D presentation;
+- Classic 2D presentation;
+- voice workspace when the capability affects website creation or change requests;
+- metadata and accessibility names;
+- public configuration and sitemap where the route or capability contract changes.
 
-## Definition of done / Критерий готовности
+A translated route may not silently fall back to English for visible product text. Canonical technology names and identifiers may remain in English, but the explanation around them must be localized.
 
-A user-facing change is complete only when all twenty locale catalogues have key parity, canonical routes work, Arabic RTL and public Russian work, the circular orbit remains usable on desktop and mobile, ratchet feedback remains gesture-gated, `sitemap.xml` and reciprocal `hreflang` expose all twenty locales, and the beta strip remains readable at supported widths.
+## View and language state
 
-Пользовательское изменение завершено только после проверки одинакового набора ключей во всех двадцати каталогах, работы канонических маршрутов, арабского RTL и публичного русского, доступности круговой орбиты на desktop и mobile, активации звука трещотки только после жеста, публикации всех двадцати локалей в `sitemap.xml` и взаимных `hreflang` и читаемости beta-полоски на поддерживаемых ширинах.
+The architecture presentation preserves:
+
+- `view=classic` when Classic 2D is active;
+- the selected architecture `scene`;
+- the selected locale path.
+
+Changing language must not reset the selected view or scene. Changing view must not reset the locale.
+
+The voice workspace remains on its localized `/classic/` route and does not redirect the user back to the architecture presentation.
+
+## Arabic and bidirectional layout
+
+Arabic uses `dir="rtl"` for both the architecture presentation and voice workspace.
+
+RTL validation includes:
+
+- document direction;
+- control placement;
+- readable text alignment;
+- keyboard and touch operation;
+- no semantic reversal of the 3D scene or workflow order;
+- no overflow caused by translated labels.
+
+## Language controls
+
+Every public language control must:
+
+- show approved SVG flags and native language names;
+- support keyboard and touch operation;
+- expose the selected locale to assistive technology;
+- preserve the active public surface and URL state;
+- remain usable on desktop and mobile;
+- avoid dependence on sound or vibration.
+
+The voice workspace retains the shared circular CLARYEL language orbit with gesture-gated ratchet feedback. The architecture presentation uses its own compact flag control integrated with the 3D/2D view selector and retains the same twenty-language catalogue and state-preservation rules.
+
+## Metadata and discovery
+
+Every public locale receives:
+
+- localized title and description;
+- canonical URL;
+- Open Graph URL and locale;
+- reciprocal `hreflang` entries;
+- `x-default`;
+- sitemap entries for both architecture and voice-workspace surfaces;
+- public indexing unless the route is explicitly operational or private.
+
+Russian is a normal public locale. Arabic is a normal public locale with RTL metadata. No hidden locale is declared.
+
+## Automatic validation
+
+The deterministic validation imports the presentation locale module and rejects a change when any locale lacks:
+
+- metadata;
+- view and language labels;
+- hero copy;
+- eight architecture features;
+- six compliance requirements;
+- five monitoring requirements;
+- seven voice-to-publication workflow states;
+- six private-to-public roadmap stages;
+- public/private boundary lists.
+
+The voice workspace continues to use exact key parity against its English catalogue.
+
+Representative browser and production validation must include English, Russian and Arabic. Browser UI changes are checked on desktop Chromium, Android-class Chromium, desktop WebKit and iPhone-class WebKit.
+
+## Definition of done
+
+A user-facing change is complete only when:
+
+1. every active locale has structural parity;
+2. 3D and Classic 2D show the same architecture status and meaning;
+3. the voice workspace remains available in every localized route;
+4. view, scene and locale state are preserved;
+5. Arabic RTL and public Russian pass direct tests;
+6. metadata, `hreflang` and the forty-route sitemap are correct;
+7. deterministic checks and Worker dry-run pass;
+8. the exact merge commit is deployed and publicly verified.

@@ -1,59 +1,87 @@
-# CLARYEL Universe public contract / Публичный контракт CLARYEL Universe
+# CLARYEL Universe public contract
 
-## Role of this repository / Роль этого репозитория
+## Role of this repository
 
-`claryel-company/claryel-web-community` is the independently buildable public runtime for `web.claryel.space` and an official functional node of CLARYEL Universe. It is not provisioned by the private `claryel-space` Worker, but its public interface must implement the same approved cross-repository website standard.
+`claryel-company/claryel-web-community` is the independently buildable public runtime for `web.claryel.space`, an official functional node of CLARYEL Universe and the public repository for the Community Edition website-development product.
 
-`claryel-company/claryel-web-community` — автономно собираемый публичный runtime для `web.claryel.space` и официальный функциональный узел CLARYEL Universe. Он не публикуется приватным Worker репозитория `claryel-space`, но его публичный интерфейс обязан реализовывать тот же утверждённый межрепозиторный стандарт сайтов.
+The managed implementation and canonical ecosystem map remain owned by the private `claryel-company/claryel-space` repository. This public repository documents and demonstrates a privacy-safe reusable multi-site map pattern without copying private runtime source.
 
-## Official ecosystem / Официальная экосистема
+## Current public ecosystem
 
-The functional CLARYEL Universe contains:
+The current functional landscape includes:
 
-- `www.claryel.com` — CLARYEL Box, the core commercial product and platform foundation;
-- `www.claryelsolar.com` — CLARYEL Solar, an applied startup project built on the CLARYEL platform;
-- `www.claryel.space` — CLARYEL Space, the ecosystem and new-project launch hub;
-- `web.claryel.space` — CLARYEL Web Community, the public software product and public repository.
+- `claryel.com` — CLARYEL Box, the core commercial product;
+- `boxcore.claryel.space` — CLARYEL Box Core, the public infrastructure open core;
+- `claryel.space` — CLARYEL Space, project and ecosystem coordination;
+- `claryelsolar.com` — CLARYEL Solar;
+- `funding.claryel.space` — CLARYEL Funding;
+- `web.claryel.space` — CLARYEL Web Community.
 
-CLARYEL ID at `id.claryel.com` is the common identity infrastructure layer and is not presented as a fifth functional product node.
+`id.claryel.com` is shared identity infrastructure rather than a separate product node.
 
-Функциональная Вселенная CLARYEL содержит:
+Canonical managed ecosystem map: `https://claryel.space/universe/`.
 
-- `www.claryel.com` — CLARYEL Box, основной коммерческий продукт и фундамент платформы;
-- `www.claryelsolar.com` — CLARYEL Solar, прикладной стартап-проект на базе платформы CLARYEL;
-- `www.claryel.space` — CLARYEL Space, экосистема и центр запуска новых проектов;
-- `web.claryel.space` — CLARYEL Web Community, публичный программный продукт и публичный репозиторий.
+## When a 3D site map is appropriate
 
-CLARYEL ID по адресу `id.claryel.com` является общим инфраструктурным слоем идентификации и не представляется как пятый функциональный продуктовый узел.
+A 3D Universe is optional. It is useful when:
 
-Canonical ecosystem map / Каноническая карта экосистемы: `https://claryel.space/universe/`.
+- many public sites share one ecosystem;
+- their roles and relationships are difficult to explain through a flat menu;
+- one central product or coordination node can be declared honestly;
+- users benefit from spatial exploration;
+- the project can still provide a complete accessible 2D index.
 
-## Mandatory interface / Обязательный интерфейс
+A single-site product does not need a 3D map merely to satisfy a visual standard.
 
-This runtime publishes the exact ordered twenty public locales: English, Italian, German, French, Spanish, Dutch, Portuguese, Polish, Romanian, Czech, Swedish, Greek, Danish, Finnish, Simplified Chinese, Hindi, Arabic, Indonesian, Ukrainian and Russian. Arabic uses RTL and Russian is a normal public locale.
+## Reusable map contract
 
-Этот runtime публикует точный упорядоченный набор из двадцати публичных локалей: английский, итальянский, немецкий, французский, испанский, нидерландский, португальский, польский, румынский, чешский, шведский, греческий, датский, финский, упрощённый китайский, хинди, арабский, индонезийский, украинский и русский. Арабский использует RTL, русский является обычной публичной локалью.
+A public multi-site map requires:
 
-Every page receives:
+- a versioned machine-readable site registry;
+- explicit public relationships;
+- one declared central node when the model has a centre;
+- canonical public URLs;
+- direct keyboard- and touch-accessible navigation;
+- reduced-motion behaviour;
+- a complete Classic 2D index;
+- graceful operation without WebGL;
+- no dependence on sound or vibration;
+- no private hostnames, addresses, network links or operational topology.
 
-- the unchanged circular twenty-flag CLARYEL Box orbit in the fixed top-right control area;
-- pointer, touch, wheel and keyboard operation;
-- audible ratchet feedback and short supported vibration after a user interaction;
-- the fixed CLARYEL Universe launcher;
-- the thin bright bottom beta publication strip;
-- canonical metadata, sitemap and reciprocal `hreflang` for all twenty public locales.
+The map is a navigation and explanation layer. It is not a source of truth for private infrastructure.
 
-Каждая страница получает:
+## Twenty public locales
 
-- неизменённую круговую орбиту из двадцати флагов CLARYEL Box в фиксированной правой верхней зоне;
-- управление указателем, касанием, колесом и клавиатурой;
-- озвученную трещотку и короткую вибрацию при поддержке после действия пользователя;
-- фиксированную кнопку CLARYEL Universe;
-- тонкую яркую нижнюю beta-полоску публикации;
-- canonical metadata, sitemap и взаимные `hreflang` для всех двадцати публичных локалей.
+Web Community publishes the exact ordered twenty public locales:
 
-## Synchronization / Синхронизация
+```text
+en it de fr es nl pt pl ro cs sv el da fi zh-CN hi ar id uk ru
+```
 
-The authoritative decision is ADR-0022 in `claryel-company/claryel-platform`. The managed implementation and the 3D Universe map are owned by `claryel-company/claryel-space`. This repository keeps a public-safe autonomous mirror. Changes to locale order, orbit geometry, ratchet feedback, beta wording, Universe URL or public-site membership are complete only after all three repositories pass their own tests and both runtime repositories pass Cloudflare production verification.
+Russian is a normal public locale. Arabic is a normal public locale using RTL.
 
-Авторитетное решение — ADR-0022 в `claryel-company/claryel-platform`. Управляемая реализация и 3D-карта Universe принадлежат `claryel-company/claryel-space`. Этот репозиторий сохраняет публично безопасное автономное зеркало. Изменения порядка локалей, геометрии орбиты, трещотки, beta-текста, адреса Universe или состава публичных сайтов завершены только после успешных проверок во всех трёх репозиториях и production-проверки Cloudflare для обоих runtime.
+The architecture presentation and voice workspace preserve the same locale contract. A future public map implementation must use the active locale catalogue and may not publish incomplete translated nodes or relationship descriptions.
+
+## 3D and 2D parity
+
+Essential map meaning must exist in both forms:
+
+- the 3D renderer shows nodes and relationships spatially;
+- the Classic 2D index lists the same nodes, purposes, relationships and direct links;
+- both forms use the same versioned registry;
+- language changes preserve the selected product where practical;
+- a WebGL failure must not block navigation.
+
+## Synchronization
+
+The project-wide architecture authority is `claryel-company/claryel-platform`. The managed Universe runtime is owned by `claryel-company/claryel-space`. Web Community owns only the public-safe reference contract and its own architecture presentation link.
+
+A Universe change is complete only after:
+
+- ownership remains unambiguous;
+- the public registry contains no private topology;
+- all twenty locale contracts pass;
+- 3D and Classic 2D parity passes;
+- keyboard, touch and reduced-motion tests pass;
+- the affected exact commits are deployed and publicly verified;
+- rollback evidence is recorded.

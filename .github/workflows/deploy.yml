@@ -60,6 +60,8 @@ jobs:
           for attempt in $(seq 1 18); do
             if curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/api/health" --output community-health.json \
               && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/api/public-config" --output community-config.json \
+              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/api/platform/compliance/manifest" --output community-compliance.json \
+              && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/legal/cookies/" --output community-cookie-policy.html \
               && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/" --output community-home.html \
               && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/ar/" --output community-ar.html \
               && curl --fail --silent --show-error --header 'Cache-Control: no-cache' "${origin}/ru/" --output community-ru.html \
@@ -68,17 +70,21 @@ jobs:
           const fs=require('node:fs');
           const health=JSON.parse(fs.readFileSync('community-health.json','utf8'));
           const config=JSON.parse(fs.readFileSync('community-config.json','utf8'));
+          const compliance=JSON.parse(fs.readFileSync('community-compliance.json','utf8'));
+          const policy=fs.readFileSync('community-cookie-policy.html','utf8');
           const home=fs.readFileSync('community-home.html','utf8');
           const arabic=fs.readFileSync('community-ar.html','utf8');
           const russian=fs.readFileSync('community-ru.html','utf8');
           const sitemap=fs.readFileSync('community-sitemap.xml','utf8');
           const expected=['en','it','de','fr','es','nl','pt','pl','ro','cs','sv','el','da','fi','zh-CN','hi','ar','id','uk','ru'];
-          if(health.status!=='ok'||health.version!=='0.3.0')process.exit(1);
+          if(health.status!=='ok'||health.version!=='0.4.0')process.exit(1);
           if(JSON.stringify(config.publicLocales)!==JSON.stringify(expected)||config.hiddenLocales.length!==0)process.exit(1);
           if(config.universeUrl!=='https://claryel.space/universe/')process.exit(1);
-          if(!home.includes('/claryel-standard.css?v=1.0.0')||!home.includes('/claryel-standard.js?v=1.0.0'))process.exit(1);
-          if(!arabic.includes('lang="ar-SA" dir="rtl"')||!arabic.includes('data-hidden-locale="false"'))process.exit(1);
-          if(!russian.includes('lang="ru-RU"')||!russian.includes('data-hidden-locale="false"')||!russian.includes('index,follow,max-image-preview:large'))process.exit(1);
+          if(compliance.version!=='2026-08-01.1'||compliance.site?.id!=='community'||JSON.stringify(compliance.languages)!==JSON.stringify(expected)||compliance.retentionDays!==180)process.exit(1);
+          if(!policy.includes('2026-08-01.1')||!policy.includes('data-site="community"')||!policy.includes('data-claryel-compliance="runtime"'))process.exit(1);
+          if(!home.includes('/claryel-standard.css?v=1.0.0')||!home.includes('/claryel-standard.js?v=1.0.0')||!home.includes('data-claryel-compliance="runtime"'))process.exit(1);
+          if(!arabic.includes('lang="ar-SA" dir="rtl"')||!arabic.includes('data-hidden-locale="false"')||!arabic.includes('data-claryel-compliance="runtime"'))process.exit(1);
+          if(!russian.includes('lang="ru-RU"')||!russian.includes('data-hidden-locale="false"')||!russian.includes('index,follow,max-image-preview:large')||!russian.includes('data-claryel-compliance="runtime"'))process.exit(1);
           if((sitemap.match(/<url>/g)||[]).length!==20)process.exit(1);
           NODE
               then
@@ -102,6 +108,8 @@ jobs:
             community-production-verification.log
             community-health.json
             community-config.json
+            community-compliance.json
+            community-cookie-policy.html
             community-home.html
             community-ar.html
             community-ru.html
@@ -127,9 +135,11 @@ jobs:
           const success=[checks,dryRun,deploy,verify].every(value=>value==='success');
           let health='unavailable';
           let locales='unavailable';
+          let compliance='unavailable';
           let deployTail='';
           try{health=JSON.parse(fs.readFileSync('community-health.json','utf8')).version||'unknown';}catch{}
           try{locales=JSON.parse(fs.readFileSync('community-config.json','utf8')).publicLocales?.length??'unknown';}catch{}
+          try{compliance=JSON.parse(fs.readFileSync('community-compliance.json','utf8')).version||'unknown';}catch{}
           try{deployTail=fs.readFileSync('community-worker-deploy.log','utf8').trim().split(/\r?\n/).slice(-18).join('\n');}catch{}
           const body=[
             `Community production deployment: **${success?'SUCCESS / УСПЕХ':'FAILURE / ОШИБКА'}**`,
@@ -139,7 +149,8 @@ jobs:
             `Worker dry-run: ${dryRun}`,
             `Cloudflare deploy: ${deploy}`,
             `Live verification: ${verify}`,
-            `Live version: ${health}`,
+            `Live product version: ${health}`,
+            `Compliance version: ${compliance}`,
             `Public locales: ${locales}`,
             `Universe URL: https://claryel.space/universe/`,
             !success&&deployTail?`Deploy output tail:\n\n\`\`\`text\n${deployTail.slice(-3500)}\n\`\`\``:''

@@ -1,76 +1,112 @@
-# Cloudflare deployment / Развёртывание Cloudflare
+# Cloudflare deployment
 
-## Target / Цель
+## Target
 
 - Worker name: `claryel-web-community`
 - Custom domain: `web.claryel.space`
 - Configuration: `wrangler.jsonc`
-- Public Box source: `BOX_ORIGIN=https://claryel.com`
-- Preserved Community application: `/classic/`
-- Protected deployment workflow: private `claryel-space` repository
-- Public repository CI: tests and Wrangler dry-run
+- Product release: `0.5.0`
+- Native architecture presentation: `/` and the twenty locale roots
+- Voice-first Community workspace: `/classic/` and the twenty localized workspace routes
+- Public repository workflow: `.github/workflows/deploy.yml`
 
-The public repository contains no Cloudflare token. Production deployment checks out the public `main` branch from the protected private workflow that already owns the encrypted Cloudflare credentials.
+The public repository contains no Cloudflare token. Production credentials remain encrypted GitHub Actions secrets, and the workflow deploys the exact accepted `main` commit.
 
-Публичный репозиторий не содержит Cloudflare token. Production-публикация получает публичную ветку `main` из защищённого приватного workflow, в котором уже находятся зашифрованные данные Cloudflare.
+## Delivery model
 
-## Delivery model / Модель публикации
+The root surface is a native Community architecture presentation, not a proxy to another product.
 
-Root and the twenty canonical locale landing paths proxy the exact public Box document. Requests under `/sites/box/` and the shared `/assets/` tree are proxied through the Community hostname. The voice-first Community application and its local assets remain independently served at `/classic/` and `/<locale>/classic/`.
+Each locale root provides:
 
-Корень и двадцать канонических языковых стартовых маршрутов проксируют точный публичный документ Box. Запросы в `/sites/box/` и общем дереве `/assets/` проксируются через домен Community. Голосовое приложение Community и его локальные ресурсы продолжают автономно обслуживаться по `/classic/` и `/<язык>/classic/`.
+- the Immersive 3D architecture view;
+- the Classic 2D architecture view selected with `?view=classic`;
+- a localized language selector;
+- persistent `view` and `scene` query state;
+- a link to the corresponding localized voice workspace;
+- a link to the optional managed CLARYEL Universe site map.
 
-`BOX_ORIGIN` is a public HTTPS origin, not a secret. It is configured explicitly so staging and rollback validation can point at an accepted public Box deployment without modifying source code.
+The voice workspace remains independently available at `/classic/` and `/<locale>/classic/`.
 
-`BOX_ORIGIN` является публичным HTTPS-origin, а не секретом. Он задаётся явно, чтобы staging и проверка отката могли использовать принятую публичную публикацию Box без изменения исходного кода.
+## Release commands
 
-## Validation / Проверка
+Run deterministic tests and public-boundary checks:
+
+```bash
+npm run check
+```
+
+Run the Cloudflare Worker packaging dry-run:
+
+```bash
+npm run deploy:dry-run
+```
+
+Deploy through the protected workflow after the Pull Request checks pass:
+
+```bash
+npm run deploy
+```
+
+The normal production path is the GitHub Actions workflow, not a manual local deployment.
+
+## Required production verification
+
+Verify at least:
 
 ```text
 https://web.claryel.space/
+https://web.claryel.space/?view=classic
 https://web.claryel.space/it/
-https://web.claryel.space/ru/
-https://web.claryel.space/sites/box/assets/production-v11.js
+https://web.claryel.space/ru/?view=classic
+https://web.claryel.space/ar/?view=classic
 https://web.claryel.space/classic/
 https://web.claryel.space/it/classic/
+https://web.claryel.space/ru/classic/
 https://web.claryel.space/api/health
 https://web.claryel.space/api/public-config
 https://web.claryel.space/robots.txt
 https://web.claryel.space/sitemap.xml
 ```
 
-Verify that the landing document carries `data-community-proxy="box-baseline"`, the Box scene and all twenty language paths load from the Community hostname, `?lang=it` redirects permanently, Russian is public and indexable, and `/classic/` retains the Community voice-first workflow, language orbit, Universe launcher and beta strip.
+The verification contract requires:
 
-Проверить наличие `data-community-proxy="box-baseline"` в стартовом документе, загрузку сцены Box и всех двадцати языковых путей с домена Community, постоянное перенаправление `?lang=it`, публичность и индексируемость русского, а также сохранение голосового процесса Community, языковой орбиты, кнопки Universe и beta-полоски по `/classic/`.
+- health version `0.5.0`;
+- both `immersive` and `classic` presentation modes;
+- exact ordered twenty public locales;
+- no hidden locale;
+- Russian presentation and voice workspace publicly indexable;
+- Arabic presentation and voice workspace using RTL;
+- root source marked as the Community architecture surface;
+- 3D and 2D controls present;
+- public compliance, monitoring and private-to-public status markers present;
+- voice workspace preserved;
+- sitemap containing forty URLs: twenty architecture routes and twenty workspace routes;
+- no dependency on the former Box landing proxy;
+- public configuration reporting adopted and planned-public-export capabilities honestly.
 
-## Required commands / Обязательные команды
+## Evidence
 
-Run deterministic checks.
+The deployment workflow retains:
 
-Запустить детерминированные проверки.
+- deterministic check log;
+- Worker dry-run log;
+- Worker deployment log;
+- public verification log;
+- health response;
+- public configuration response;
+- representative English, Russian and Arabic architecture documents;
+- representative voice workspace document;
+- sitemap.
 
-```bash
-npm run check
-```
+Source validation, merge, deployment and public verification remain separate states.
 
-Run the Cloudflare packaging dry-run.
+## Rollback
 
-Запустить dry-run упаковки Cloudflare.
-
-```bash
-npm run deploy:dry-run
-```
-
-## Rollback / Откат
-
-1. Restore or revert to `archive/community-before-box-clone-20260801` for the complete pre-change runtime.
+1. Revert the exact release merge commit through a focused Pull Request.
 2. Run `npm run check` and `npm run deploy:dry-run`.
-3. Merge the focused rollback Pull Request after CI succeeds.
-4. Trigger the protected deployment workflow.
-5. Confirm root, all locale paths, `/classic/`, APIs, robots and sitemap.
+3. Merge only after required CI succeeds.
+4. Deploy the rollback through the protected workflow.
+5. Verify the root presentation, both view modes, representative locales, `/classic/`, APIs, robots and sitemap.
+6. Record the reverted commit, rollback commit, workflow run and public verification result.
 
-1. Восстановить или вернуть `archive/community-before-box-clone-20260801` для полного runtime до изменений.
-2. Выполнить `npm run check` и `npm run deploy:dry-run`.
-3. Слить отдельный rollback Pull Request после успешного CI.
-4. Запустить защищённый workflow публикации.
-5. Проверить корень, все языковые пути, `/classic/`, API, robots и sitemap.
+The historical archive `archive/community-before-box-clone-20260801` at `0a5da4f49a9b3c4bf1cf3107a8ccef857cf3ca32` remains available for forensic comparison, but normal rollback does not restore the superseded Box-proxy architecture unless a new architecture decision explicitly requires it.

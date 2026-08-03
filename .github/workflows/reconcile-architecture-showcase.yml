@@ -25,7 +25,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Check out the exact feature branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: feature/architecture-showcase-3d-2d-2026-08-01
           fetch-depth: 0

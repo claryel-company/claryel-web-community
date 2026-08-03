@@ -1,0 +1,13 @@
+name: Repository statistics 2026-08-03
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  statistics:
+    uses: claryel-company/claryel-boxcore/.github/workflows/repository-statistics-20260803.yml@ops/repository-statistics-20260803

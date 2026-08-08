@@ -1,7 +1,11 @@
 # CLARYEL Web Community
 
+<!-- CLARYEL-NAVIGATION:START -->
 > [!IMPORTANT]
-> CLARYEL Web Community is the public, independently buildable Community Edition of the CLARYEL website-development platform and the public-software node of CLARYEL Universe. Public contributors must follow `AGENTS.md`, `REPOSITORY.yaml`, `CONTRIBUTING.md`, `SECURITY.md` and the implementation documentation. CLARYEL maintainers additionally apply the accepted project-wide architecture decisions from the private `claryel-company/claryel-platform` repository.
+> **CLARYEL project navigation:** Before changing this repository, start with the authoritative project context in `claryel-company/claryel-platform`: `ASSUMPTIONS.md`, `ARCHITECTURE.md`, `DECISIONS.md`, `REPOSITORIES.md`, `TASK_ROUTING.md`, `DEVELOPMENT_RULES.md` and `METRICS.md`. Then read this repository's `AGENTS.md`, `REPOSITORY.yaml` and `NEXT_STEPS.md`.
+<!-- CLARYEL-NAVIGATION:END -->
+
+CLARYEL Web Community is the public, independently buildable Community Edition of the CLARYEL website-development platform and the public-software node of CLARYEL Universe. Public contributors must follow `AGENTS.md`, `REPOSITORY.yaml`, `CONTRIBUTING.md`, `SECURITY.md` and the implementation documentation. CLARYEL maintainers additionally apply the accepted project-wide architecture decisions from the private `claryel-company/claryel-platform` repository.
 
 **Create, publish and continuously improve websites through voice-first AI conversations.** Describe the business, attach a logo or visual reference, work through governed AI and Git adapters, publish an exact reviewed commit and keep changing any part of the website with natural-language or dictated requests.
 

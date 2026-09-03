@@ -30,7 +30,7 @@ jobs:
           npm run check 2>&1 | tee ci-check.log
       - name: Upload product-check evidence / Загрузить evidence проверки продукта
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: community-product-check-${{ github.sha }}
           path: ci-check.log

@@ -99,7 +99,7 @@ const chromeCss=await read('public/chrome.css');
 const chromePages=await read('src/chrome-pages.js');
 const chromeModule=await import(`${pathToFileURL(path.join(root,'public/chrome-locales.js')).href}?check=${Date.now()}`);
 const chromeLocales=chromeModule.CHROME_LOCALES||{};
-if(!chromeHtml.includes('data-nav="news"')||!chromeHtml.includes('chrome.js?v=0.5.0'))throw new Error('Chrome template is incomplete.');
+if(!chromeHtml.includes('data-nav="news"')||!chromeHtml.includes('chrome.js?v=0.5.0.1'))throw new Error('Chrome template is incomplete.');
 if(/<script(?![^>]*\bsrc=)/i.test(chromeHtml)||/\sstyle=/i.test(chromeHtml))throw new Error('Chrome template violates the public CSP contract.');
 if(!chromeJs.includes('CHROME_LOCALES')||!chromeJs.includes('chromePath')||chromeJs.includes('searchParams.set(\'view\''))throw new Error('Chrome runtime must not put view= into public URLs.');
 if(!chromeCss.includes('.site-nav')||!chromeCss.includes('html[dir="rtl"]'))throw new Error('Chrome CSS is incomplete.');

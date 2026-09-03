@@ -1,4 +1,4 @@
-import{CHROME_LOCALES,CHROME_LOCALE_META}from'./chrome-locales.js';
+import{CHROME_LOCALES,CHROME_LOCALE_META}from'./chrome-locales.js?v=0.5.0.1';
 
 const q=(selector,root=document)=>root.querySelector(selector);
 const qa=(selector,root=document)=>[...root.querySelectorAll(selector)];

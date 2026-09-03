@@ -34,9 +34,19 @@ A future architecture revision should derive the active locale set from the auth
 /ru/classic/           Russian
 ```
 
+### Box-like chrome pages
+
+```text
+/news/ /support/ /legal/                 English
+/it/news/ /it/support/ /it/legal/        Italian
+/ru/news/ /ru/support/ /ru/legal/        Russian
+```
+
+English never uses `/en/` as a public address; `/en/` and `/en/...` permanently redirect to the path without that prefix. Chrome pages do not use `view=` or `claryel-view` in public URLs. Architecture 3D/2D state remains on the presentation surface only.
+
 `?lang=` is compatibility input only and redirects permanently to the canonical path. Public canonical URLs, Open Graph URLs, sitemap entries and reciprocal `hreflang` use paths.
 
-The sitemap contains both surfaces for every locale.
+The sitemap contains architecture, voice-workspace and chrome routes for every locale.
 
 ## Surface parity
 
@@ -129,6 +139,6 @@ A user-facing change is complete only when:
 3. the voice workspace remains available in every localized route;
 4. view, scene and locale state are preserved;
 5. Arabic RTL and public Russian pass direct tests;
-6. metadata, `hreflang` and the forty-route sitemap are correct;
+6. metadata, `hreflang` and the sitemap (architecture, workspace and chrome routes) are correct;
 7. deterministic checks and Worker dry-run pass;
 8. the exact merge commit is deployed and publicly verified.

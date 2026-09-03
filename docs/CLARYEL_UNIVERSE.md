@@ -60,7 +60,7 @@ en it de fr es nl pt pl ro cs sv el da fi zh-CN hi ar id uk ru
 
 Russian is a normal public locale. Arabic is a normal public locale using RTL.
 
-The architecture presentation and voice workspace preserve the same locale contract. A future public map implementation must use the active locale catalogue and may not publish incomplete translated nodes or relationship descriptions.
+The architecture presentation, Box-like chrome pages and voice workspace preserve the same locale contract. A future public map implementation must use the active locale catalogue and may not publish incomplete translated nodes or relationship descriptions. English chrome and presentation addresses never use `/en/`.
 
 ## 3D and 2D parity
 

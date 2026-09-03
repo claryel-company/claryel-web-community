@@ -1,4 +1,5 @@
 import{PRESENTATION_LOCALES,PRESENTATION_LOCALE_META}from'./presentation-locales.js';
+import{CHROME_LOCALES}from'./chrome-locales.js';
 
 const q=(selector,root=document)=>root.querySelector(selector);
 const qa=(selector,root=document)=>[...root.querySelectorAll(selector)];
@@ -32,6 +33,7 @@ function syncUrl(){
 
 function localeRootPath(meta){return meta.path;}
 function localeWorkspacePath(meta){return meta.code==='en'?'/classic/':`${meta.path}classic/`;}
+function localeChromePath(meta,surface){return surface==='home'?meta.path:(meta.code==='en'?`/${surface}/`:`${meta.path}${surface}/`);}
 
 function applyDocumentMetadata(){
   document.documentElement.lang=localeMeta.locale;
@@ -68,6 +70,17 @@ function localizeStaticCopy(){
   if(classicButton)classicButton.textContent=copy.controls.classic;
   const workspace=q('a[href="/classic/"]');
   if(workspace)workspace.href=localeWorkspacePath(localeMeta);
+  const chromeCopy=CHROME_LOCALES[localeCode]||CHROME_LOCALES.en;
+  const home=q('[data-nav="home"]');
+  const news=q('[data-nav="news"]');
+  const support=q('[data-nav="support"]');
+  const privacy=q('[data-nav="privacy"]');
+  const brand=q('.compact-brand');
+  if(home){home.textContent=chromeCopy.nav.home;home.href=localeChromePath(localeMeta,'home');home.setAttribute('aria-current','page');}
+  if(news){news.textContent=chromeCopy.nav.news;news.href=localeChromePath(localeMeta,'news');}
+  if(support){support.textContent=chromeCopy.nav.support;support.href=localeChromePath(localeMeta,'support');}
+  if(privacy){privacy.textContent=chromeCopy.nav.privacy;privacy.href=localeChromePath(localeMeta,'legal');}
+  if(brand)brand.href=localeChromePath(localeMeta,'home');
   const currentFlag=q('#currentFlag');
   const currentLanguage=q('#currentLanguage');
   if(currentFlag)currentFlag.src=`/assets/flags/${localeMeta.flag}.svg`;

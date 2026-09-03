@@ -24,8 +24,10 @@ for(const marker of[
   '/api/platform/compliance/consent',
   '/legal/cookies/',
   '/legal/privacy/',
+  '/legal/security/',
   'cookiePolicyUrl:',
   'privacyPolicyUrl:',
+  'securityPolicyUrl:',
   'privacyPolicyEffectiveDate:',
   'retentionDays:180',
   "const OPTIONAL=Object.freeze(['preferences','analytics','marketing','external'])",
@@ -35,7 +37,8 @@ for(const marker of[
   'claryel-compliance.js?v=2026-08-01.2',
   "event:'privacy.consent_updated'",
   'X-Claryel-Legal-Source',
-  "return'privacy'"
+  "return'privacy'",
+  "return'security'"
 ])if(!compliance.includes(marker))throw new Error(`Community compliance contract is missing: ${marker}`);
 
 const codes=[...compliance.matchAll(/Object\.freeze\(\[([^\]]+)\]\)/g)][0]?.[1]?.match(/'[^']+'/g)?.map(value=>value.slice(1,-1))||[];
@@ -50,4 +53,4 @@ for(const forbidden of['or contact the controller','либо запросите 
 }
 if(!documentation.includes('release `0.5.0`')||!documentation.includes('версионируются непосредственно'))throw new Error('Community compliance documentation is not aligned with release 0.5.0.');
 
-console.log(`Validated Community compliance compatibility for ${expected.length} public locales, direct Privacy Policy and Cookie Policy routes, consent APIs and managed legal content.`);
+console.log(`Validated Community compliance compatibility for ${expected.length} public locales, direct Privacy Policy, Security and Cookie Policy routes, consent APIs and managed legal content.`);

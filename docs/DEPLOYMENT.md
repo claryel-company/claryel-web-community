@@ -80,7 +80,8 @@ The verification contract requires:
 - 3D and 2D controls present;
 - public compliance, monitoring and private-to-public status markers present;
 - voice workspace preserved;
-- sitemap containing forty URLs: twenty architecture routes and twenty workspace routes;
+- sitemap containing the original forty architecture and workspace URLs, plus twenty news, twenty support and twenty Privacy and Security hub URLs after chrome pages are live;
+- `/news/`, `/support/` and `/legal/` available in path locales, with `/en/` permanently redirected;
 - no dependency on the former Box landing proxy;
 - public configuration reporting adopted and planned-public-export capabilities honestly.
 

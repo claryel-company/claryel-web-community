@@ -63,7 +63,9 @@ jobs:
           if(JSON.stringify(health.presentationModes)!==JSON.stringify(['immersive','classic']))throw new Error('Managed presentation modes are incomplete.');
           if(JSON.stringify(config.publicLocales)!==JSON.stringify(expected)||config.hiddenLocales?.length!==0)throw new Error('Managed locale contract failed.');
           if(config.voiceWorkspace!=='/classic/'||config.universeUrl!=='https://claryel.space/universe/')throw new Error('Managed navigation contract failed.');
-          if((sitemap.match(/<url>/g)||[]).length!==40)throw new Error('Managed sitemap must contain forty routes.');
+          const sitemapCount=(sitemap.match(/<url>/g)||[]).length;
+          if(sitemapCount!==40&&sitemapCount!==100)throw new Error('Managed sitemap must contain the original forty routes, or one hundred after chrome pages are live.');
+          if(!sitemap.includes('https://web.claryel.space/it/classic/')||!sitemap.includes('https://web.claryel.space/ru/'))throw new Error('Managed sitemap is missing architecture or workspace routes.');
           console.log('Managed Community production contract passed.');
           NODE
 

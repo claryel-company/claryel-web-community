@@ -102,16 +102,22 @@ test('localized voice workspace remains independently available',async()=>{
   assert.match(html,/claryel-standard\.js\?v=1\.0\.0/);
 });
 
-test('sitemap contains twenty presentation and twenty workspace URLs',async()=>{
+test('sitemap contains presentation, workspace and chrome URLs',async()=>{
   const text=await(await handleRequest(new Request('https://web.claryel.space/sitemap.xml'),createEnv())).text();
-  assert.equal((text.match(/<url>/g)||[]).length,40);
+  assert.equal((text.match(/<url>/g)||[]).length,100);
   assert.match(text,/https:\/\/web\.claryel\.space\/it\//);
   assert.match(text,/https:\/\/web\.claryel\.space\/it\/classic\//);
+  assert.match(text,/https:\/\/web\.claryel\.space\/news\//);
+  assert.match(text,/https:\/\/web\.claryel\.space\/it\/news\//);
+  assert.match(text,/https:\/\/web\.claryel\.space\/support\//);
+  assert.match(text,/https:\/\/web\.claryel\.space\/legal\//);
   assert.match(text,/https:\/\/web\.claryel\.space\/zh-cn\//);
   assert.match(text,/https:\/\/web\.claryel\.space\/zh-cn\/classic\//);
   assert.match(text,/https:\/\/web\.claryel\.space\/ru\//);
   assert.match(text,/https:\/\/web\.claryel\.space\/ru\/classic\//);
   assert.doesNotMatch(text,/\?lang=/);
+  assert.doesNotMatch(text,/\?view=/);
+  assert.doesNotMatch(text,/claryel-view/);
 });
 
 test('voice permission remains available on the preserved voice workspace',async()=>{

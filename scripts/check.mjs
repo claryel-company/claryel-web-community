@@ -8,6 +8,7 @@ const required=[
   'README.md','AGENTS.md','REPOSITORY.yaml','LICENSE','SECURITY.md','CONTRIBUTING.md','wrangler.jsonc',
   'src/worker.js','src/entry.js','public/index.html','public/app.js','public/styles.css',
   'public/presentation.html','public/presentation.css','public/presentation.js','public/presentation-locales.js',
+  'public/chrome.html','public/chrome.css','public/chrome.js','public/chrome-locales.js','src/chrome-pages.js',
   'public/claryel-standard.css','public/claryel-standard.js','public/assets/claryel-mark-v3.svg','public/i18n/manifest.json',
   'docs/ARCHITECTURE.md','docs/ARCHITECTURE_SHOWCASE.md','docs/PRIVATE_TO_PUBLIC_ROADMAP.md',
   'docs/AI_APP_WORKFLOW.md','docs/DEPLOYMENT.md','docs/LOCALIZATION.md','docs/MARKET_POSITIONING.md',
@@ -52,7 +53,8 @@ if(!wrangler.includes('"PRODUCT_VERSION": "0.5.0"'))throw new Error('Wrangler do
 
 for(const marker of[
   'data-view="immersive"','data-view="classic"','id="architectureStage"','id="classicView"',
-  'id="languagePanel"','CLARYEL UNIVERSE','presentation.css?v=0.5.0','presentation.js?v=0.5.0'
+  'id="languagePanel"','CLARYEL UNIVERSE','presentation.css?v=0.5.0','presentation.js?v=0.5.0',
+  'data-nav="home"','data-nav="news"','data-nav="support"','data-nav="privacy"','/legal/'
 ])if(!presentationHtml.includes(marker))throw new Error(`Presentation HTML is missing ${marker}`);
 if(/<script(?![^>]*\bsrc=)/i.test(presentationHtml))throw new Error('Presentation contains an inline script and violates the public CSP contract.');
 if(/\sstyle=/i.test(presentationHtml))throw new Error('Presentation contains an inline style attribute and violates the public CSP contract.');
@@ -60,7 +62,7 @@ if(/\sstyle=/i.test(presentationHtml))throw new Error('Presentation contains an 
 for(const marker of[
   'PRESENTATION_LOCALES','sceneSlugs','validViews','renderArchitectureNodes','renderClassic',
   'setupLanguageControl','navigateLanguage','history.replaceState','localeWorkspacePath',
-  'c.complianceItems','c.monitoringItems','map-panel','roadmap-grid','boundary'
+  'c.complianceItems','c.monitoringItems','map-panel','roadmap-grid','boundary','CHROME_LOCALES'
 ])if(!presentationJs.includes(marker))throw new Error(`Presentation runtime is missing ${marker}`);
 for(const marker of[
   '.architecture-stage','.core-cube','.architecture-node','.classic-view','.feature-grid','.policy-grid',
@@ -90,6 +92,59 @@ for(const code of expected){
 }
 if(presentationLocales.ru.hero.title===presentationLocales.en.hero.title)throw new Error('Russian presentation falls back to English.');
 if(presentationLocales.it.hero.title===presentationLocales.en.hero.title)throw new Error('Italian presentation falls back to English.');
+
+const chromeHtml=await read('public/chrome.html');
+const chromeJs=await read('public/chrome.js');
+const chromeCss=await read('public/chrome.css');
+const chromePages=await read('src/chrome-pages.js');
+const chromeModule=await import(`${pathToFileURL(path.join(root,'public/chrome-locales.js')).href}?check=${Date.now()}`);
+const chromeLocales=chromeModule.CHROME_LOCALES||{};
+if(!chromeHtml.includes('data-nav="news"')||!chromeHtml.includes('chrome.js?v=0.5.0.1'))throw new Error('Chrome template is incomplete.');
+if(/<script(?![^>]*\bsrc=)/i.test(chromeHtml)||/\sstyle=/i.test(chromeHtml))throw new Error('Chrome template violates the public CSP contract.');
+if(!chromeJs.includes('CHROME_LOCALES')||!chromeJs.includes('chromePath')||chromeJs.includes('searchParams.set(\'view\''))throw new Error('Chrome runtime must not put view= into public URLs.');
+if(!chromeCss.includes('.site-nav')||!chromeCss.includes('html[dir="rtl"]'))throw new Error('Chrome CSS is incomplete.');
+if(!chromePages.includes('englishPrefixRedirect')||!chromePages.includes('matchChromeRoute')||!worker.includes('serveChrome'))throw new Error('Chrome Worker routing is incomplete.');
+if(!worker.includes("englishPrefixRedirect")||!worker.includes("'/en/'")&&!worker.includes('englishPrefixRedirect'))throw new Error('English /en/ must permanently redirect to the path without /en/.');
+const lockedNews=chromeLocales.en?.news||{};
+const newsBody=`${lockedNews.pause} ${lockedNews.snapshot} ${lockedNews.outages} ${lockedNews.models}`;
+for(const phrase of[
+  'On 2 September 2026 CLARYEL published a pause of hourly publication for an architecture rebuild onto local git CLARYEL01.',
+  'Working source moved off GitHub onto local Git on disk (CLARYEL01).',
+  '12 August 2026 is both the last published hourly snapshot and a GitHub outage.',
+  'Both facts belong to that date. It is not the pause date.',
+  'GitHub had two serious outages in the last month.',
+  'The second outage in the same month has no public date here.',
+  'Bando Nuova Impresa 2026 Regione/Unioncamere Lombardia, 10.000 EUR',
+  'https://mediamint.claryel.space/#architecture-rebuild-2026-09',
+  'After a computer reboot, hourly archive processing stopped.',
+  'The interruption was visible immediately.',
+  'The analysis command was manual, so recovery was delayed by about one day.',
+  'The archive path was missing after reboot.',
+  'Wi-Fi remained software-disabled while Ethernet was healthy.'
+])if(!`${newsBody} ${lockedNews.grant} ${lockedNews.anchorHref} ${lockedNews.reboot}`.includes(phrase))throw new Error(`Locked English news copy is missing: ${phrase}`);
+if(lockedNews.support||lockedNews.supportTitle)throw new Error('News body must not include a phone-lines or support paragraph.');
+if(!lockedNews.rebootTitle||!lockedNews.reboot||!lockedNews.grantTitle)throw new Error('Reboot and Investors grant must be their own news sections.');
+if(/phone|Deepgram|Google|amministrazione|Telegram|WhatsApp|@uctive/i.test(`${newsBody} ${lockedNews.grant}`))throw new Error('Grant and pause body must not sit next to support or phone lines.');
+if(/12\.08 is not GitHub|12 August 2026 is not GitHub|не GitHub/i.test(JSON.stringify(chromeLocales)))throw new Error('News copy must not say that 12 August is not GitHub.');
+if(/\breboot\b/i.test(`${lockedNews.snapshot} ${lockedNews.outages}`))throw new Error('Do not mix a 12 August reboot into the GitHub-outage sentences.');
+if(/EDP Gramo/i.test(JSON.stringify(chromeLocales)))throw new Error('Grant copy must never mention EDP Gramo.');
+if(/Accedi|Sign-in|\bSign in\b|[?&]site=web|[?&]site=community|id\.claryel\.com/i.test(chromeHtml+chromeJs+JSON.stringify(chromeLocales)))throw new Error('Community chrome must not add Sign-in or ID site= parameters.');
+if(/99\s*€|99\s*EUR|99 euro/i.test(JSON.stringify(chromeLocales)+chromeHtml+presentationHtml))throw new Error('Community chrome must not mention the 99 EUR offer.');
+if(chromeLocales.it.news.pause===chromeLocales.en.news.pause||chromeLocales.ru.news.pause===chromeLocales.en.news.pause)throw new Error('Italian and Russian news must match the locked English facts, not reuse English.');
+if(!chromeJs.includes('news-grant')||!chromePages.includes('news-grant')||!chromeJs.includes('rebootTitle'))throw new Error('News renderer must keep grant and reboot as separate sections.');
+const lockedSupport=chromeLocales.en?.support||{};
+if(!/Deepgram/.test(lockedSupport.lines)||!/Google/.test(lockedSupport.lines))throw new Error('Support lines must be Deepgram and Google lines.');
+if(/[0-9]/.test(`${lockedSupport.linesTitle}${lockedSupport.lines}`))throw new Error('Support lines must not invent phone numbers or digits.');
+if(chromeLocales.it.news.reboot===chromeLocales.en.news.reboot||chromeLocales.ru.news.reboot===chromeLocales.en.news.reboot)throw new Error('Italian and Russian reboot notes must match the locked English facts, not reuse English.');
+for(const code of expected){
+  const copy=chromeLocales[code];
+  if(!copy?.nav?.home||!copy.nav.news||!copy.nav.support||!copy.nav.privacy)throw new Error(`Chrome navigation is incomplete: ${code}`);
+  if(!copy.news?.pause||!copy.news.snapshot||!copy.news.outages||!copy.news.grant||!copy.news.reboot||!copy.news.rebootTitle||!copy.support?.lines||!copy.legal?.securityTitle)throw new Error(`Chrome copy is incomplete: ${code}`);
+  if(copy.news.support||copy.news.supportTitle)throw new Error(`News copy must not keep a phone-lines paragraph: ${code}`);
+  if(!/Deepgram/i.test(copy.support.lines)||!/Google/i.test(copy.support.lines))throw new Error(`Support lines must name Deepgram and Google: ${code}`);
+  if(/[0-9]/.test(`${copy.support.linesTitle}${copy.support.lines}`))throw new Error(`Support lines must not contain digits: ${code}`);
+  if(/Deepgram|Google|phone|telefono|телефон|amministrazione/i.test(copy.news.grant))throw new Error(`Grant section must not contain support lines: ${code}`);
+}
 
 if(!voiceHtml.includes('/assets/claryel-mark-v3.svg'))throw new Error('Official CLARYEL mark is missing from the voice workspace.');
 if(!voiceHtml.includes('id="languageMenu"')||!app.includes('/assets/flags/'))throw new Error('Voice workspace language picker is missing.');

@@ -29,6 +29,7 @@ export async function handleComplianceRequest(request,env){
     policyUrl:localizedPath(language,'/legal/cookies/'),
     cookiePolicyUrl:localizedPath(language,'/legal/cookies/'),
     privacyPolicyUrl:localizedPath(language,'/legal/privacy/'),
+    securityPolicyUrl:localizedPath(language,'/legal/security/'),
     settingsEvent:'claryel:open-privacy-settings',
     cookieInventory:COOKIE_INVENTORY,
     monitoring:{availabilityMinutes:5,confirmationFailures:2,daily:true,weekly:true,monthlyLegalReview:true}
@@ -101,7 +102,7 @@ async function policyResponse(request,env,language,kind){
 }
 
 function legalUnavailableResponse(language,kind){
-  const title=kind==='privacy'?'Privacy Policy':'Cookie Policy';
+  const title=kind==='privacy'?'Privacy Policy':kind==='security'?'Security':'Cookie Policy';
   const direction=language==='ar'?'rtl':'ltr';
   const html=`<!doctype html><html lang="${escapeAttribute(language==='zh-CN'?'zh-CN':language)}" dir="${direction}" data-site="community" data-claryel-policy="${kind}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${title} — CLARYEL Web Community</title></head><body><main><h1>${title}</h1><p>The managed legal document is temporarily unavailable. Please retry shortly.</p><p><a href="mailto:amministrazione@claryel.it">amministrazione@claryel.it</a></p></main></body></html>`;
   return new Response(html,{status:503,headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','Retry-After':'60','X-Content-Type-Options':'nosniff'}});
@@ -110,6 +111,7 @@ function legalUnavailableResponse(language,kind){
 function policyKindForPath(pathname){
   if(pathname==='/legal/cookies'||pathname==='/legal/cookies/'||/^\/[^/]+\/legal\/cookies\/?$/i.test(pathname))return'cookies';
   if(pathname==='/legal/privacy'||pathname==='/legal/privacy/'||/^\/[^/]+\/legal\/privacy\/?$/i.test(pathname))return'privacy';
+  if(pathname==='/legal/security'||pathname==='/legal/security/'||/^\/[^/]+\/legal\/security\/?$/i.test(pathname))return'security';
   return null;
 }
 function languageFromRequest(url){const query=normalise(url.searchParams.get('lang'));if(PUBLIC_LOCALES.includes(query))return query;const first=url.pathname.split('/').filter(Boolean)[0]||'';const pathCode=normalise(first);return PUBLIC_LOCALES.includes(pathCode)?pathCode:'en';}

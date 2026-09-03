@@ -20,7 +20,7 @@ The public site now has two product surfaces.
 - **Immersive 3D** — an interactive architecture model;
 - **Classic 2D** — a conventional scrollable architecture brief selected with `?view=classic`.
 
-Both modes preserve the selected language and architecture scene. The presentation is available in the exact ordered twenty public locales, including Russian and Arabic RTL.
+Both modes preserve the selected language and architecture scene. The presentation is available in the exact ordered twenty public locales, including Russian and Arabic RTL. Public chrome follows the Box pattern: Home, News, Support, and Privacy and Security, with English at `/` and locales at `/it/`, `/ru/` and the other public paths. `/en/` redirects permanently. The voice workspace remains at `/classic/`.
 
 ### Voice workspace
 

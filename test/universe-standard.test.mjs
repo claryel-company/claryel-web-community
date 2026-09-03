@@ -51,7 +51,9 @@ test('Russian architecture landing is a normal public indexed locale',async()=>{
 test('presentation hreflang and sitemap cover all twenty locales and both surfaces',async()=>{
   const sitemap=await handleRequest(new Request('https://web.claryel.space/sitemap.xml'),env);
   const xml=await sitemap.text();
-  assert.equal((xml.match(/<url>/g)||[]).length,40);
+  assert.equal((xml.match(/<url>/g)||[]).length,100);
+  assert.match(xml,/https:\/\/web\.claryel\.space\/news\//);
+  assert.match(xml,/https:\/\/web\.claryel\.space\/it\/support\//);
   assert.match(xml,/https:\/\/web\.claryel\.space\/hi\//);
   assert.match(xml,/https:\/\/web\.claryel\.space\/ar\/classic\//);
   assert.match(xml,/https:\/\/web\.claryel\.space\/ru\/classic\//);

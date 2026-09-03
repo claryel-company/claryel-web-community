@@ -21,8 +21,12 @@ The managed platform remains the single source of the current twenty-language le
 - `/api/platform/compliance/consent`
 - `/legal/privacy/`
 - `/<locale>/legal/privacy/`
+- `/legal/security/`
+- `/<locale>/legal/security/`
 - `/legal/cookies/`
 - `/<locale>/legal/cookies/`
+- `/legal/` Privacy and Security hub
+- `/<locale>/legal/`
 
 The manifest declares the `community` site identity, exactly twenty public locales, necessary and optional consent categories, 180-day consent retention, localized Privacy Policy and Cookie Policy paths, the settings-reopen event and monitoring compatibility metadata.
 Manifest объявляет идентификатор сайта `community`, ровно двадцать публичных языков, обязательные и необязательные категории согласия, хранение выбора 180 дней, локализованные пути Privacy Policy и Cookie Policy, событие повторного открытия настроек и метаданные совместимости мониторинга.

@@ -1,3 +1,5 @@
+import{chromePath,chromeSitemapPaths,englishPrefixRedirect,localizePresentationNav,matchChromeRoute,replaceChromeDocument}from'./chrome-pages.js';
+
 const SECURITY_HEADERS=Object.freeze({
   "Content-Security-Policy":["default-src 'self'","script-src 'self'","style-src 'self'","img-src 'self' data: blob:","font-src 'self'","connect-src 'self'","object-src 'none'","base-uri 'self'","frame-ancestors 'none'","form-action 'self'","upgrade-insecure-requests"].join('; '),
   "Cross-Origin-Opener-Policy":"same-origin",
@@ -88,13 +90,18 @@ function redirectForLegacyLanguage(url){
   if(!url.searchParams.has('lang'))return null;
   const code=normaliseCode(url.searchParams.get('lang'));
   if(!LOCALES[code])return null;
-  const destination=new URL(classicRoute(url.pathname)?classicPath(code):presentationPath(code),url.origin);
-  for(const[key,value]of url.searchParams)if(key!=='lang')destination.searchParams.append(key,value);
+  const chrome=matchChromeRoute(url.pathname);
+  const destination=new URL(classicRoute(url.pathname)?classicPath(code):chrome?chromePath(code,chrome.surface):presentationPath(code),url.origin);
+  for(const[key,value]of url.searchParams){
+    if(key==='lang')continue;
+    if(chrome&&(key==='view'||key==='claryel-view'))continue;
+    destination.searchParams.append(key,value);
+  }
   return Response.redirect(destination.toString(),308);
 }
 
 function hreflangMarkup(origin,surface='presentation'){
-  const pathFor=surface==='classic'?classicPath:presentationPath;
+  const pathFor=surface==='classic'?classicPath:surface==='news'||surface==='support'||surface==='legal'?(code=>chromePath(code,surface)):presentationPath;
   const links=PUBLIC_LOCALES.map(code=>`  <link rel="alternate" hreflang="${LOCALES[code].locale}" href="${origin}${pathFor(code)}">`);
   links.push(`  <link rel="alternate" hreflang="x-default" href="${origin}${pathFor('en')}">`);
   return links.join('\n');
@@ -104,7 +111,7 @@ function replacePresentationMeta(html,{code,origin}){
   const meta=LOCALES[code];
   const seo=SEO[code]||SEO.en;
   const canonical=`${origin}${presentationPath(code)}`;
-  return html
+  return localizePresentationNav(html,code)
     .replace(/<html\b[^>]*>/i,`<html lang="${meta.locale}"${meta.direction==='rtl'?' dir="rtl"':''} data-site="community" data-locale="${code}" data-view-mode="immersive" data-scene-index="0" data-presentation-surface="architecture">`)
     .replace(/<title>[^<]*<\/title>/,`<title>${escapeHtml(seo.title)}</title>`)
     .replace(/(<meta name="description" content=")[^"]*(">)/,`$1${escapeAttribute(seo.description)}$2`)
@@ -151,6 +158,16 @@ async function servePresentation(request,env,code,origin){
   return withSecurityHeaders(new Response(request.method==='HEAD'?null:html,{status:200,headers}),{contentLanguage:LOCALES[code].locale});
 }
 
+async function serveChrome(request,env,route,origin){
+  const assetResponse=await readHtmlAsset(request,env,'/chrome.html');
+  if(!assetResponse.ok)return withSecurityHeaders(assetResponse,{noIndex:true});
+  const html=replaceChromeDocument(await assetResponse.text(),{code:route.code,surface:route.surface,origin});
+  const headers=new Headers(assetResponse.headers);
+  headers.set('Content-Type','text/html; charset=utf-8');
+  headers.delete('Content-Length');
+  return withSecurityHeaders(new Response(request.method==='HEAD'?null:html,{status:200,headers}),{contentLanguage:LOCALES[route.code].locale});
+}
+
 async function serveClassic(request,env,route,origin){
   const assetResponse=await readHtmlAsset(request,env,'/index.html');
   if(!assetResponse.ok)return withSecurityHeaders(assetResponse,{noIndex:true});
@@ -165,7 +182,8 @@ function createRobots(origin){return new Response(`User-agent: *\nAllow: /\nDisa
 function createSitemap(origin){
   const presentation=PUBLIC_LOCALES.map(code=>`${origin}${presentationPath(code)}`);
   const workspace=PUBLIC_LOCALES.map(code=>`${origin}${classicPath(code)}`);
-  const entries=[...presentation,...workspace].map(url=>`  <url><loc>${url}</loc></url>`).join('\n');
+  const chrome=chromeSitemapPaths().map(path=>`${origin}${path}`);
+  const entries=[...presentation,...workspace,...chrome].map(url=>`  <url><loc>${url}</loc></url>`).join('\n');
   return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>\n`,{headers:{'Content-Type':'application/xml; charset=utf-8'}});
 }
 
@@ -184,14 +202,24 @@ export async function handleRequest(request,env){
   const url=new URL(request.url);
   const origin=env.PUBLIC_ORIGIN||url.origin;
   if(request.method!=='GET'&&request.method!=='HEAD')return withSecurityHeaders(json({error:'method_not_allowed'},405),{cacheControl:'no-store'});
+  const englishDestination=englishPrefixRedirect(url.pathname);
+  if(englishDestination){
+    const target=new URL(englishDestination,origin);
+    target.search=url.search;
+    return withSecurityHeaders(Response.redirect(target.toString(),308),{cacheControl:'no-store'});
+  }
   const legacyRedirect=redirectForLegacyLanguage(url);
   if(legacyRedirect)return withSecurityHeaders(legacyRedirect,{cacheControl:'no-store'});
-  if(url.pathname==='/api/health')return withSecurityHeaders(json({status:'ok',product:'CLARYEL Web Community',version:env.PRODUCT_VERSION||'0.5.0',presentationModes:['immersive','classic'],presentationPath:'/',voiceWorkspace:'/classic/'}),{cacheControl:'no-store'});
-  if(url.pathname==='/api/public-config')return withSecurityHeaders(json({product:'CLARYEL Web Community',edition:'community',freeSiteLimit:Number.parseInt(env.FREE_SITE_LIMIT||'2',10),freeLimitBasis:'account-holder',publicOrigin:origin,localePaths:Object.fromEntries(PUBLIC_LOCALES.map(code=>[code,presentationPath(code)])),classicLocalePaths:Object.fromEntries(PUBLIC_LOCALES.map(code=>[code,classicPath(code)])),publicLocales:PUBLIC_LOCALES,hiddenLocales:[],presentationModes:['immersive','classic'],presentationPath:'/',voiceWorkspace:'/classic/',universeUrl:'https://claryel.space/universe/',architectureCapabilities:ARCHITECTURE_CAPABILITIES,aiMode:'voice-first-governed-git-workflow'}),{cacheControl:'public, max-age=60, must-revalidate'});
+  if(url.pathname==='/api/health')return withSecurityHeaders(json({status:'ok',product:'CLARYEL Web Community',version:env.PRODUCT_VERSION||'0.5.0',presentationModes:['immersive','classic'],presentationPath:'/',voiceWorkspace:'/classic/',chromeSurfaces:['news','support','legal']}),{cacheControl:'no-store'});
+  if(url.pathname==='/api/public-config')return withSecurityHeaders(json({product:'CLARYEL Web Community',edition:'community',freeSiteLimit:Number.parseInt(env.FREE_SITE_LIMIT||'2',10),freeLimitBasis:'account-holder',publicOrigin:origin,localePaths:Object.fromEntries(PUBLIC_LOCALES.map(code=>[code,presentationPath(code)])),classicLocalePaths:Object.fromEntries(PUBLIC_LOCALES.map(code=>[code,classicPath(code)])),chromeLocalePaths:Object.fromEntries(['news','support','legal'].map(surface=>[surface,Object.fromEntries(PUBLIC_LOCALES.map(code=>[code,chromePath(code,surface)]))])),publicLocales:PUBLIC_LOCALES,hiddenLocales:[],presentationModes:['immersive','classic'],presentationPath:'/',voiceWorkspace:'/classic/',universeUrl:'https://claryel.space/universe/',architectureCapabilities:ARCHITECTURE_CAPABILITIES,aiMode:'voice-first-governed-git-workflow'}),{cacheControl:'public, max-age=60, must-revalidate'});
   if(url.pathname==='/robots.txt')return withSecurityHeaders(createRobots(origin),{cacheControl:'public, max-age=3600'});
   if(url.pathname==='/sitemap.xml')return withSecurityHeaders(createSitemap(origin),{cacheControl:'public, max-age=3600'});
   if(url.pathname==='/presentation.html')return withSecurityHeaders(Response.redirect(new URL('/',origin).toString(),308),{cacheControl:'no-store'});
+  if(url.pathname==='/chrome.html')return withSecurityHeaders(Response.redirect(new URL('/news/',origin).toString(),308),{cacheControl:'no-store'});
   if(url.pathname==='/index.html')return withSecurityHeaders(Response.redirect(new URL('/classic/',origin).toString(),308),{cacheControl:'no-store'});
+  const chrome=matchChromeRoute(url.pathname);
+  if(chrome?.redirect){const target=new URL(chrome.redirect,origin);return withSecurityHeaders(Response.redirect(target.toString(),308),{cacheControl:'no-store'});}
+  if(chrome)return serveChrome(request,env,chrome,origin);
   const classic=classicRoute(url.pathname);
   if(classic?.redirect){const target=new URL(classic.redirect,origin);target.search=url.search;return withSecurityHeaders(Response.redirect(target.toString(),308),{cacheControl:'no-store'});}
   if(classic)return serveClassic(request,env,classic,origin);

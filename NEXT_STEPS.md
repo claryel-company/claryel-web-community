@@ -2,7 +2,7 @@
 
 ## Current state
 
-- Date: `2026-08-01`
+- Date: `2026-09-03`
 - Responsible owner: CLARYEL architecture owner
 - Working branch: `feature/architecture-showcase-3d-2d-2026-08-01`
 - Target release: `0.5.0`
@@ -26,6 +26,7 @@
 - Published consent and legal compliance requirements as `architecture-adopted`, not as a completed public runtime claim.
 - Published low-cost monitoring requirements as `architecture-adopted`, including confirmation retries, outage/recovery email, self-hosted runner portability and Uptime Kuma.
 - Added a formal private-to-public export roadmap.
+- Added Box-like public chrome: Home / News / Support / Privacy and Security, path locales without `/en/`, and one pause-news item for the 2 September 2026 local-git CLARYEL01 rebuild. The `/classic/` workspace cabinets stay separate.
 - Removed the active root dependency on the former `BOX_ORIGIN` proxy.
 - Expanded the sitemap contract to forty URLs: twenty architecture routes and twenty voice-workspace routes.
 - Added machine-readable capability states to `/api/public-config`.
@@ -118,6 +119,6 @@ Never transfer:
 
 ## Rollback
 
-Revert the exact release merge commit through a focused Pull Request, rerun deterministic and Worker dry-run checks, deploy through the protected workflow and verify both presentation modes, representative locales, `/classic/`, public APIs and the forty-entry sitemap.
+Revert the exact release merge commit through a focused Pull Request, rerun deterministic and Worker dry-run checks, deploy through the protected workflow and verify both presentation modes, representative locales, `/classic/`, chrome pages, public APIs and the sitemap.
 
 The historical Box-proxy archive is retained for forensic comparison and is not the normal rollback target.

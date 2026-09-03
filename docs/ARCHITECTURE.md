@@ -54,6 +54,10 @@ The existing browser-local voice-first product remains available independently:
 
 The architecture presentation links to the corresponding localized voice workspace rather than replacing it.
 
+### Box-like public chrome
+
+The architecture presentation and the public news, support and Privacy and Security pages share a Home / News / Support / Privacy and Security navigation. Those chrome pages use path locales (`/it/news/`, `/ru/support/`) with English at `/news/`, `/support/` and `/legal/`. They do not add Sign-in, ID `site=` parameters or `view=` query addresses. The voice workspace at `/classic/` remains a separate cabinet surface.
+
 ## Twenty public locales
 
 Both surfaces use the exact ordered twenty-locale contract:
@@ -130,7 +134,7 @@ The Cloudflare Worker owns:
 - legacy `?lang=` redirects;
 - Arabic direction metadata;
 - reciprocal `hreflang`;
-- a forty-entry sitemap covering both surfaces;
+- a sitemap covering architecture, voice-workspace and chrome routes;
 - security headers;
 - health and public configuration endpoints;
 - static asset delivery;

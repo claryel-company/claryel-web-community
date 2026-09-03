@@ -57,7 +57,8 @@ The public Community Edition currently demonstrates:
 - an optional 3D multi-site map pattern with direct links and a complete 2D fallback;
 - Cloudflare Worker delivery with deterministic checks, exact-commit deployment and public verification;
 - mobile, keyboard, touch and reduced-motion support;
-- a separately preserved voice workspace at `/classic/`.
+- a separately preserved voice workspace at `/classic/`;
+- Box-like Home / News / Support / Privacy and Security chrome on the public architecture surface, with path-locale news, support and legal hub pages.
 
 ## Architecture adopted
 

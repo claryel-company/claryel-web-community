@@ -50,8 +50,16 @@ test('English news page uses the locked pause copy',async()=>{
   assert.match(html,/Bando Nuova Impresa 2026 Regione\/Unioncamere Lombardia, 10\.000 EUR/);
   assert.match(html,/https:\/\/mediamint\.claryel\.space\/#architecture-rebuild-2026-09/);
   assert.match(html,/Other products are paused\. CLARYEL Box and CLARYEL ID keep working/);
+  assert.match(html,/<h2>Operational transparency — 12 August 2026<\/h2>/);
+  assert.match(html,/After a computer reboot, hourly archive processing stopped/);
+  assert.match(html,/The interruption was visible immediately/);
+  assert.match(html,/The analysis command was manual, so recovery was delayed by about one day/);
+  assert.match(html,/The archive path was missing after reboot/);
+  assert.match(html,/Wi-Fi remained software-disabled while Ethernet was healthy/);
+  assert.match(html,/class="news-card news-grant"/);
+  assert.match(html,/<h2>Investors<\/h2>/);
   assert.doesNotMatch(html,/12\.08 is not GitHub|12 August 2026 is not GitHub/);
-  assert.doesNotMatch(html,/reboot/i);
+  assert.doesNotMatch(html,/Phone lines are not open yet|Write to amministrazione@claryel\.it/);
   assert.doesNotMatch(html,/EDP Gramo/i);
   assert.doesNotMatch(html,/Accedi|Sign-in|\bSign in\b/);
   assert.doesNotMatch(html,/99\s*€|99\s*EUR/);
@@ -67,23 +75,29 @@ test('Italian and Russian news match the locked English facts',async()=>{
   assert.match(it,/12 agosto 2026 è sia l.ultimo snapshot orario pubblicato sia un.interruzione di GitHub/);
   assert.match(it,/seconda interruzione nello stesso mese non ha qui una data pubblica/);
   assert.match(it,/Bando Nuova Impresa 2026/);
+  assert.match(it,/Trasparenza operativa — 12 agosto 2026/);
+  assert.match(it,/Dopo un riavvio del computer/);
   assert.match(ru,/2 сентября 2026/);
   assert.match(ru,/последний опубликованный ежечасный снимок, и сбой GitHub/);
   assert.match(ru,/У второго сбоя в том же месяце здесь нет публичной даты/);
+  assert.match(ru,/Операционная прозрачность — 12 августа 2026/);
+  assert.match(ru,/После перезагрузки компьютера/);
   assert.doesNotMatch(it,/Accedi/);
+  assert.doesNotMatch(it+ru,/linee telefoniche|телефонные линии/i);
   assert.doesNotMatch(ru,/EDP Gramo/);
 });
 
 test('Support copy stays Italian-first and does not invent phone numbers or Sign-in',async()=>{
   const en=await(await handleRequest(new Request('https://web.claryel.space/support/'),createEnv())).text();
   const it=await(await handleRequest(new Request('https://web.claryel.space/it/support/'),createEnv())).text();
-  assert.match(en,/Phone lines are not open yet/);
+  assert.match(en,/Deepgram and Google lines are not open yet/);
   assert.match(en,/Italian first/);
   assert.match(en,/amministrazione@claryel\.it/);
   assert.match(en,/Telegram @uctive/);
   assert.match(en,/Do not call/);
-  assert.match(it,/Le linee telefoniche non sono ancora aperte/);
+  assert.match(it,/Le linee Deepgram e Google non sono ancora aperte/);
   assert.match(it,/italiano è il primo/i);
+  assert.doesNotMatch(en,/Phone lines are not open yet/);
   assert.doesNotMatch(en,/\+\d{5,}|\b\d{3}[\s-]\d{3}[\s-]\d{4}\b/);
   assert.doesNotMatch(en+it,/Accedi|Sign-in|id\.claryel\.com\?site=/);
 });
@@ -123,6 +137,12 @@ test('every chrome locale keeps navigation, news, support and legal copy',()=>{
     assert.ok(copy.news.pause.includes('CLARYEL01')||copy.news.pause.includes('CLARYEL01')===false&&copy.news.pause.length>40,code);
     assert.match(copy.news.pause,/CLARYEL01/);
     assert.match(copy.news.grant,/Bando Nuova Impresa 2026/);
+    assert.ok(copy.news.rebootTitle&&copy.news.reboot,code);
+    assert.equal(copy.news.support,undefined);
+    assert.match(copy.support.lines,/Deepgram/);
+    assert.match(copy.support.lines,/Google/);
+    assert.doesNotMatch(copy.support.linesTitle+copy.support.lines,/[0-9]/);
+    assert.doesNotMatch(copy.news.grant,/Deepgram|Google|phone|amministrazione/i);
     assert.doesNotMatch(copy.news.snapshot+copy.news.outages,/reboot|riavvio|перезагруз/i);
   }
 });

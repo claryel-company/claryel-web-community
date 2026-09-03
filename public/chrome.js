@@ -48,7 +48,7 @@ function renderNav(){
 
 function renderNews(){
   const n=copy.news;
-  return `<p class="chrome-kicker">${escapeHtml(n.kicker)}</p><h1>${escapeHtml(n.title)}</h1><p class="chrome-lead">${escapeHtml(n.lead)}</p><article class="news-card"><time datetime="${escapeHtml(n.date)}">${escapeHtml(n.date)}</time><h2>${escapeHtml(n.itemTitle)}</h2><p>${escapeHtml(n.pause)}</p><p>${escapeHtml(n.snapshot)}</p><p>${escapeHtml(n.outages)}</p><p>${escapeHtml(n.models)}</p><p><a href="${escapeHtml(n.anchorHref)}">${escapeHtml(n.anchorLabel)}</a></p><h3>${escapeHtml(n.grantTitle)}</h3><p>${escapeHtml(n.grant)}</p><h3>${escapeHtml(n.supportTitle)}</h3><p>${escapeHtml(n.support)}</p><h3>${escapeHtml(n.productsTitle)}</h3><p>${escapeHtml(n.products)}</p></article>`;
+  return `<p class="chrome-kicker">${escapeHtml(n.kicker)}</p><h1>${escapeHtml(n.title)}</h1><p class="chrome-lead">${escapeHtml(n.lead)}</p><article class="news-card"><time datetime="${escapeHtml(n.date)}">${escapeHtml(n.date)}</time><h2>${escapeHtml(n.itemTitle)}</h2><p>${escapeHtml(n.pause)}</p><p>${escapeHtml(n.snapshot)}</p><p>${escapeHtml(n.outages)}</p><p>${escapeHtml(n.models)}</p><p><a href="${escapeHtml(n.anchorHref)}">${escapeHtml(n.anchorLabel)}</a></p></article><article class="news-card"><time datetime="${escapeHtml(n.rebootDate)}">${escapeHtml(n.rebootDate)}</time><h2>${escapeHtml(n.rebootTitle)}</h2><p>${escapeHtml(n.reboot)}</p></article><article class="news-card news-grant"><h2>${escapeHtml(n.grantTitle)}</h2><p>${escapeHtml(n.grant)}</p></article><article class="news-card"><h2>${escapeHtml(n.productsTitle)}</h2><p>${escapeHtml(n.products)}</p></article>`;
 }
 
 function renderSupport(){
